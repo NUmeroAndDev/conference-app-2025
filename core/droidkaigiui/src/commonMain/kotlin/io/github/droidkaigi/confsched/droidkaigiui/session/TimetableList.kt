@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched.droidkaigiui.session
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -83,6 +84,7 @@ fun TimetableList(
 
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.animateItem()
                 ) {
                     TimetableTimeSlot(
                         startTimeText = timeSlot.startTimeString,
@@ -91,29 +93,32 @@ fun TimetableList(
                             .onSizeChanged { timetableTimeSlotHeight = it.height }
                             .graphicsLayer { translationY = timetableTimeSlotOffsetY.toFloat() },
                     )
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                    AnimatedContent(
+                        targetState = timetableItems,
+                        contentKey = { it.map { item -> item.id } },
                     ) {
-                        timetableItems.windowed(columnCount, columnCount, true).forEach { windowedItems ->
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                                modifier = Modifier.height(IntrinsicSize.Max),
-                            ) {
-                                windowedItems.forEach { item ->
-                                    TimetableItemCard(
-                                        timetableItem = item,
-                                        isBookmarked = isBookmarked(item.id),
-                                        isDateTagVisible = isDateTagVisible,
-                                        highlightWord = highlightWord,
-                                        onBookmarkClick = { onBookmarkClick(item.id) },
-                                        onTimetableItemClick = { onTimetableItemClick(item.id) },
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .fillMaxHeight(),
-                                    )
-                                }
-                                if (windowedItems.size < columnCount) {
-                                    repeat(columnCount - windowedItems.size) {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(12.dp),
+                        ) {
+                            timetableItems.chunked(columnCount).forEach { chunkedItems ->
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                    modifier = Modifier.height(IntrinsicSize.Max),
+                                ) {
+                                    chunkedItems.forEach { item ->
+                                        TimetableItemCard(
+                                            timetableItem = item,
+                                            isBookmarked = isBookmarked(item.id),
+                                            isDateTagVisible = isDateTagVisible,
+                                            highlightWord = highlightWord,
+                                            onBookmarkClick = { onBookmarkClick(item.id) },
+                                            onTimetableItemClick = { onTimetableItemClick(item.id) },
+                                            modifier = Modifier
+                                                .weight(1f)
+                                                .fillMaxHeight()
+                                        )
+                                    }
+                                    if (chunkedItems.size < columnCount) {
                                         Spacer(Modifier.weight(1f))
                                     }
                                 }
@@ -160,4 +165,10 @@ private fun TimetableListPreview() {
             isBookmarked = { false },
         )
     }
+}
+
+@Preview(widthDp = 1024)
+@Composable
+private fun TimetableListLandscapePreview() {
+    TimetableListPreview()
 }
