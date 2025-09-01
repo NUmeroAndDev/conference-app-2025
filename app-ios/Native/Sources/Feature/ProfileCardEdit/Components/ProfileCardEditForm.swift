@@ -4,14 +4,10 @@ import SwiftUI
 import Theme
 
 // TODO: add varidation
-public struct ProfileCardEditForm: View {
-    let presenter: ProfileCardEditPresenter
+struct ProfileCardEditForm: View {
+    @Binding var presenter: ProfileCardEditPresenter
 
-    public init(presenter: ProfileCardEditPresenter) {
-        self.presenter = presenter
-    }
-
-    public var body: some View {
+    var body: some View {
         VStack(spacing: 32) {
             Text(
                 String(
@@ -91,7 +87,7 @@ public struct ProfileCardEditForm: View {
 private struct ProfileCardEditInputImageWrapper: View {
     let presenter: ProfileCardEditPresenter
     @State private var currentInitialImage: UIImage?
-    
+
     var body: some View {
         ProfileCardEditInputImage(
             selectedPhoto: .init(

@@ -5,20 +5,20 @@ import Presentation
 import _PhotosUI_SwiftUI
 
 @Observable
-public class FormState {
-    public var name: String
-    public var occupation: String
-    public var urlString: String
-    public var image: PhotosPickerItem?
-    public var cardVariant: ProfileCardVariant
-    public var existingImageData: Data?
+class FormState {
+    var name: String
+    var occupation: String
+    var urlString: String
+    var image: PhotosPickerItem?
+    var cardVariant: ProfileCardVariant
+    var existingImageData: Data?
 
-    public var nameError: String?
-    public var occupationError: String?
-    public var urlError: String?
-    public var imageError: String?
+    var nameError: String?
+    var occupationError: String?
+    var urlError: String?
+    var imageError: String?
 
-    public init(
+    init(
         name: String, occupation: String, urlString: String, image: PhotosPickerItem?, cardVariant: ProfileCardVariant, existingImageData: Data? = nil
     ) {
         self.name = name
@@ -29,7 +29,7 @@ public class FormState {
         self.existingImageData = existingImageData
     }
 
-    public func validate() -> Bool {
+    func validate() -> Bool {
         nameError = name.isEmpty ? "Name is required" : nil
         occupationError = occupation.isEmpty ? "Occupation is required" : nil
         urlError = urlString.isEmpty ? "URL is required" : nil
@@ -39,7 +39,7 @@ public class FormState {
     }
 
     @MainActor
-    public func createProfile() async throws -> Profile {
+    func createProfile() async throws -> Profile {
         let imageData: Data
 
         if let newImage = image {
@@ -65,17 +65,17 @@ public class FormState {
 
 @MainActor
 @Observable
-public final class ProfileCardEditPresenter {
-    public let profile: ProfileProvider
-    public var formState: FormState
-    public var onComplete: (() -> Void)?
+final class ProfileCardEditPresenter {
+    let profile: ProfileProvider
+    var formState: FormState
+    var onComplete: (() -> Void)?
 
-    public init(profile: ProfileProvider) {
+    init(profile: ProfileProvider) {
         self.profile = profile
         self.formState = FormState(name: "", occupation: "", urlString: "", image: nil, cardVariant: .nightPill, existingImageData: nil)
     }
 
-    public func loadForEditing() {
+    func loadForEditing() {
         formState = FormState(
             name: profile.profile?.name ?? "",
             occupation: profile.profile?.occupation ?? "",
@@ -87,9 +87,9 @@ public final class ProfileCardEditPresenter {
     }
 
     @MainActor
-    public func createCard() {
+    func createCard() {
         if !formState.validate() { return }
-        
+
         Task {
             let profileData = try await formState.createProfile()
             profile.saveProfile(profileData)
@@ -97,23 +97,23 @@ public final class ProfileCardEditPresenter {
         }
     }
 
-    public func setName(_ name: String) {
+    func setName(_ name: String) {
         formState.name = name
     }
 
-    public func setOccupation(_ occupation: String) {
+    func setOccupation(_ occupation: String) {
         formState.occupation = occupation
     }
 
-    public func setLink(_ linkString: String) {
+    func setLink(_ linkString: String) {
         formState.urlString = linkString
     }
 
-    public func setImage(_ image: PhotosPickerItem?) {
+    func setImage(_ image: PhotosPickerItem?) {
         formState.image = image
     }
 
-    public func setCardVariant(_ variant: ProfileCardVariant) {
+    func setCardVariant(_ variant: ProfileCardVariant) {
         formState.cardVariant = variant
     }
 }
