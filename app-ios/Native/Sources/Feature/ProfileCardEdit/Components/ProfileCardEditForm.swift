@@ -4,7 +4,7 @@ import SwiftUI
 import Theme
 
 // TODO: add varidation
-public struct EditProfileCardForm: View {
+public struct ProfileCardEditForm: View {
     let presenter: ProfileCardEditPresenter
 
     public init(presenter: ProfileCardEditPresenter) {
@@ -59,7 +59,7 @@ public struct EditProfileCardForm: View {
                 )
             )
 
-            ProfileCardInputImage(
+            ProfileCardEditInputImage(
                 selectedPhoto: .init(
                     get: {
                         presenter.formState.image
@@ -69,7 +69,7 @@ public struct EditProfileCardForm: View {
                     }
                 ),
                 initialImage: {
-                    guard let imageData = presenter.profile.profile?.image,
+                    guard let imageData = presenter.formState.existingImageData,
                             let uiImage = UIImage(data: imageData) else {
                         return nil
                     }
