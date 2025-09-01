@@ -59,24 +59,7 @@ public struct ProfileCardEditForm: View {
                 )
             )
 
-            ProfileCardEditInputImage(
-                selectedPhoto: .init(
-                    get: {
-                        presenter.formState.image
-                    },
-                    set: {
-                        presenter.setImage($0)
-                    }
-                ),
-                initialImage: {
-                    guard let imageData = presenter.formState.existingImageData,
-                            let uiImage = UIImage(data: imageData) else {
-                        return nil
-                    }
-                    return uiImage
-                }(),
-                title: String(localized: "Image", bundle: .module)
-            )
+            ProfileCardEditInputImageWrapper(presenter: presenter)
 
             ProfileCardInputCardVariant(
                 selectedCardType: .init(
@@ -102,5 +85,34 @@ public struct ProfileCardEditForm: View {
             .filledButtonStyle()
         }
         .padding(.horizontal, 16)
+    }
+}
+
+private struct ProfileCardEditInputImageWrapper: View {
+    let presenter: ProfileCardEditPresenter
+    @State private var currentInitialImage: UIImage?
+    
+    var body: some View {
+        ProfileCardEditInputImage(
+            selectedPhoto: .init(
+                get: { presenter.formState.image },
+                set: { presenter.setImage($0) }
+            ),
+            initialImage: currentInitialImage,
+            title: String(localized: "Image", bundle: .module)
+        )
+        .onChange(of: presenter.formState.existingImageData) { _, newData in
+            if let newData = newData, let uiImage = UIImage(data: newData) {
+                currentInitialImage = uiImage
+            } else {
+                currentInitialImage = nil
+            }
+        }
+        .onAppear {
+            if let imageData = presenter.formState.existingImageData,
+               let uiImage = UIImage(data: imageData) {
+                currentInitialImage = uiImage
+            }
+        }
     }
 }

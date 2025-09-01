@@ -79,6 +79,12 @@ public struct ProfileCardEditInputImage: View {
                 selectedPhoto = nil
             }
         }
+        .onChange(of: initialImage) { _, newInitialImage in
+            if let newInitialImage = newInitialImage {
+                selectedImage = Image(uiImage: newInitialImage)
+                selectedPhoto = nil
+            }
+        }
         .photosPicker(isPresented: $isPickerPresented, selection: $selectedPhoto)
         .onChange(of: selectedPhoto) { _, newValue in
             newValue?
