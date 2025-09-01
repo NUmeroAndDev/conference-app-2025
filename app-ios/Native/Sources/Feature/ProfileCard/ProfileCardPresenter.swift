@@ -61,10 +61,6 @@ final class ProfileCardPresenter {
     var formState: FormState
     var isEditing: Bool
 
-    var shouldEditing: Bool {
-        isEditing || profile.profile == nil
-    }
-
     init() {
         formState = FormState(name: "", occupation: "", urlString: "", image: nil, cardVariant: .nightPill)
         isEditing = false

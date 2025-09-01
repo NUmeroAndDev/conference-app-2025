@@ -7,6 +7,7 @@ import Theme
 
 public struct ProfileCardScreen: View {
     @State private var presenter = ProfileCardPresenter()
+    @State private var showingEditScreen = false
 
     public init() {}
 
@@ -21,6 +22,16 @@ public struct ProfileCardScreen: View {
                 .onAppear {
                     presenter.loadInitial()
                 }
+                .onChange(of: presenter.profile.isLoading) { _, isLoading in
+                    // If there is no profile when loading is complete, the edit screen will automatically appear
+                    if !isLoading && presenter.profile.profile == nil && !showingEditScreen {
+                        showingEditScreen = true
+                        presenter.editProfile()
+                    }
+                }
+                .navigationDestination(isPresented: $showingEditScreen) {
+                    ProfileCardEditScreen(presenter: $presenter)
+                }
         }
     }
 
@@ -33,18 +44,15 @@ public struct ProfileCardScreen: View {
                 if isLoading {
                     ProgressView()
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                } else if presenter.shouldEditing {
-                    editView
-                } else {
+                } else if profile != nil {
                     cardView(profile!)
+                } else {
+                    // when creating a new profile, the editing screen will be navigated automatically
+                    EmptyView()
                 }
             }
             .padding(.bottom, 80)  // Tab bar padding
         }
-    }
-
-    private var editView: some View {
-        EditProfileCardForm(presenter: $presenter)
     }
 
     @ViewBuilder
@@ -110,8 +118,11 @@ public struct ProfileCardScreen: View {
     }
 
     private var editButton: some View {
-        Button {
-            presenter.editProfile()
+        NavigationLink {
+            ProfileCardEditScreen(presenter: $presenter)
+                .onAppear {
+                    presenter.editProfile()
+                }
         } label: {
             Text(String(localized: "Edit", bundle: .module))
                 .frame(maxWidth: .infinity)

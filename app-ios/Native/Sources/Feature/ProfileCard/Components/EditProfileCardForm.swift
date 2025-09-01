@@ -64,6 +64,13 @@ struct EditProfileCardForm: View {
                         presenter.setImage($0)
                     }
                 ),
+                initialImage: {
+                    guard let imageData = presenter.profile.profile?.image,
+                            let uiImage = UIImage(data: imageData) else {
+                        return nil
+                    }
+                    return uiImage
+                }(),
                 title: String(localized: "Image", bundle: .module)
             )
 
@@ -81,7 +88,11 @@ struct EditProfileCardForm: View {
             Button {
                 presenter.createCard()
             } label: {
-                Text(String(localized: "Create Card", bundle: .module))
+                let isEditing = presenter.profile.profile != nil
+                let buttonText = isEditing ?
+                    String(localized: "Save Card", bundle: .module) :
+                    String(localized: "Create Card", bundle: .module)
+                Text(buttonText)
                     .frame(maxWidth: .infinity)
             }
             .filledButtonStyle()

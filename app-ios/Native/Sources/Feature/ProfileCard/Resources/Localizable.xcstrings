@@ -11,6 +11,16 @@
         }
       }
     },
+    "Save Card" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "編集内容を保存する"
+          }
+        }
+      }
+    },
     "Edit" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -74,6 +84,9 @@
       }
     },
     "Profile Card" : {
+
+    },
+    "Edit Profile Card" : {
 
     },
     "QRCode" : {

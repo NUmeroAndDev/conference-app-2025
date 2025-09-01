@@ -7,10 +7,12 @@ public struct ProfileCardInputImage: View {
     @State private var isPickerPresented = false
     @State private var selectedImage: Image?
     @Binding var selectedPhoto: PhotosPickerItem?
+    var initialImage: UIImage?
     var title: String
 
-    public init(selectedPhoto: Binding<PhotosPickerItem?>, title: String) {
+    public init(selectedPhoto: Binding<PhotosPickerItem?>, initialImage: UIImage? = nil, title: String) {
         self._selectedPhoto = selectedPhoto
+        self.initialImage = initialImage
         self.title = title
     }
 
@@ -22,16 +24,19 @@ public struct ProfileCardInputImage: View {
 
             if let image = selectedImage {
                 ZStack(alignment: .topTrailing) {
-                    image
-                        .resizable()
-                        .frame(width: 120, height: 120)
-                        .padding(.top, 12)
-                        .padding(.trailing, 17)
                     Button {
-                        selectedPhoto = nil
-                        selectedImage = nil
+                        isPickerPresented = true
                     } label: {
-                        Image(systemName: "xmark")
+                        image
+                            .resizable()
+                            .frame(width: 120, height: 120)
+                            .padding(.top, 12)
+                            .padding(.trailing, 17)
+                    }
+                    Button {
+                        isPickerPresented = true
+                    } label: {
+                        Image(systemName: "pencil")
                             .resizable()
                             .renderingMode(.template)
                             .foregroundStyle(AssetColors.onSurface.swiftUIColor)
@@ -68,6 +73,12 @@ public struct ProfileCardInputImage: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .onAppear {
+            if let initialImage = initialImage {
+                selectedImage = Image(uiImage: initialImage)
+                selectedPhoto = nil
+            }
+        }
         .photosPicker(isPresented: $isPickerPresented, selection: $selectedPhoto)
         .onChange(of: selectedPhoto) { _, newValue in
             newValue?
