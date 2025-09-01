@@ -5,34 +5,31 @@ import Presentation
 import SwiftUI
 import Theme
 
+@MainActor
 public struct ProfileCardScreen: View {
     @State private var presenter = ProfileCardPresenter()
-    @State private var showingEditScreen = false
+    let onNavigate: (ProfileCardNavigationDestination) -> Void
 
-    public init() {}
+    public init(onNavigate: @escaping (ProfileCardNavigationDestination) -> Void = { _ in }) {
+        self.onNavigate = onNavigate
+    }
 
     public var body: some View {
-        NavigationStack {
-            profileCardScrollView
-                .background(AssetColors.surface.swiftUIColor)
-                .navigationTitle("Profile Card")
-                #if os(iOS)
-                    .navigationBarTitleDisplayMode(.large)
-                #endif
-                .onAppear {
-                    presenter.loadInitial()
+        profileCardScrollView
+            .background(AssetColors.surface.swiftUIColor)
+            .navigationTitle("Profile Card")
+            #if os(iOS)
+                .navigationBarTitleDisplayMode(.large)
+            #endif
+            .onAppear {
+                presenter.loadInitial()
+            }
+            .onChange(of: presenter.profile.isLoading) { _, isLoading in
+                // If there is no profile when loading is complete, the edit screen will automatically appear
+                if !isLoading && presenter.profile.profile == nil {
+                    onNavigate(.edit)
                 }
-                .onChange(of: presenter.profile.isLoading) { _, isLoading in
-                    // If there is no profile when loading is complete, the edit screen will automatically appear
-                    if !isLoading && presenter.profile.profile == nil && !showingEditScreen {
-                        showingEditScreen = true
-                        presenter.editProfile()
-                    }
-                }
-                .navigationDestination(isPresented: $showingEditScreen) {
-                    ProfileCardEditScreen(presenter: $presenter)
-                }
-        }
+            }
     }
 
     @ViewBuilder
@@ -65,6 +62,7 @@ public struct ProfileCardScreen: View {
     }
 
     @ViewBuilder
+    @MainActor
     private func profileCard(_ profile: Model.Profile) -> some View {
         TiltFlipCard(
             front: { normal in
@@ -118,11 +116,8 @@ public struct ProfileCardScreen: View {
     }
 
     private var editButton: some View {
-        NavigationLink {
-            ProfileCardEditScreen(presenter: $presenter)
-                .onAppear {
-                    presenter.editProfile()
-                }
+        Button {
+            onNavigate(.edit)
         } label: {
             Text(String(localized: "Edit", bundle: .module))
                 .frame(maxWidth: .infinity)

@@ -165,8 +165,14 @@ public struct RootScreen: View {
     }
 
     private var profileCardTab: some View {
-        NavigationStack {
-            ProfileCardScreen()
+        NavigationStack(path: $navigationPath) {
+            ProfileCardScreen(onNavigate: handleProfileCardNavigation)
+                .navigationDestination(for: NavigationDestination.self) { destination in
+                    let navigationHandler = NavigationHandler(
+                        handleSearchNavigation: handleSearchNavigation
+                    )
+                    destination.view(with: navigationHandler)
+                }
         }
     }
 
@@ -191,6 +197,13 @@ public struct RootScreen: View {
         switch destination {
         case .timetableDetail(let item):
             navigationPath.append(NavigationDestination.timetableDetail(item))
+        }
+    }
+
+    private func handleProfileCardNavigation(_ destination: ProfileCardNavigationDestination) {
+        switch destination {
+        case .edit:
+            navigationPath.append(NavigationDestination.profileCardEdit)
         }
     }
 
