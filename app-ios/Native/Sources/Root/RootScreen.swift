@@ -6,6 +6,7 @@ import FavoriteFeature
 import HomeFeature
 import Model
 import ProfileCardFeature
+import ProfileCardEditFeature
 import SearchFeature
 import SponsorFeature
 import StaffFeature
@@ -92,7 +93,8 @@ public struct RootScreen: View {
             HomeScreen(onNavigate: handleHomeNavigation)
                 .navigationDestination(for: NavigationDestination.self) { destination in
                     let navigationHandler = NavigationHandler(
-                        handleSearchNavigation: handleSearchNavigation
+                        handleSearchNavigation: handleSearchNavigation,
+                        handleProfileCardEditNavigation: handleProfileCardEditNavigation
                     )
                     destination.view(with: navigationHandler)
                 }
@@ -170,7 +172,8 @@ public struct RootScreen: View {
             ProfileCardScreen(onNavigate: handleProfileCardNavigation)
                 .navigationDestination(for: NavigationDestination.self) { destination in
                     let navigationHandler = NavigationHandler(
-                        handleSearchNavigation: handleSearchNavigation
+                        handleSearchNavigation: handleSearchNavigation,
+                        handleProfileCardEditNavigation: handleProfileCardEditNavigation
                     )
                     destination.view(with: navigationHandler)
                 }
@@ -205,6 +208,13 @@ public struct RootScreen: View {
         switch destination {
         case .edit:
             profileCardNavigationPath.append(NavigationDestination.profileCardEdit)
+        }
+    }
+
+    private func handleProfileCardEditNavigation(_ destination: ProfileCardEditNavigationDestination) {
+        switch destination {
+        case .completed:
+            profileCardNavigationPath = NavigationPath()
         }
     }
 

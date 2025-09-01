@@ -14,9 +14,14 @@ public enum NavigationDestination: Hashable {
 // Navigation handler that can be passed down
 public struct NavigationHandler {
     let handleSearchNavigation: (SearchNavigationDestination) -> Void
+    let handleProfileCardEditNavigation: (ProfileCardEditNavigationDestination) -> Void
 
-    public init(handleSearchNavigation: @escaping (SearchNavigationDestination) -> Void) {
+    public init(
+        handleSearchNavigation: @escaping (SearchNavigationDestination) -> Void,
+        handleProfileCardEditNavigation: @escaping (ProfileCardEditNavigationDestination) -> Void = { _ in }
+    ) {
         self.handleSearchNavigation = handleSearchNavigation
+        self.handleProfileCardEditNavigation = handleProfileCardEditNavigation
     }
 }
 
@@ -31,7 +36,7 @@ extension NavigationDestination {
         case .search:
             SearchScreen(onNavigate: navigationHandler.handleSearchNavigation)
         case .profileCardEdit:
-            ProfileCardEditScreen()
+            ProfileCardEditScreen(onNavigate: navigationHandler.handleProfileCardEditNavigation)
         }
     }
 }

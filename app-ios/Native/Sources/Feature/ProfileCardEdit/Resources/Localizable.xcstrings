@@ -21,16 +21,6 @@
         }
       }
     },
-    "Edit Profile Card" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "プロフィールカードを編集"
-          }
-        }
-      }
-    },
     "Image" : {
       "localizations" : {
         "ja" : {
@@ -81,6 +71,9 @@
           }
         }
       }
+    },
+    "Profile Card" : {
+
     },
     "Save Card" : {
       "localizations" : {

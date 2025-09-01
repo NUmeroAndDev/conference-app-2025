@@ -6,9 +6,11 @@ import Theme
 
 public struct ProfileCardEditScreen: View {
     @State private var presenter = ProfileCardEditPresenter(profile: ProfileProvider())
-    @Environment(\.dismiss) private var dismiss
+    let onNavigate: (ProfileCardEditNavigationDestination) -> Void
 
-    public init() {}
+    public init(onNavigate: @escaping (ProfileCardEditNavigationDestination) -> Void = { _ in }) {
+        self.onNavigate = onNavigate
+    }
 
     public var body: some View {
         ScrollView {
@@ -16,13 +18,13 @@ public struct ProfileCardEditScreen: View {
             .padding(.bottom, 80)
         }
         .background(AssetColors.surface.swiftUIColor)
-        .navigationTitle("Edit Profile Card")
+        .navigationTitle("Profile Card")
         .navigationBarTitleDisplayMode(.large)
         .navigationBarBackButtonHidden(presenter.profile.profile == nil)
         .onAppear {
             presenter.profile.subscribeProfileIfNeeded()
             presenter.onComplete = {
-                dismiss()
+                onNavigate(.completed)
             }
         }
         .onChange(of: presenter.profile.isLoading) { _, isLoading in
