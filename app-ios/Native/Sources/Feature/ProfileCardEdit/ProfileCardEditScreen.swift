@@ -21,17 +21,14 @@ public struct ProfileCardEditScreen: View {
         .navigationBarBackButtonHidden(presenter.profile.profile == nil)
         .onAppear {
             presenter.profile.subscribeProfileIfNeeded()
+            presenter.onComplete = {
+                dismiss()
+            }
         }
         .onChange(of: presenter.profile.isLoading) { _, isLoading in
             // Load form data when profile loading is complete
             if !isLoading {
                 presenter.loadForEditing()
-            }
-        }
-        .onChange(of: presenter.isEditing) { _, isEditing in
-            // Close the screen when editing is complete
-            if !isEditing && presenter.profile.profile != nil {
-                dismiss()
             }
         }
     }

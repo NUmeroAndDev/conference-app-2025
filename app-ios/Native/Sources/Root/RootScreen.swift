@@ -39,9 +39,10 @@ private enum TabType: CaseIterable, Hashable {
 public struct RootScreen: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var selectedTab: TabType = .timetable
-    @State private var navigationPath = NavigationPath()
+    @State private var timetableNavigationPath = NavigationPath()
     @State private var aboutNavigationPath = NavigationPath()
     @State private var favoriteNavigationPath = NavigationPath()
+    @State private var profileCardNavigationPath = NavigationPath()
     @State private var composeMultiplatformEnabled = false
     @State private var favoriteScreenUiMode: FavoriteScreenUiModePicker.UiMode = .swiftui
     private let presenter = RootPresenter()
@@ -87,7 +88,7 @@ public struct RootScreen: View {
     }
 
     private var timetableTab: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStack(path: $timetableNavigationPath) {
             HomeScreen(onNavigate: handleHomeNavigation)
                 .navigationDestination(for: NavigationDestination.self) { destination in
                     let navigationHandler = NavigationHandler(
@@ -165,7 +166,7 @@ public struct RootScreen: View {
     }
 
     private var profileCardTab: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStack(path: $profileCardNavigationPath) {
             ProfileCardScreen(onNavigate: handleProfileCardNavigation)
                 .navigationDestination(for: NavigationDestination.self) { destination in
                     let navigationHandler = NavigationHandler(
@@ -179,9 +180,9 @@ public struct RootScreen: View {
     private func handleHomeNavigation(_ destination: HomeNavigationDestination) {
         switch destination {
         case .timetableDetail(let item):
-            navigationPath.append(NavigationDestination.timetableDetail(item))
+            timetableNavigationPath.append(NavigationDestination.timetableDetail(item))
         case .search:
-            navigationPath.append(NavigationDestination.search)
+            timetableNavigationPath.append(NavigationDestination.search)
         }
     }
 
@@ -196,14 +197,14 @@ public struct RootScreen: View {
     private func handleSearchNavigation(_ destination: SearchNavigationDestination) {
         switch destination {
         case .timetableDetail(let item):
-            navigationPath.append(NavigationDestination.timetableDetail(item))
+            timetableNavigationPath.append(NavigationDestination.timetableDetail(item))
         }
     }
 
     private func handleProfileCardNavigation(_ destination: ProfileCardNavigationDestination) {
         switch destination {
         case .edit:
-            navigationPath.append(NavigationDestination.profileCardEdit)
+            profileCardNavigationPath.append(NavigationDestination.profileCardEdit)
         }
     }
 

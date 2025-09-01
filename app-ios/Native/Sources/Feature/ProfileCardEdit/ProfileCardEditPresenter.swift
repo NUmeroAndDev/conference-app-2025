@@ -67,14 +67,12 @@ public class FormState {
 @Observable
 public final class ProfileCardEditPresenter {
     public let profile: ProfileProvider
-
     public var formState: FormState
-    public var isEditing: Bool
+    public var onComplete: (() -> Void)?
 
     public init(profile: ProfileProvider) {
         self.profile = profile
         self.formState = FormState(name: "", occupation: "", urlString: "", image: nil, cardVariant: .nightPill, existingImageData: nil)
-        self.isEditing = false
     }
 
     public func loadForEditing() {
@@ -91,11 +89,11 @@ public final class ProfileCardEditPresenter {
     @MainActor
     public func createCard() {
         if !formState.validate() { return }
-
+        
         Task {
             let profileData = try await formState.createProfile()
             profile.saveProfile(profileData)
-            self.isEditing = false
+            onComplete?()
         }
     }
 
