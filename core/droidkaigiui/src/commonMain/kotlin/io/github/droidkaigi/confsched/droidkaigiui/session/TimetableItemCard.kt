@@ -19,7 +19,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,7 +26,6 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -165,6 +163,7 @@ fun TimetableItemCard(
                         }
                         onBookmarkClick()
                     },
+                    modifier = Modifier.padding(end = 12.dp),
                 )
             }
         }
@@ -241,24 +240,26 @@ private fun TimetableItemTitle(
 private fun FavoriteButton(
     isBookmarked: Boolean,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    TextButton(
+    IconButton(
         onClick = onClick,
-        shapes = ButtonDefaults.shapes(),
-        modifier = Modifier
-            .testTag(TimetableItemCardBookmarkButtonTestTag),
+        shapes = IconButtonDefaults.shapes(),
+        colors = IconButtonDefaults.iconButtonColors(
+            contentColor = LocalRoomTheme.current.primaryColor,
+        ),
+        modifier = modifier.testTag(TimetableItemCardBookmarkButtonTestTag),
     ) {
+        // TODO: Fix contentDescription
         if (isBookmarked) {
             Icon(
                 Icons.Filled.Favorite,
                 contentDescription = stringResource(DroidkaigiuiRes.string.bookmarked),
-                tint = LocalRoomTheme.current.primaryColor,
             )
         } else {
             Icon(
                 Icons.Outlined.FavoriteBorder,
                 contentDescription = stringResource(DroidkaigiuiRes.string.not_bookmarked),
-                tint = LocalRoomTheme.current.primaryColor,
             )
         }
     }
