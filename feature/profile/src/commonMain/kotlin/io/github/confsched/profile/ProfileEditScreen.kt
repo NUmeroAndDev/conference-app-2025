@@ -480,6 +480,7 @@ private fun ImagePicker(
                 colors = IconButtonDefaults
                     .iconButtonColors()
                     .copy(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                shapes = IconButtonDefaults.shapes(),
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .size(40.dp)
