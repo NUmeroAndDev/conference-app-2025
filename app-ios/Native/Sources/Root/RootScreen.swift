@@ -375,7 +375,7 @@ public struct RootScreen: View {
                             .renderingMode(.template)
                             .tint(
                                 isSelected
-                                    ? AssetColors.primary40.swiftUIColor : AssetColors.onSurfaceVariant.swiftUIColor
+                                    ? AssetColors.primaryFixed.swiftUIColor : AssetColors.onSurfaceVariant.swiftUIColor
                             )
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                             .contentShape(Rectangle())
