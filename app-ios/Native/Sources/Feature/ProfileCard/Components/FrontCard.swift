@@ -65,7 +65,7 @@ struct FrontCard: View {
                 }
                 Spacer()
             }
-            .padding(.horizontal, 30)
+            .padding(.horizontal, 24)
             .padding(.vertical, 40)
             .frame(width: cardWidth, height: cardHeight)
             Image("\(cardType.rawValue)_front_wave", bundle: .module)
