@@ -63,7 +63,7 @@ public struct ProfileCardScreen: View {
                 FrontCard(
                     userRole: profile.occupation,
                     userName: profile.name,
-                    cardType: profile.cardVariant.type,
+                    cardVariant: profile.cardVariant,
                     image: profile.image,
                     normal: (normal.x, normal.y, normal.z),
                 )
