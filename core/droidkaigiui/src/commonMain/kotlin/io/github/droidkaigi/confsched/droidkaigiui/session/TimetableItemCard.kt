@@ -19,6 +19,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
@@ -232,6 +234,7 @@ private fun TimetableItemTitle(
     )
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun FavoriteButton(
     isBookmarked: Boolean,
@@ -239,6 +242,7 @@ private fun FavoriteButton(
 ) {
     TextButton(
         onClick = onClick,
+        shapes = ButtonDefaults.shapes(),
         modifier = Modifier
             .testTag(TimetableItemCardBookmarkButtonTestTag),
     ) {

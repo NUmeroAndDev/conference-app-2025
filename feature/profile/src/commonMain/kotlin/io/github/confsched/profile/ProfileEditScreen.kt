@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -111,7 +112,7 @@ private val profileSaver: Saver<Profile, Any> = listSaver(
     },
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ProfileEditScreen(
     initialProfile: Profile?,
@@ -158,6 +159,7 @@ fun ProfileEditScreen(
             form.Theme()
             Button(
                 onClick = { form.handleSubmit() },
+                shapes = ButtonDefaults.shapes(),
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(18.dp),
             ) {
@@ -445,6 +447,7 @@ private fun InputLabel(
     )
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun ImagePicker(
     image: PlatformFile?,
@@ -494,6 +497,7 @@ private fun ImagePicker(
     } else {
         OutlinedButton(
             onClick = { launcher.launch() },
+            shapes = ButtonDefaults.shapes(),
             contentPadding = PaddingValues(
                 top = 10.dp,
                 start = 16.dp,
