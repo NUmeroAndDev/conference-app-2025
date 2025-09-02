@@ -97,7 +97,7 @@ actual fun KaigiAppUi() {
                         materialFadeIn() togetherWith materialFadeOut()
                     } + NavDisplay.predictivePopTransitionSpec {
                         materialFadeIn() togetherWith materialFadeOut()
-                    }
+                    },
                 )
                 contributorsEntry(
                     onBackClick = { backStack.safeRemoveLastOrNull() },
@@ -127,7 +127,7 @@ actual fun KaigiAppUi() {
                         materialFadeIn() togetherWith materialFadeOut()
                     } + NavDisplay.predictivePopTransitionSpec {
                         materialFadeIn() togetherWith materialFadeOut()
-                    }
+                    },
                 )
                 eventMapEntry(
                     onClickReadMore = externalNavController::navigate,
@@ -137,7 +137,7 @@ actual fun KaigiAppUi() {
                         materialFadeIn() togetherWith materialFadeOut()
                     } + NavDisplay.predictivePopTransitionSpec {
                         materialFadeIn() togetherWith materialFadeOut()
-                    }
+                    },
                 )
                 aboutEntries(
                     onAboutItemClick = { item ->
@@ -197,7 +197,7 @@ actual fun KaigiAppUi() {
                         materialFadeIn() togetherWith materialFadeOut()
                     } + NavDisplay.predictivePopTransitionSpec {
                         materialFadeIn() togetherWith materialFadeOut()
-                    }
+                    },
                 )
                 profileNavEntry(
                     onShareProfileCardClick = externalNavController::onShareProfileCardClick,
@@ -207,7 +207,7 @@ actual fun KaigiAppUi() {
                         materialFadeIn() togetherWith materialFadeOut()
                     } + NavDisplay.predictivePopTransitionSpec {
                         materialFadeIn() togetherWith materialFadeOut()
-                    }
+                    },
                 )
             },
             modifier = Modifier
