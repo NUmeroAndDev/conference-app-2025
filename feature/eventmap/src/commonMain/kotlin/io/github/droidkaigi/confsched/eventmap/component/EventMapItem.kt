@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -37,6 +39,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun EventMapItem(
     eventMapEvent: EventMapEvent,
@@ -84,6 +87,7 @@ fun EventMapItem(
                 Spacer(Modifier.height(height = 8.dp))
                 OutlinedButton(
                     modifier = Modifier.fillMaxWidth(),
+                    shapes = ButtonDefaults.shapes(),
                     onClick = { onClickReadMore(it) },
                 ) {
                     Text(

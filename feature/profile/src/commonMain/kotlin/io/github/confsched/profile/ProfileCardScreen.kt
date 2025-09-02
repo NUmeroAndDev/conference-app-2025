@@ -17,7 +17,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
@@ -50,7 +52,7 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ProfileCardScreen(
     uiState: ProfileUiState.Card,
@@ -98,6 +100,7 @@ fun ProfileCardScreen(
             Spacer(Modifier.height(32.dp))
             Button(
                 enabled = shareableProfileCardRenderResult != null,
+                shapes = ButtonDefaults.shapes(),
                 onClick = {
                     shareableProfileCardRenderResult?.let {
                         coroutineScope.launch {
@@ -125,6 +128,7 @@ fun ProfileCardScreen(
             Spacer(Modifier.height(8.dp))
             OutlinedButton(
                 onClick = onEditClick,
+                shapes = ButtonDefaults.shapes(),
                 modifier = Modifier.fillMaxWidth(),
                 border = null,
                 contentPadding = PaddingValues(18.dp),
