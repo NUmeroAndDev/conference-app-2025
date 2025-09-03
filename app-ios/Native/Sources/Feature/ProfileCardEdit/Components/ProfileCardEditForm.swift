@@ -7,6 +7,14 @@ import Theme
 struct ProfileCardEditForm: View {
     @Binding var presenter: ProfileCardEditPresenter
 
+    enum Field: Hashable {
+        case nickName
+        case occupation
+        case link
+        case image
+    }
+    @FocusState private var focusedField: Field?
+
     var body: some View {
         VStack(spacing: 32) {
             Text(
@@ -27,8 +35,13 @@ struct ProfileCardEditForm: View {
                     set: {
                         presenter.setName($0)
                     }
-                ),
+                )
             )
+            .focused($focusedField, equals: .nickName)
+            .submitLabel(.next)
+            .onSubmit {
+                focusedField = .occupation
+            }
 
             ProfileCardInputTextField(
                 title: String(localized: "Occupation", bundle: .module),
@@ -39,12 +52,18 @@ struct ProfileCardEditForm: View {
                     set: {
                         presenter.setOccupation($0)
                     }
-                ),
+                )
             )
+            .focused($focusedField, equals: .occupation)
+            .submitLabel(.next)
+            .onSubmit {
+                focusedField = .link
+            }
 
             ProfileCardInputTextField(
                 title: String(localized: "Link（ex.X、Instagram...）", bundle: .module),
                 placeholder: "https://",
+                keyboardType: .URL,
                 text: .init(
                     get: {
                         presenter.formState.urlString
@@ -54,6 +73,10 @@ struct ProfileCardEditForm: View {
                     }
                 )
             )
+            .focused($focusedField, equals: .link)
+            .onSubmit {
+                focusedField = nil
+            }
 
             ProfileCardEditInputImageWrapper(presenter: presenter)
 
@@ -69,6 +92,7 @@ struct ProfileCardEditForm: View {
             )
 
             Button {
+                focusedField = nil
                 presenter.createCard()
             } label: {
                 let isEditing = presenter.profile.profile != nil
@@ -81,6 +105,9 @@ struct ProfileCardEditForm: View {
             .filledButtonStyle()
         }
         .padding(.horizontal, 16)
+        .onTapGesture {
+            focusedField = nil
+        }
     }
 }
 
@@ -91,11 +118,18 @@ private struct ProfileCardEditInputImageWrapper: View {
     var body: some View {
         ProfileCardEditInputImage(
             selectedPhoto: .init(
-                get: { presenter.formState.image },
-                set: { presenter.setImage($0) }
+                get: {
+                    presenter.formState.image
+                },
+                set: {
+                    presenter.setImage($0)
+                }
             ),
             initialImage: currentInitialImage,
-            title: String(localized: "Image", bundle: .module)
+            title: String(localized: "Image", bundle: .module),
+            dismissKeyboard: {
+                focusedField = nil
+            }
         )
         .onChange(of: presenter.formState.existingImageData) { _, newData in
             if let newData = newData, let uiImage = UIImage(data: newData) {
