@@ -4,7 +4,7 @@ import SwiftUI
 import Theme
 
 // TODO: add varidation
-struct ProfileCardEditForm: View {
+struct EditProfileCardForm: View {
     @Binding var presenter: ProfileCardEditPresenter
 
     enum Field: Hashable {
@@ -78,7 +78,7 @@ struct ProfileCardEditForm: View {
                 focusedField = nil
             }
 
-            ProfileCardEditInputImageWrapper(presenter: presenter)
+            ProfileCardInputImageWrapper(presenter: presenter, focusedField: $focusedField)
 
             ProfileCardInputCardVariant(
                 selectedCardType: .init(
@@ -111,12 +111,13 @@ struct ProfileCardEditForm: View {
     }
 }
 
-private struct ProfileCardEditInputImageWrapper: View {
+private struct ProfileCardInputImageWrapper: View {
     let presenter: ProfileCardEditPresenter
+    @FocusState.Binding var focusedField: EditProfileCardForm.Field?
     @State private var currentInitialImage: UIImage?
 
     var body: some View {
-        ProfileCardEditInputImage(
+        ProfileCardInputImage(
             selectedPhoto: .init(
                 get: {
                     presenter.formState.image
