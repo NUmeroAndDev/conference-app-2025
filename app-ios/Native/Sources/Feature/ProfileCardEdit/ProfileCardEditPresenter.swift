@@ -38,25 +38,34 @@ class FormState {
         return nameError == nil && occupationError == nil && urlError == nil && imageError == nil
     }
 
+    enum ProfileCreationError: Error {
+        case failedToLoadImageData
+        case missingImageData
+        case invalidURL
+    }
     @MainActor
     func createProfile() async throws -> Profile {
         let imageData: Data
 
         if let newImage = image {
             guard let data = try await newImage.loadTransferable(type: Data.self) else {
-                fatalError("Failed to load new image data")
+                throw ProfileCreationError.failedToLoadImageData
             }
             imageData = data
         } else if let existingData = existingImageData {
             imageData = existingData
         } else {
-            fatalError("No image data available")
+            throw ProfileCreationError.missingImageData
         }
 
+        guard let url = URL(string: urlString) else {
+            throw ProfileCreationError.invalidURL
+        }
+        
         return Profile(
             name: name,
             occupation: occupation,
-            url: URL(string: urlString)!,
+            url: url,
             image: imageData,
             cardVariant: cardVariant
         )

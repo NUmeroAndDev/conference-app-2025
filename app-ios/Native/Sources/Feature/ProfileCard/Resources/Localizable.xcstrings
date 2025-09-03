@@ -13,6 +13,15 @@
       }
     },
     "Profile Card" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロフィールカード"
+          }
+        }
+      }
 
     },
     "QRCode" : {
