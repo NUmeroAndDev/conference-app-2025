@@ -49,7 +49,7 @@ fun TimetableTopAppBar(
                     onClick = {
                         spacialEnvironment.toggleSpaceMode()
                     },
-                    shapes = IconButtonDefaults.shapes()
+                    shapes = IconButtonDefaults.shapes(),
                 ) {
                     if (spacialEnvironment.isFullSpace) {
                         Icon(
