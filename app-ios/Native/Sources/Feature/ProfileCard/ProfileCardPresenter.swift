@@ -7,7 +7,11 @@ import Presentation
 @MainActor
 @Observable
 final class ProfileCardPresenter {
-    let profile = ProfileProvider()
+    let profile: ProfileProvider
+
+    init(profile: ProfileProvider) {
+        self.profile = profile
+    }
 
     func loadInitial() {
         profile.subscribeProfileIfNeeded()
