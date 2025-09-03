@@ -50,6 +50,8 @@ public struct RootScreen: View {
     @State private var favoriteScreenUiMode: FavoriteScreenUiModePicker.UiMode = .swiftui
     private let presenter = RootPresenter()
     @State private var notificationCoordinator: NotificationNavigationCoordinator?
+    @Dependency(\.notificationUseCase) private var notificationUseCase
+    @Dependency(\.timetableUseCase) private var timetableUseCase
 
     public init() {
         UITabBar.appearance().unselectedItemTintColor = UIColor(named: "tab_inactive")
@@ -83,8 +85,6 @@ public struct RootScreen: View {
     }
 
     private func setupNotificationHandling() {
-        @Dependency(\.notificationUseCase) var notificationUseCase
-
         // Initialize notification coordinator if not already done
         if notificationCoordinator == nil {
             notificationCoordinator = NotificationNavigationCoordinator(
@@ -271,13 +271,13 @@ public struct RootScreen: View {
             let timetableItem = try await findTimetableItemById(itemId)
 
             // Clear existing navigation path and navigate to detail
-            navigationPath = NavigationPath()
+            timetableNavigationPath = NavigationPath()
 
             // Add a small delay to ensure tab switch is complete
             try await Task.sleep(nanoseconds: 100_000_000)  // 0.1 seconds
 
             // Navigate to the timetable detail
-            navigationPath.append(NavigationDestination.timetableDetail(timetableItem))
+            timetableNavigationPath.append(NavigationDestination.timetableDetail(timetableItem))
 
             print("Successfully navigated to session: \(timetableItem.timetableItem.title.currentLangTitle)")
         } catch {
@@ -289,7 +289,6 @@ public struct RootScreen: View {
     }
 
     private func findTimetableItemById(_ itemId: String) async throws -> TimetableItemWithFavorite {
-        @Dependency(\.timetableUseCase) var timetableUseCase
 
         // Get the latest timetable data with timeout to avoid infinite waiting
         let timetableSequence = timetableUseCase.load()
