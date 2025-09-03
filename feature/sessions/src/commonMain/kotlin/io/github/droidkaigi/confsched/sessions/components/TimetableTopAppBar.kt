@@ -39,6 +39,7 @@ fun TimetableTopAppBar(
     onUiTypeChangeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val isFullSpace = rememberSpacialEnvironment().isFullSpace
     AnimatedTextTopAppBar(
         title = stringResource(SessionsRes.string.timetable),
         actions = {
@@ -90,7 +91,9 @@ fun TimetableTopAppBar(
                 )
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = if (isFullSpace) Color.Unspecified else Color.Transparent,
+        ),
         modifier = modifier,
     )
 }
