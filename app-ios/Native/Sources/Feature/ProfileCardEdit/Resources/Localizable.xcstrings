@@ -32,7 +32,6 @@
       }
     },
     "Image is required" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -43,45 +42,11 @@
       }
     },
     "Invalid URL format" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "正しいURL形式で入力してください"
-          }
-        }
-      }
-    },
-    "Link is required" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "リンクを入力してください"
-          }
-        }
-      }
-    },
-    "Nickname is required" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ニックネームを入力してください"
-          }
-        }
-      }
-    },
-    "Occupation is required" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "職種を入力してください"
           }
         }
       }
@@ -93,6 +58,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "会場やSNSで自分を紹介できるプロフィールカードを作ってみましょう！"
+          }
+        }
+      }
+    },
+    "Link is required" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リンクを入力してください"
           }
         }
       }
@@ -117,12 +92,32 @@
         }
       }
     },
+    "Nickname is required" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ニックネームを入力してください"
+          }
+        }
+      }
+    },
     "Occupation" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "職種"
+          }
+        }
+      }
+    },
+    "Occupation is required" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "職種を入力してください"
           }
         }
       }
