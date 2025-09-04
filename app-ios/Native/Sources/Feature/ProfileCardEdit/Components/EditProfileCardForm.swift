@@ -3,7 +3,6 @@ import Model
 import SwiftUI
 import Theme
 
-// TODO: add varidation
 struct EditProfileCardForm: View {
     @Binding var presenter: ProfileCardEditPresenter
 
@@ -34,8 +33,10 @@ struct EditProfileCardForm: View {
                     },
                     set: {
                         presenter.setName($0)
+                        presenter.formState.nameError = nil
                     }
-                )
+                ),
+                errorMessage: presenter.formState.nameError
             )
             .focused($focusedField, equals: .nickName)
             .submitLabel(.next)
@@ -51,8 +52,10 @@ struct EditProfileCardForm: View {
                     },
                     set: {
                         presenter.setOccupation($0)
+                        presenter.formState.occupationError = nil
                     }
-                )
+                ),
+                errorMessage: presenter.formState.occupationError
             )
             .focused($focusedField, equals: .occupation)
             .submitLabel(.next)
@@ -70,8 +73,10 @@ struct EditProfileCardForm: View {
                     },
                     set: {
                         presenter.setLink($0)
+                        presenter.formState.urlError = nil
                     }
-                )
+                ),
+                errorMessage: presenter.formState.urlError
             )
             .focused($focusedField, equals: .link)
             .onSubmit {
@@ -124,13 +129,15 @@ private struct ProfileCardInputImageWrapper: View {
                 },
                 set: {
                     presenter.setImage($0)
+                    presenter.formState.imageError = nil
                 }
             ),
             initialImage: currentInitialImage,
             title: String(localized: "Image", bundle: .module),
             dismissKeyboard: {
                 focusedField = nil
-            }
+            },
+            errorMessage: presenter.formState.imageError
         )
         .onChange(of: presenter.formState.existingImageData) { _, newData in
             if let newData = newData, let uiImage = UIImage(data: newData) {

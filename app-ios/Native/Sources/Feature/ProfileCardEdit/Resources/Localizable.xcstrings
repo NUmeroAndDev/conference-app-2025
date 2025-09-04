@@ -31,6 +31,61 @@
         }
       }
     },
+    "Image is required" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "画像を追加してください"
+          }
+        }
+      }
+    },
+    "Invalid URL format" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正しいURL形式で入力してください"
+          }
+        }
+      }
+    },
+    "Link is required" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リンクを入力してください"
+          }
+        }
+      }
+    },
+    "Nickname is required" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ニックネームを入力してください"
+          }
+        }
+      }
+    },
+    "Occupation is required" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "職種を入力してください"
+          }
+        }
+      }
+    },
     "Let's create a profile card to introduce yourself at events or on social media!" : {
       "extractionState" : "manual",
       "localizations" : {
