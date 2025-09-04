@@ -197,6 +197,31 @@ SoilDataBoundary(
 - Use conventional commit format for commit messages
 - Run `./gradlew spotlessApply` before committing to ensure consistent formatting
 
+# PR Planning & Review Standards
+
+## Testing Requirements by Change Complexity
+- **Simple fixes** (URL updates, minor tweaks): Existing tests must pass
+- **UI changes**: Screenshot tests with Roborazzi required across platforms
+- **Cross-platform features**: Test on Android, iOS, and JVM
+- **Large features**: Comprehensive test coverage essential (praised as "thorough tests were really helpful")
+
+## Platform-Specific Considerations for Planning
+- **iOS changes**: Expect 7-9 review iterations for complex features, thorough technical discussions
+- **JVM/Desktop**: Focus on window sizing, navigation behavior, crash prevention
+- **Android**: Ensure Material Design compliance, keyboard handling, theme consistency
+
+## Review Expectations by Scope
+- **Simple changes**: 1-2 quick LGTM approvals typical
+- **Medium features**: 2-3 review cycles expected  
+- **Complex features**: Multiple detailed review rounds normal and expected
+
+## What Reviewers Check Most Carefully
+- **User Experience Consistency**: Haptic feedback patterns, visual theme alignment, navigation behavior
+- **Architectural Adherence**: Following Metro DI, Soil data patterns, established conventions
+- **Platform Guidelines**: iOS/Android/Desktop best practices compliance
+- **No Regressions**: Existing functionality must remain intact
+- **Performance Impact**: Especially for UI components and timeline features
+
 # Important Reminders
 
 - **Do what has been asked; nothing more, nothing less**
