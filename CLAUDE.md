@@ -27,14 +27,14 @@ This is the **DroidKaigi 2025 conference application** - a Kotlin Multiplatform 
 - `./gradlew check`: Run all checks including tests and lint
 - `./gradlew test`: Run all tests across platforms
 - `./gradlew testReleaseUnitTest`: Run unit tests for release build variant
-- `./gradlew testDebugUnitTestRecordRoborazzi`: Record screenshot tests (UI verification)
-- `./gradlew testDebugUnitTestVerifyRoborazzi`: Verify screenshot tests
+- `./gradlew recordRoborazziDebug`: Record screenshot tests (UI verification)
+- `./gradlew verifyRoborazziDebug`: Verify screenshot tests
 - `./gradlew compareRoborazziDebug`: Compare Roborazzi screenshots for debug variant
 - `./gradlew compareRoborazziJvm`: Compare Roborazzi screenshots for JVM platform
 - UI tests use Roborazzi for screenshot testing with multiplatform support
 
 ## Code Generation
-- `./gradlew kspCommonMainKotlin`: Generate KSP code (Metro dependency injection, context retention functions)
+- `./gradlew kspCommonMainKotlinMetadata`: Generate KSP code (Metro dependency injection, context retention functions)
 - KSP generates `rememberXXXScreenContextRetained()` functions for configuration change persistence
 
 # Architecture Overview
@@ -184,7 +184,7 @@ SoilDataBoundary(
 
 ## Common Issues
 - **Build failures**: Run `./gradlew clean` then rebuild
-- **KSP errors**: Run `./gradlew kspCommonMainKotlin` to regenerate code
+- **KSP errors**: Run `./gradlew kspCommonMainKotlinMetadata` to regenerate code
 - **Context parameter errors**: Ensure proper `context(screenContext: XXXScreenContext)` usage
 - **Soil data errors**: Wrap UI in `SoilDataBoundary` for proper data handling
 
