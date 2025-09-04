@@ -3,7 +3,6 @@ import Model
 import Observation
 import Presentation
 
-
 @MainActor
 @Observable
 final class ProfileCardPresenter {

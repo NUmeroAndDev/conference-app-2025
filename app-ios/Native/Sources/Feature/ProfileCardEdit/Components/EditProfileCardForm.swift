@@ -101,9 +101,10 @@ struct EditProfileCardForm: View {
                 presenter.createCard()
             } label: {
                 let isEditing = presenter.profile.profile != nil
-                let buttonText = isEditing ?
-                    String(localized: "Save Card", bundle: .module) :
-                    String(localized: "Create Card", bundle: .module)
+                let buttonText =
+                    isEditing
+                    ? String(localized: "Save Card", bundle: .module)
+                    : String(localized: "Create Card", bundle: .module)
                 Text(buttonText)
                     .frame(maxWidth: .infinity)
             }
@@ -148,7 +149,8 @@ private struct ProfileCardInputImageWrapper: View {
         }
         .onAppear {
             if let imageData = presenter.formState.existingImageData,
-               let uiImage = UIImage(data: imageData) {
+                let uiImage = UIImage(data: imageData)
+            {
                 currentInitialImage = uiImage
             }
         }

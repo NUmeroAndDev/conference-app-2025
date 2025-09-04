@@ -5,8 +5,8 @@ import EventMapFeature
 import FavoriteFeature
 import HomeFeature
 import Model
-import ProfileCardFeature
 import ProfileCardEditFeature
+import ProfileCardFeature
 import SearchFeature
 import SettingsFeature
 import SponsorFeature

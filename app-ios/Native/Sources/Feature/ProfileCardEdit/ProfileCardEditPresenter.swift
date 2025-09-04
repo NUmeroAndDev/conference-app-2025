@@ -19,7 +19,8 @@ class FormState {
     var imageError: String?
 
     init(
-        name: String, occupation: String, urlString: String, image: PhotosPickerItem?, cardVariant: ProfileCardVariant, existingImageData: Data? = nil
+        name: String, occupation: String, urlString: String, image: PhotosPickerItem?, cardVariant: ProfileCardVariant,
+        existingImageData: Data? = nil
     ) {
         self.name = name
         self.occupation = occupation
@@ -46,7 +47,8 @@ class FormState {
         }
 
         // Image validation
-        imageError = (image == nil && existingImageData == nil) ? String(localized: "Image is required", bundle: .module) : nil
+        imageError =
+            (image == nil && existingImageData == nil) ? String(localized: "Image is required", bundle: .module) : nil
 
         return nameError == nil && occupationError == nil && urlError == nil && imageError == nil
     }
@@ -99,7 +101,8 @@ final class ProfileCardEditPresenter {
 
     init(profile: ProfileProvider) {
         self.profile = profile
-        self.formState = FormState(name: "", occupation: "", urlString: "", image: nil, cardVariant: .nightPill, existingImageData: nil)
+        self.formState = FormState(
+            name: "", occupation: "", urlString: "", image: nil, cardVariant: .nightPill, existingImageData: nil)
     }
 
     func loadForEditing() {

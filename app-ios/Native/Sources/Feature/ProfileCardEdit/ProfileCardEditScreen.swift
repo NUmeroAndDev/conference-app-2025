@@ -15,7 +15,7 @@ public struct ProfileCardEditScreen: View {
     public var body: some View {
         ScrollView {
             EditProfileCardForm(presenter: $presenter)
-            .padding(.bottom, 80)
+                .padding(.bottom, 80)
         }
         .background(AssetColors.surface.swiftUIColor)
         .navigationTitle("Profile Card")
