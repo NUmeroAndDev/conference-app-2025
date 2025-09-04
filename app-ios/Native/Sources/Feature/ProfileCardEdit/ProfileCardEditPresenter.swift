@@ -46,7 +46,7 @@ class FormState {
         }
 
         // Image validation
-        imageError = image == nil ? String(localized: "Image is required", bundle: .module) : nil
+        imageError = (image == nil && existingImageData == nil) ? String(localized: "Image is required", bundle: .module) : nil
 
         return nameError == nil && occupationError == nil && urlError == nil && imageError == nil
     }
