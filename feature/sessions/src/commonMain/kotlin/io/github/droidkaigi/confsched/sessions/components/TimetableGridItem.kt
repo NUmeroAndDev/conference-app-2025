@@ -54,6 +54,7 @@ import kotlin.time.Duration.Companion.minutes
 @Composable
 fun TimetableGridItem(
     timetableItem: TimetableItem,
+    isBookmarked: Boolean,
     onTimetableItemClick: (timetableItem: TimetableItem) -> Unit,
     scaleState: TimetableScaleState = remember { TimetableScaleState() },
     modifier: Modifier = Modifier,
@@ -78,7 +79,13 @@ fun TimetableGridItem(
                 .padding(all = TimetableGridItemDefaults.contentMargin)
                 .border(1.dp, LocalRoomTheme.current.primaryColor, shape)
                 .clip(shape)
-                .background(LocalRoomTheme.current.containerColor)
+                .background(
+                    if (isBookmarked) {
+                        LocalRoomTheme.current.primaryColor.copy(alpha = 0.3f)
+                    } else {
+                        LocalRoomTheme.current.containerColor
+                    },
+                )
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = ripple(bounded = true),
@@ -245,6 +252,7 @@ private fun TimetableGridItemPreview() {
             timetableItem = TimetableItem.Session.fake().copy(
                 message = null,
             ),
+            isBookmarked = false,
             onTimetableItemClick = {},
         )
     }
@@ -258,6 +266,7 @@ private fun TimetableGridItemPreview_80min() {
             timetableItem = TimetableItem.Session.fake(80.minutes).copy(
                 message = null,
             ),
+            isBookmarked = false,
             onTimetableItemClick = {},
         )
     }
@@ -282,6 +291,7 @@ private fun TimetableGridItemPreview_WelcomeTalk() {
                     sort = 1,
                 ),
             ),
+            isBookmarked = false,
             onTimetableItemClick = {},
         )
     }
@@ -299,6 +309,7 @@ private fun TimetableGridItemPreview_LongTitle() {
                     enTitle = "Material3 Migration Material3 Migration Material3 Migration Material3 Migration",
                 ),
             ),
+            isBookmarked = false,
             onTimetableItemClick = {},
         )
     }
@@ -310,6 +321,7 @@ private fun TimetableGridItemPreview_WithError() {
     KaigiPreviewContainer {
         TimetableGridItem(
             timetableItem = TimetableItem.Session.fake(),
+            isBookmarked = false,
             onTimetableItemClick = {},
         )
     }
@@ -323,6 +335,7 @@ private fun TimetableGridItemPreview_NoSpeaker() {
             timetableItem = TimetableItem.Session.fake().copy(
                 speakers = persistentListOf(),
             ),
+            isBookmarked = false,
             onTimetableItemClick = {},
         )
     }
