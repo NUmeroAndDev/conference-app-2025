@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 
 @Composable
 expect fun provideSelectionContainerCustomContextMenu(
-    onWebSearchClick: (encodedSelectedText: String) -> Unit,
+    onWebSearchClick: (url: String) -> Unit,
     buildSearchUrl: (encodedSelectedText: String) -> String = { q ->
         "https://www.google.com/search?q=$q"
     },
