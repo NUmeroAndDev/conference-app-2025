@@ -75,7 +75,7 @@ fun EntryProviderBuilder<NavKey>.timetableItemDetailEntry(
                 onAddCalendarClick = onAddCalendarClick,
                 onShareClick = onShareClick,
                 onLinkClick = onLinkClick,
-                onWebSearchClick,
+                onWebSearchClick = onWebSearchClick,
             )
         }
     }
