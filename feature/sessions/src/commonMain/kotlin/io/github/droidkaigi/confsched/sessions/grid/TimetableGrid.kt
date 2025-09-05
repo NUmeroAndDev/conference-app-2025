@@ -68,6 +68,7 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.atTime
@@ -77,6 +78,7 @@ import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import kotlin.time.Duration.Companion.hours
 import kotlin.time.ExperimentalTime
 
 @Composable
@@ -490,6 +492,23 @@ private fun TimetableGridPreview() {
                 selectedDay = DroidKaigi2025Day.ConferenceDay1,
                 isBookmarked = { false },
                 onBookmarkClick = {},
+                onTimetableItemClick = {},
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun TimetableGridWithTimelinePreview() {
+    val timetable = remember { Timetable.fake() }
+    val currentTime = DroidKaigi2025Day.ConferenceDay1.start + 11.hours
+    CompositionLocalProvider(LocalClock provides FakeClock(currentTime)) {
+        KaigiPreviewContainer(Modifier.fillMaxSize()) {
+            TimetableGrid(
+                timetable = timetable,
+                timeLine = TimeLine.now(LocalClock.current),
+                selectedDay = DroidKaigi2025Day.ConferenceDay1,
                 onTimetableItemClick = {},
             )
         }
