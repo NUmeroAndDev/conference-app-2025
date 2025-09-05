@@ -509,6 +509,8 @@ private fun TimetableGridWithTimelinePreview() {
                 timetable = timetable,
                 timeLine = TimeLine.now(LocalClock.current),
                 selectedDay = DroidKaigi2025Day.ConferenceDay1,
+                isBookmarked = { false },
+                onBookmarkClick = {},
                 onTimetableItemClick = {},
             )
         }
