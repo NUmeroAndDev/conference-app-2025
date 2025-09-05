@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.designsystem.component.ClickableLinkText
+import io.github.droidkaigi.confsched.designsystem.component.provideSelectionContainerCustomContextMenu
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
@@ -52,6 +53,7 @@ fun TimetableItemDetailContent(
     currentLang: Lang,
     modifier: Modifier = Modifier,
     onLinkClick: (url: String) -> Unit,
+    onWebSearchClick: (url: String) -> Unit,
 ) {
     Column(modifier = modifier) {
         DescriptionSection(
@@ -60,6 +62,7 @@ fun TimetableItemDetailContent(
                 is TimetableItem.Special -> timetableItem.description.currentLangTitle
             },
             onLinkClick = onLinkClick,
+            onWebSearchClick = onWebSearchClick,
         )
         TargetAudienceSection(targetAudience = timetableItem.targetAudience)
     }
@@ -69,23 +72,28 @@ fun TimetableItemDetailContent(
 private fun DescriptionSection(
     description: String,
     onLinkClick: (url: String) -> Unit,
+    onWebSearchClick: (url: String) -> Unit,
 ) {
     var isExpand by rememberBooleanSaveable(false)
     var isOverFlow by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.padding(8.dp)) {
-        SelectionContainer {
-            ClickableLinkText(
-                content = description,
-                regex = "(https)(://[\\w/:%#$&?()~.=+\\-]+)".toRegex(),
-                onLinkClick = onLinkClick,
-                style = MaterialTheme.typography.bodyLarge,
-                maxLines = if (isExpand) Int.MAX_VALUE else 7,
-                overflow = if (isExpand) TextOverflow.Clip else TextOverflow.Ellipsis,
-                onOverflow = {
-                    isOverFlow = it
-                },
-            )
+        provideSelectionContainerCustomContextMenu(
+            onWebSearchClick = { onWebSearchClick(it) },
+        ) {
+            SelectionContainer {
+                ClickableLinkText(
+                    content = description,
+                    regex = "(https)(://[\\w/:%#$&?()~.=+\\-]+)".toRegex(),
+                    onLinkClick = onLinkClick,
+                    style = MaterialTheme.typography.bodyLarge,
+                    maxLines = if (isExpand) Int.MAX_VALUE else 7,
+                    overflow = if (isExpand) TextOverflow.Clip else TextOverflow.Ellipsis,
+                    onOverflow = {
+                        isOverFlow = it
+                    },
+                )
+            }
         }
         Spacer(Modifier.height(16.dp))
         AnimatedVisibility(
@@ -147,6 +155,7 @@ private fun TimetableItemDetailContentPreview() {
                 timetableItem = session,
                 currentLang = Lang.JAPANESE,
                 onLinkClick = {},
+                onWebSearchClick = {},
             )
         }
     }
@@ -162,6 +171,7 @@ private fun TimetableItemDetailContentWithEnglishPreview() {
                 timetableItem = session,
                 currentLang = Lang.ENGLISH,
                 onLinkClick = {},
+                onWebSearchClick = {},
             )
         }
     }
@@ -177,6 +187,7 @@ private fun TimetableItemDetailContentWithMixedPreview() {
                 timetableItem = session,
                 currentLang = Lang.MIXED,
                 onLinkClick = {},
+                onWebSearchClick = {},
             )
         }
     }

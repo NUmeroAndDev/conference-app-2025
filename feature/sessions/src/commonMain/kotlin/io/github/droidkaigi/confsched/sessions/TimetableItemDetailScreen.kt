@@ -42,6 +42,7 @@ fun TimetableItemDetailScreen(
     onShareClick: (TimetableItem) -> Unit,
     onLanguageSelect: (Lang) -> Unit,
     onLinkClick: (url: String) -> Unit,
+    onWebSearchClick: (url: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ProvideRoomTheme(uiState.timetableItem.room.roomTheme) {
@@ -119,6 +120,7 @@ fun TimetableItemDetailScreen(
                         timetableItem = uiState.timetableItem,
                         currentLang = uiState.currentLang,
                         onLinkClick = onLinkClick,
+                        onWebSearchClick = onWebSearchClick,
                     )
                 }
             }
@@ -143,6 +145,7 @@ private fun TimetableItemDetailScreenPreview() {
             onShareClick = {},
             onLanguageSelect = {},
             onLinkClick = {},
+            onWebSearchClick = {},
         )
     }
 }

@@ -17,6 +17,7 @@ fun TimetableItemDetailScreenRoot(
     onAddCalendarClick: (TimetableItem) -> Unit,
     onShareClick: (TimetableItem) -> Unit,
     onLinkClick: (url: String) -> Unit,
+    onWebSearchClick: (url: String) -> Unit,
 ) {
     SoilDataBoundary(
         state1 = rememberQuery(screenContext.timetableItemQueryKey),
@@ -42,6 +43,7 @@ fun TimetableItemDetailScreenRoot(
             onShareClick = onShareClick,
             onLanguageSelect = { lang -> eventFlow.tryEmit(TimetableItemDetailScreenEvent.LanguageSelect(lang)) },
             onLinkClick = onLinkClick,
+            onWebSearchClick = onWebSearchClick,
         )
     }
 }

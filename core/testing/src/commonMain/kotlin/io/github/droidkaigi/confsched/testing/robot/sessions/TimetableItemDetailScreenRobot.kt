@@ -64,6 +64,7 @@ class TimetableItemDetailScreenRobot(
                         onAddCalendarClick = {},
                         onShareClick = {},
                         onLinkClick = {},
+                        onWebSearchClick = {},
                     )
                 }
             }
