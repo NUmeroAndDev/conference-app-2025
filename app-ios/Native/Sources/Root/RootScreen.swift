@@ -4,6 +4,7 @@ import Dependencies
 import EventMapFeature
 import FavoriteFeature
 import HomeFeature
+import LicenseFeature
 import Model
 import ProfileCardEditFeature
 import ProfileCardFeature
@@ -62,6 +63,8 @@ public struct RootScreen: View {
             if composeMultiplatformEnabled {
                 KmpAppComposeViewControllerWrapper()
                     .ignoresSafeArea(.all)
+            } else if #available(iOS 26, *) {
+                tabContent
             } else {
                 ZStack(alignment: .bottom) {
                     tabContent
@@ -114,18 +117,39 @@ public struct RootScreen: View {
 
     @ViewBuilder
     private var tabContent: some View {
-        switch selectedTab {
-        case .timetable:
-            timetableTab
-        case .map:
-            mapTab
-        case .favorite:
-            favoriteTab
-        case .info:
-            infoTab
-        case .profileCard:
-            profileCardTab
+        TabView(selection: $selectedTab) {
+            Tab(value: .timetable) {
+                timetableTab
+                    .hiddenTabBarIfNeeded()
+            } label: {
+                TabType.timetable.tabImage(selectedTab).swiftUIImage
+            }
+            Tab(value: .map) {
+                mapTab
+                    .hiddenTabBarIfNeeded()
+            } label: {
+                TabType.map.tabImage(selectedTab).swiftUIImage
+            }
+            Tab(value: .favorite) {
+                favoriteTab
+                    .hiddenTabBarIfNeeded()
+            } label: {
+                TabType.favorite.tabImage(selectedTab).swiftUIImage
+            }
+            Tab(value: .info) {
+                infoTab
+                    .hiddenTabBarIfNeeded()
+            } label: {
+                TabType.info.tabImage(selectedTab).swiftUIImage
+            }
+            Tab(value: .profileCard) {
+                profileCardTab
+                    .hiddenTabBarIfNeeded()
+            } label: {
+                TabType.profileCard.tabImage(selectedTab).swiftUIImage
+            }
         }
+        .tint(AssetColors.primaryFixed.swiftUIColor)
     }
 
     private var timetableTab: some View {
@@ -199,8 +223,7 @@ public struct RootScreen: View {
         case .sponsors:
             SponsorScreen()
         case .licenses:
-            Text("Licenses")
-                .navigationTitle("Licenses")
+            LicenseScreen()
         case .settings:
             SettingsScreen()
         }
@@ -360,7 +383,7 @@ public struct RootScreen: View {
                             .renderingMode(.template)
                             .tint(
                                 isSelected
-                                    ? AssetColors.primary40.swiftUIColor : AssetColors.onSurfaceVariant.swiftUIColor
+                                    ? AssetColors.primaryFixed.swiftUIColor : AssetColors.onSurfaceVariant.swiftUIColor
                             )
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                             .contentShape(Rectangle())
