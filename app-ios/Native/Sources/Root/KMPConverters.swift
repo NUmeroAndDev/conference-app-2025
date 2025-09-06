@@ -427,7 +427,7 @@ extension Model.Profile {
         if let byteArray = shared.profileImageByteArray {
             imageData = convertKotlinByteArrayToData(byteArray)
         } else {
-            imageData = Data()
+            return nil
         }
 
         self.init(from: sharedProfile, imageData: imageData)
