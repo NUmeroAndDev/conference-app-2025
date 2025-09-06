@@ -8,6 +8,12 @@ import androidx.compose.ui.Modifier
 expect fun Modifier.enableMouseDragScroll(scrollableState: ScrollableState): Modifier
 
 @Composable
+expect fun Modifier.bindMouseBackForward(
+    onBackPressed: () -> Unit,
+    onForwardPressed: () -> Unit,
+): Modifier
+
+@Composable
 expect fun Modifier.enableMouseWheelZoom(
     multiplyVerticalScaleBy: (Float) -> Unit,
     zoomStep: Float = 1.05f,

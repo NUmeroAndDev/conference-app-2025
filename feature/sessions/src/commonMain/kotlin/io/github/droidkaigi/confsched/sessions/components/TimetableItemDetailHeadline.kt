@@ -2,7 +2,6 @@ package io.github.droidkaigi.confsched.sessions.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -18,6 +17,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -34,10 +35,11 @@ import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
-import io.github.droidkaigi.confsched.droidkaigiui.component.TimetableItemTag
+import io.github.droidkaigi.confsched.droidkaigiui.SubcomposeAsyncImage
+import io.github.droidkaigi.confsched.droidkaigiui.component.OutlinedToolTip
+import io.github.droidkaigi.confsched.droidkaigiui.component.RoomToolTip
 import io.github.droidkaigi.confsched.droidkaigiui.extension.icon
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
-import io.github.droidkaigi.confsched.droidkaigiui.rememberAsyncImagePainter
 import io.github.droidkaigi.confsched.model.core.Lang
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.fake
@@ -66,19 +68,17 @@ fun TimetableItemDetailHeadline(
             .then(modifier),
     ) {
         FlowRow {
-            TimetableItemTag(
-                modifier = Modifier.align(Alignment.CenterVertically),
-                tagText = timetableItem.room.name.currentLangTitle.toUpperCase(Locale.current),
-                contentTextColor = MaterialTheme.colorScheme.surface,
-                contentBackgroundColor = roomTheme.primaryColor,
-                borderColor = roomTheme.primaryColor,
+            RoomToolTip(
                 icon = timetableItem.room.icon,
+                text = timetableItem.room.name.currentLangTitle.toUpperCase(Locale.current),
+                color = roomTheme.primaryColor,
+                modifier = Modifier.align(Alignment.CenterVertically),
             )
             timetableItem.language.labels.forEach { label ->
                 Spacer(modifier = Modifier.padding(4.dp))
-                TimetableItemTag(
+                OutlinedToolTip(
                     modifier = Modifier.align(Alignment.CenterVertically),
-                    tagText = label,
+                    text = label,
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
@@ -101,8 +101,8 @@ fun TimetableItemDetailHeadline(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Image(
-                    painter = rememberAsyncImagePainter(speaker.iconUrl),
+                SubcomposeAsyncImage(
+                    model = speaker.iconUrl,
                     contentDescription = null,
                     modifier = Modifier
                         .border(border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.onSurfaceVariant), shape = CircleShape)
@@ -128,6 +128,7 @@ fun TimetableItemDetailHeadline(
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun LanguageSwitcher(
     currentLang: Lang,
@@ -150,6 +151,7 @@ private fun LanguageSwitcher(
             val isSelected = normalizedCurrentLang == lang
             TextButton(
                 onClick = { onLanguageSelect(lang) },
+                shapes = ButtonDefaults.shapes(),
                 contentPadding = PaddingValues(12.dp),
             ) {
                 val contentColor = if (isSelected) {
