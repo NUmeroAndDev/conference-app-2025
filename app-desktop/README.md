@@ -1,10 +1,8 @@
-# app-desktop README (Revised)
+# app-desktop README
 
 ## Overview
 `app-desktop` is the desktop client for the official DroidKaigi 2025 app.  
 It is developed as a Kotlin/JVM application using JetBrains Compose Multiplatform.
-
----
 
 ## Prerequisites
 
@@ -68,18 +66,24 @@ app-desktop/
 
     ```shell
     mkdir -p DroidKaigi2025.iconset
+    
     cp icon_16x16.png       DroidKaigi2025.iconset/icon_16x16.png
     cp icon_32x32.png       DroidKaigi2025.iconset/icon_16x16@2x.png
+    
     cp icon_32x32.png       DroidKaigi2025.iconset/icon_32x32.png
     cp icon_64x64.png       DroidKaigi2025.iconset/icon_32x32@2x.png
+    
     cp icon_128x128.png     DroidKaigi2025.iconset/icon_128x128.png
     cp icon_256x256.png     DroidKaigi2025.iconset/icon_128x128@2x.png
+    
     cp icon_256x256.png     DroidKaigi2025.iconset/icon_256x256.png
     cp icon_512x512.png     DroidKaigi2025.iconset/icon_256x256@2x.png
+    
     cp icon_512x512.png     DroidKaigi2025.iconset/icon_512x512.png
     cp icon_1024x1024.png   DroidKaigi2025.iconset/icon_512x512@2x.png
     
     iconutil -c icns DroidKaigi2025.iconset -o DroidKaigi2025.icns
+    
     iconutil -c iconset DroidKaigi2025.icns -o check.iconset
     ls check.iconset
     ```
