@@ -58,7 +58,7 @@ import io.github.droidkaigi.confsched.sessions.ScrolledToCurrentTimeState
 import io.github.droidkaigi.confsched.sessions.SessionsRes
 import io.github.droidkaigi.confsched.sessions.TimetableState
 import io.github.droidkaigi.confsched.sessions.add_to_bookmark
-import io.github.droidkaigi.confsched.sessions.components.ContextMenuProvider
+import io.github.droidkaigi.confsched.sessions.components.ContextMenuProviderForDesktop
 import io.github.droidkaigi.confsched.sessions.components.SimpleContextMenuItem
 import io.github.droidkaigi.confsched.sessions.components.TimetableGridItem
 import io.github.droidkaigi.confsched.sessions.go_to_timetable_detail
@@ -68,7 +68,6 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.atTime
@@ -142,7 +141,7 @@ fun TimetableGrid(
                     )
                     val gotoTimetableDetailLabel = stringResource(SessionsRes.string.go_to_timetable_detail)
 
-                    ContextMenuProvider(
+                    ContextMenuProviderForDesktop(
                         items = {
                             listOf(
                                 SimpleContextMenuItem(gotoTimetableDetailLabel) { onTimetableItemClick(timetableItem.id) },

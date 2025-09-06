@@ -18,7 +18,7 @@ import io.github.droidkaigi.confsched.sessions.grid.TimetableGridScope
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-actual fun TimetableGridScope.ContextMenuProvider(
+actual fun TimetableGridScope.ContextMenuProviderForDesktop(
     items: () -> List<SimpleContextMenuItem>,
     content: @Composable (() -> Unit),
 ) {

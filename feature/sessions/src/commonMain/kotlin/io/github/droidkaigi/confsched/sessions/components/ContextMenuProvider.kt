@@ -9,7 +9,7 @@ data class SimpleContextMenuItem(
 )
 
 @Composable
-expect fun TimetableGridScope.ContextMenuProvider(
+expect fun TimetableGridScope.ContextMenuProviderForDesktop(
     items: () -> List<SimpleContextMenuItem>,
     content: @Composable () -> Unit,
 )
