@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 @Composable
-internal fun rememberOneStepForwardController(
+internal fun rememberOneStepForwardControllerForDesktop(
     backStack: SnapshotStateList<NavKey>,
 ): () -> Unit {
     var redoKey by remember { mutableStateOf<NavKey?>(null) }
