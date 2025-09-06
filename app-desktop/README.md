@@ -1,4 +1,4 @@
-# app-desktop README
+# DroidKaigi 2025 JVM App :desktop_computer:
 
 ## Overview
 `app-desktop` is the desktop client for the official DroidKaigi 2025 app.  
