@@ -193,7 +193,7 @@ private fun ZoomDirection.multiplier(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-actual fun Modifier.enableMouseWheelZoom(
+actual fun Modifier.enableMouseWheelZoomForDesktop(
     multiplyVerticalScaleBy: (Float) -> Unit,
     zoomStep: Float,
     requireModifierKey: Boolean,

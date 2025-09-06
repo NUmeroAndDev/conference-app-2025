@@ -16,7 +16,7 @@ actual fun Modifier.bindMouseBackForward(
 ): Modifier = this // NOOP
 
 @Composable
-actual fun Modifier.enableMouseWheelZoom(
+actual fun Modifier.enableMouseWheelZoomForDesktop(
     multiplyVerticalScaleBy: (Float) -> Unit,
     zoomStep: Float,
     requireModifierKey: Boolean,

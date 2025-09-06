@@ -16,7 +16,7 @@ expect fun Modifier.bindMouseBackForward(
 ): Modifier
 
 @Composable
-expect fun Modifier.enableMouseWheelZoom(
+expect fun Modifier.enableMouseWheelZoomForDesktop(
     multiplyVerticalScaleBy: (Float) -> Unit,
     zoomStep: Float = 1.05f,
     requireModifierKey: Boolean = true,
