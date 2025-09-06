@@ -33,19 +33,15 @@ public struct ProfileCardInputImage: View {
                 .foregroundStyle(.white)
 
             if let image = selectedImage {
-                ZStack(alignment: .topTrailing) {
-                    Button {
-                        isPickerPresented = true
-                    } label: {
+                Button {
+                    isPickerPresented = true
+                } label: {
+                    ZStack(alignment: .topTrailing) {
                         image
                             .resizable()
                             .frame(width: 120, height: 120)
                             .padding(.top, 12)
                             .padding(.trailing, 17)
-                    }
-                    Button {
-                        isPickerPresented = true
-                    } label: {
                         Image(systemName: "pencil")
                             .resizable()
                             .renderingMode(.template)
@@ -91,13 +87,13 @@ public struct ProfileCardInputImage: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .onAppear {
-            if let initialImage = initialImage {
+            if let initialImage {
                 selectedImage = Image(uiImage: initialImage)
                 selectedPhoto = nil
             }
         }
         .onChange(of: initialImage) { _, newInitialImage in
-            if let newInitialImage = newInitialImage {
+            if let newInitialImage {
                 selectedImage = Image(uiImage: newInitialImage)
                 selectedPhoto = nil
             }
