@@ -5,7 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-expect fun Modifier.enableMouseDragScroll(scrollableState: ScrollableState): Modifier
+expect fun Modifier.enableMouseDragScroll(
+    scrollableState: ScrollableState,
+): Modifier
 
 @Composable
 expect fun Modifier.bindMouseBackForward(

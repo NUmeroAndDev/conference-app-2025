@@ -215,4 +215,3 @@ actual fun Modifier.enableMouseWheelZoom(
 
     event.changes.forEach { it.consume() }
 }
-

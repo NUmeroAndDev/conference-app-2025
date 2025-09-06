@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 actual fun Modifier.enableMouseDragScroll(
-    scrollableState: ScrollableState
+    scrollableState: ScrollableState,
 ): Modifier = this // NOOP
 
 @Composable
