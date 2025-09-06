@@ -5,7 +5,7 @@ import SwiftUI
 import Theme
 
 public struct ProfileCardEditScreen: View {
-    @State private var presenter = ProfileCardEditPresenter(profile: ProfileProvider())
+    @State private var presenter = ProfileCardEditPresenter()
     let onNavigate: (ProfileCardEditNavigationDestination) -> Void
 
     public init(onNavigate: @escaping (ProfileCardEditNavigationDestination) -> Void = { _ in }) {

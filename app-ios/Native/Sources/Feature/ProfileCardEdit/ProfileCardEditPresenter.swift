@@ -95,12 +95,11 @@ class FormState {
 @MainActor
 @Observable
 final class ProfileCardEditPresenter {
-    let profile: ProfileProvider
+    let profile = ProfileProvider()
     var formState: FormState
     var onComplete: (() -> Void)?
 
-    init(profile: ProfileProvider) {
-        self.profile = profile
+    init() {
         self.formState = FormState(
             name: "", occupation: "", urlString: "", image: nil, cardVariant: .nightPill, existingImageData: nil)
     }

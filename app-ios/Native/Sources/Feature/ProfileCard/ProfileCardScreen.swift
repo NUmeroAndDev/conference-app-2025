@@ -7,7 +7,7 @@ import Theme
 
 @MainActor
 public struct ProfileCardScreen: View {
-    @State private var presenter = ProfileCardPresenter(profile: ProfileProvider())
+    @State private var presenter = ProfileCardPresenter()
     let onNavigate: (ProfileCardNavigationDestination) -> Void
 
     public init(onNavigate: @escaping (ProfileCardNavigationDestination) -> Void = { _ in }) {
