@@ -10,13 +10,19 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollDispatcher
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.PointerType
+import androidx.compose.ui.input.pointer.isBackPressed
+import androidx.compose.ui.input.pointer.isForwardPressed
+import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.util.VelocityTracker
 import kotlinx.coroutines.launch
@@ -132,4 +138,25 @@ actual fun Modifier.enableMouseDragScroll(
                 onDragCancel = { velocityTracker = null },
             )
         }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+actual fun Modifier.bindMouseBackForward(
+    onBackPressed: () -> Unit,
+    onForwardPressed: () -> Unit,
+): Modifier = this.onPointerEvent(
+    eventType = PointerEventType.Press,
+    pass = PointerEventPass.Initial,
+) { e ->
+    when {
+        e.buttons.isBackPressed -> {
+            onBackPressed()
+            e.changes.forEach { it.consume() }
+        }
+        e.buttons.isForwardPressed -> {
+            onForwardPressed()
+            e.changes.forEach { it.consume() }
+        }
+    }
 }
