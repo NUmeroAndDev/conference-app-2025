@@ -67,6 +67,7 @@ let package = Package(
                 .target(name: "SponsorFeature"),
                 .target(name: "StaffFeature"),
                 .target(name: "ProfileCardFeature"),
+                .target(name: "ProfileCardEditFeature"),
                 .target(name: "SettingsFeature"),
                 .target(name: "LicenseFeature"),
                 .target(name: "KMPFramework"),
@@ -93,7 +94,7 @@ let package = Package(
                 .process("Resources")
             ],
         ),
-        
+
         // Feature targets without resources
         .target(
             name: "TimetableDetailFeature",
@@ -106,7 +107,7 @@ let package = Package(
             ],
             path: "Sources/Feature/TimetableDetail",
         ),
-        
+
         .target(
             name: "AboutFeature",
             dependencies: [
@@ -122,7 +123,7 @@ let package = Package(
                 .process("Resources")
             ],
         ),
-        
+
         .target(
             name: "ContributorFeature",
             dependencies: [
@@ -137,7 +138,7 @@ let package = Package(
                 .process("Resources")
             ],
         ),
-        
+
         .target(
             name: "EventMapFeature",
             dependencies: [
@@ -150,7 +151,7 @@ let package = Package(
             ],
             path: "Sources/Feature/EventMap",
         ),
-        
+
         .target(
             name: "FavoriteFeature",
             dependencies: [
@@ -165,7 +166,7 @@ let package = Package(
                 .process("Resources")
             ],
         ),
-        
+
         .target(
             name: "SearchFeature",
             dependencies: [
@@ -180,7 +181,7 @@ let package = Package(
                 .process("Resources")
             ],
         ),
-        
+
         .target(
             name: "SponsorFeature",
             dependencies: [
@@ -192,7 +193,7 @@ let package = Package(
             ],
             path: "Sources/Feature/Sponsor",
         ),
-        
+
         .target(
             name: "StaffFeature",
             dependencies: [
@@ -207,7 +208,7 @@ let package = Package(
                 .process("Resources")
             ],
         ),
-        
+
         .target(
             name: "ProfileCardFeature",
             dependencies: [
@@ -219,7 +220,7 @@ let package = Package(
             ],
             path: "Sources/Feature/ProfileCard",
         ),
-        
+
         .target(
             name: "SettingsFeature",
             dependencies: [
@@ -247,6 +248,21 @@ let package = Package(
             resources: [
                 .process("Resources")
             ]
+        ),
+
+        .target(
+            name: "ProfileCardEditFeature",
+            dependencies: [
+                .product(name: "Presentation", package: "Core"),
+                .product(name: "Model", package: "Core"),
+                .target(name: "Component"),
+                .target(name: "Extension"),
+                .target(name: "Theme"),
+            ],
+            path: "Sources/Feature/ProfileCardEdit",
+            resources: [
+                .process("Resources")
+            ],
         ),
 
         .target(
