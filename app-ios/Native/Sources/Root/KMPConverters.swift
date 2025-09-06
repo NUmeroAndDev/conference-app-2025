@@ -449,8 +449,6 @@ extension Model.ProfileCardVariant {
             self = .nightFlower
         case .lightFlower:
             self = .dayFlower
-        default:
-            self = .nightPill
         }
     }
 }

@@ -94,12 +94,14 @@ struct FrontCard: View {
             if let uiImage = UIImage(data: image) {
                 Image(uiImage: uiImage)
             } else {
-                Image(systemName: "")
+                Image(systemName: "person.fill")
             }
         return
             image
             .resizable()
+            .aspectRatio(contentMode: .fill)
             .frame(width: avatarSize, height: avatarSize)
+            .background(.white)
             .foregroundColor(.accentColor)
             .mask {
                 maskImage
