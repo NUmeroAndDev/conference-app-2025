@@ -6,6 +6,7 @@ import FavoriteFeature
 import HomeFeature
 import LicenseFeature
 import Model
+import ProfileCardEditFeature
 import ProfileCardFeature
 import SearchFeature
 import SettingsFeature
@@ -42,13 +43,16 @@ private enum TabType: CaseIterable, Hashable {
 public struct RootScreen: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var selectedTab: TabType = .timetable
-    @State private var navigationPath = NavigationPath()
+    @State private var timetableNavigationPath = NavigationPath()
     @State private var aboutNavigationPath = NavigationPath()
     @State private var favoriteNavigationPath = NavigationPath()
+    @State private var profileCardNavigationPath = NavigationPath()
     @State private var composeMultiplatformEnabled = false
     @State private var favoriteScreenUiMode: FavoriteScreenUiModePicker.UiMode = .swiftui
     private let presenter = RootPresenter()
     @State private var notificationCoordinator: NotificationNavigationCoordinator?
+    @Dependency(\.notificationUseCase) private var notificationUseCase
+    @Dependency(\.timetableUseCase) private var timetableUseCase
 
     public init() {
         UITabBar.appearance().unselectedItemTintColor = UIColor(named: "tab_inactive")
@@ -84,8 +88,6 @@ public struct RootScreen: View {
     }
 
     private func setupNotificationHandling() {
-        @Dependency(\.notificationUseCase) var notificationUseCase
-
         // Initialize notification coordinator if not already done
         if notificationCoordinator == nil {
             notificationCoordinator = NotificationNavigationCoordinator(
@@ -151,11 +153,12 @@ public struct RootScreen: View {
     }
 
     private var timetableTab: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStack(path: $timetableNavigationPath) {
             HomeScreen(onNavigate: handleHomeNavigation)
                 .navigationDestination(for: NavigationDestination.self) { destination in
                     let navigationHandler = NavigationHandler(
-                        handleSearchNavigation: handleSearchNavigation
+                        handleSearchNavigation: handleSearchNavigation,
+                        handleProfileCardEditNavigation: handleProfileCardEditNavigation
                     )
                     destination.view(with: navigationHandler)
                 }
@@ -227,17 +230,24 @@ public struct RootScreen: View {
     }
 
     private var profileCardTab: some View {
-        NavigationStack {
-            ProfileCardScreen()
+        NavigationStack(path: $profileCardNavigationPath) {
+            ProfileCardScreen(onNavigate: handleProfileCardNavigation)
+                .navigationDestination(for: NavigationDestination.self) { destination in
+                    let navigationHandler = NavigationHandler(
+                        handleSearchNavigation: handleSearchNavigation,
+                        handleProfileCardEditNavigation: handleProfileCardEditNavigation
+                    )
+                    destination.view(with: navigationHandler)
+                }
         }
     }
 
     private func handleHomeNavigation(_ destination: HomeNavigationDestination) {
         switch destination {
         case .timetableDetail(let item):
-            navigationPath.append(NavigationDestination.timetableDetail(item))
+            timetableNavigationPath.append(NavigationDestination.timetableDetail(item))
         case .search:
-            navigationPath.append(NavigationDestination.search)
+            timetableNavigationPath.append(NavigationDestination.search)
         }
     }
 
@@ -252,7 +262,21 @@ public struct RootScreen: View {
     private func handleSearchNavigation(_ destination: SearchNavigationDestination) {
         switch destination {
         case .timetableDetail(let item):
-            navigationPath.append(NavigationDestination.timetableDetail(item))
+            timetableNavigationPath.append(NavigationDestination.timetableDetail(item))
+        }
+    }
+
+    private func handleProfileCardNavigation(_ destination: ProfileCardNavigationDestination) {
+        switch destination {
+        case .edit:
+            profileCardNavigationPath.append(NavigationDestination.profileCardEdit)
+        }
+    }
+
+    private func handleProfileCardEditNavigation(_ destination: ProfileCardEditNavigationDestination) {
+        switch destination {
+        case .completed:
+            profileCardNavigationPath = NavigationPath()
         }
     }
 
@@ -270,13 +294,13 @@ public struct RootScreen: View {
             let timetableItem = try await findTimetableItemById(itemId)
 
             // Clear existing navigation path and navigate to detail
-            navigationPath = NavigationPath()
+            timetableNavigationPath = NavigationPath()
 
             // Add a small delay to ensure tab switch is complete
             try await Task.sleep(nanoseconds: 100_000_000)  // 0.1 seconds
 
             // Navigate to the timetable detail
-            navigationPath.append(NavigationDestination.timetableDetail(timetableItem))
+            timetableNavigationPath.append(NavigationDestination.timetableDetail(timetableItem))
 
             print("Successfully navigated to session: \(timetableItem.timetableItem.title.currentLangTitle)")
         } catch {
@@ -288,7 +312,6 @@ public struct RootScreen: View {
     }
 
     private func findTimetableItemById(_ itemId: String) async throws -> TimetableItemWithFavorite {
-        @Dependency(\.timetableUseCase) var timetableUseCase
 
         // Get the latest timetable data with timeout to avoid infinite waiting
         let timetableSequence = timetableUseCase.load()
