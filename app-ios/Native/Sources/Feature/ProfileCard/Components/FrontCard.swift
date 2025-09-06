@@ -90,7 +90,14 @@ struct FrontCard: View {
     }
 
     private var avatarImage: some View {
-        Image(uiImage: UIImage(data: image)!)
+        let image =
+            if let uiImage = UIImage(data: image) {
+                Image(uiImage: uiImage)
+            } else {
+                Image(systemName: "")
+            }
+        return
+            image
             .resizable()
             .frame(width: avatarSize, height: avatarSize)
             .foregroundColor(.accentColor)
