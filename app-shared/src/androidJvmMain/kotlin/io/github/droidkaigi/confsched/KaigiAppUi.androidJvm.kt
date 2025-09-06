@@ -78,7 +78,6 @@ actual fun KaigiAppUi() {
                     onAddCalendarClick = externalNavController::navigateToCalendarRegistration,
                     onShareClick = externalNavController::onShareClick,
                     onLinkClick = externalNavController::navigate,
-                    onWebSearchClick = externalNavController::navigate,
                     onSearchClick = { backStack.add(SearchNavKey) },
                     onTimetableItemClick = {
                         if (backStack.lastOrNull() is TimetableItemDetailNavKey) {

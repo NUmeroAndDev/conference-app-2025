@@ -24,7 +24,6 @@ fun EntryProviderBuilder<NavKey>.sessionEntries(
     onAddCalendarClick: (TimetableItem) -> Unit,
     onShareClick: (TimetableItem) -> Unit,
     onLinkClick: (String) -> Unit,
-    onWebSearchClick: (url: String) -> Unit,
     onSearchClick: () -> Unit,
     onTimetableItemClick: (TimetableItemId) -> Unit,
 ) {
@@ -37,7 +36,6 @@ fun EntryProviderBuilder<NavKey>.sessionEntries(
         onAddCalendarClick = onAddCalendarClick,
         onShareClick = onShareClick,
         onLinkClick = onLinkClick,
-        onWebSearchClick = onWebSearchClick,
     )
     searchEntry(
         onBackClick = onBackClick,
@@ -66,7 +64,6 @@ fun EntryProviderBuilder<NavKey>.timetableItemDetailEntry(
     onAddCalendarClick: (TimetableItem) -> Unit,
     onShareClick: (TimetableItem) -> Unit,
     onLinkClick: (String) -> Unit,
-    onWebSearchClick: (url: String) -> Unit,
 ) {
     entry<TimetableItemDetailNavKey>(metadata = listDetailSceneStrategyDetailPaneMetaData()) {
         with(rememberTimetableItemDetailScreenContextRetained(it.id)) {
@@ -75,7 +72,6 @@ fun EntryProviderBuilder<NavKey>.timetableItemDetailEntry(
                 onAddCalendarClick = onAddCalendarClick,
                 onShareClick = onShareClick,
                 onLinkClick = onLinkClick,
-                onWebSearchClick = onWebSearchClick,
             )
         }
     }

@@ -53,7 +53,6 @@ fun TimetableItemDetailContent(
     currentLang: Lang,
     modifier: Modifier = Modifier,
     onLinkClick: (url: String) -> Unit,
-    onWebSearchClick: (url: String) -> Unit,
 ) {
     Column(modifier = modifier) {
         DescriptionSection(
@@ -62,7 +61,6 @@ fun TimetableItemDetailContent(
                 is TimetableItem.Special -> timetableItem.description.currentLangTitle
             },
             onLinkClick = onLinkClick,
-            onWebSearchClick = onWebSearchClick,
         )
         TargetAudienceSection(targetAudience = timetableItem.targetAudience)
     }
@@ -72,14 +70,13 @@ fun TimetableItemDetailContent(
 private fun DescriptionSection(
     description: String,
     onLinkClick: (url: String) -> Unit,
-    onWebSearchClick: (url: String) -> Unit,
 ) {
     var isExpand by rememberBooleanSaveable(false)
     var isOverFlow by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.padding(8.dp)) {
         provideSelectionContainerCustomContextMenu(
-            onWebSearchClick = { onWebSearchClick(it) },
+            onWebSearchClick = { onLinkClick(it) },
         ) {
             SelectionContainer {
                 ClickableLinkText(
@@ -155,7 +152,6 @@ private fun TimetableItemDetailContentPreview() {
                 timetableItem = session,
                 currentLang = Lang.JAPANESE,
                 onLinkClick = {},
-                onWebSearchClick = {},
             )
         }
     }
@@ -171,7 +167,6 @@ private fun TimetableItemDetailContentWithEnglishPreview() {
                 timetableItem = session,
                 currentLang = Lang.ENGLISH,
                 onLinkClick = {},
-                onWebSearchClick = {},
             )
         }
     }
@@ -187,7 +182,6 @@ private fun TimetableItemDetailContentWithMixedPreview() {
                 timetableItem = session,
                 currentLang = Lang.MIXED,
                 onLinkClick = {},
-                onWebSearchClick = {},
             )
         }
     }

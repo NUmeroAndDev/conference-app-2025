@@ -76,8 +76,6 @@ fun NavGraphBuilder.timetableItemDetailNavGraph(
             TimetableItemDetailScreenRoot(
                 onBackClick = onBackClick,
                 onLinkClick = onLinkClick,
-                // It's JVM-specific, so it does nothing on iOS.
-                onWebSearchClick = {},
                 onShareClick = onShareClick,
                 onAddCalendarClick = onAddCalendarClick,
             )
