@@ -23,7 +23,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.designsystem.component.ClickableLinkText
-import io.github.droidkaigi.confsched.designsystem.component.provideSelectionContainerCustomContextMenu
+import io.github.droidkaigi.confsched.designsystem.component.provideSelectionContainerCustomContextMenuForDesktop
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
@@ -75,7 +75,7 @@ private fun DescriptionSection(
     var isOverFlow by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.padding(8.dp)) {
-        provideSelectionContainerCustomContextMenu(
+        provideSelectionContainerCustomContextMenuForDesktop(
             onWebSearchClick = { onLinkClick(it) },
         ) {
             SelectionContainer {

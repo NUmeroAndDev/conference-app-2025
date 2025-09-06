@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-actual fun provideSelectionContainerCustomContextMenu(
+actual fun provideSelectionContainerCustomContextMenuForDesktop(
     onWebSearchClick: (url: String) -> Unit,
     buildSearchUrl: (encodedSelectedText: String) -> String,
     content: @Composable () -> Unit,
