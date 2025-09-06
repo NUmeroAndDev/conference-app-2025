@@ -14,15 +14,30 @@ import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.isSecondaryPressed
 import androidx.compose.ui.input.pointer.onPointerEvent
+import io.github.droidkaigi.confsched.sessions.SessionsRes
+import io.github.droidkaigi.confsched.sessions.add_to_bookmark
+import io.github.droidkaigi.confsched.sessions.go_to_timetable_detail
 import io.github.droidkaigi.confsched.sessions.grid.TimetableGridScope
+import io.github.droidkaigi.confsched.sessions.remove_from_bookmark
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 actual fun TimetableGridScope.ContextMenuProviderForDesktop(
-    items: () -> List<SimpleContextMenuItem>,
-    content: @Composable (() -> Unit),
+    isBookmarked: Boolean,
+    onSelectShowDetail: () -> Unit,
+    onToggleFavorite: () -> Unit,
+    content: @Composable () -> Unit,
 ) {
     val (open, setOpen) = remember { mutableStateOf(false) }
+    val gotoTimetableDetailLabel = stringResource(SessionsRes.string.go_to_timetable_detail)
+    val bookmarkLabel = stringResource(
+        if (isBookmarked) {
+            SessionsRes.string.remove_from_bookmark
+        } else {
+            SessionsRes.string.add_to_bookmark
+        },
+    )
 
     // TODO Improve the appearance.
     Box(
@@ -42,20 +57,27 @@ actual fun TimetableGridScope.ContextMenuProviderForDesktop(
             expanded = open,
             onDismissRequest = { setOpen(false) },
         ) {
-            for (item in items()) {
+            @Composable
+            fun item(label: String, onClick: () -> Unit) {
                 DropdownMenuItem(
                     text = {
                         Text(
-                            text = item.label,
+                            text = label,
                             color = Color.Black,
                         )
                     },
                     onClick = {
                         setOpen(false)
-                        item.onClick()
+                        onClick()
                     },
                 )
             }
+
+            val items = listOf(
+                gotoTimetableDetailLabel to onSelectShowDetail,
+                bookmarkLabel to onToggleFavorite,
+            )
+            items.forEach { (label, action) -> item(label, action) }
         }
     }
 }

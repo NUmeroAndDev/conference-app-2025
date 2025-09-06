@@ -5,8 +5,10 @@ import io.github.droidkaigi.confsched.sessions.grid.TimetableGridScope
 
 @Composable
 actual fun TimetableGridScope.ContextMenuProviderForDesktop(
-    items: () -> List<SimpleContextMenuItem>,
-    content: @Composable (() -> Unit),
+    isBookmarked: Boolean,
+    onSelectShowDetail: () -> Unit,
+    onToggleFavorite: () -> Unit,
+    content: @Composable () -> Unit,
 ) {
     // NOOP
     content()

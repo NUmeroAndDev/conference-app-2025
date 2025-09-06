@@ -55,15 +55,10 @@ import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.TimetableItemId
 import io.github.droidkaigi.confsched.model.sessions.fake
 import io.github.droidkaigi.confsched.sessions.ScrolledToCurrentTimeState
-import io.github.droidkaigi.confsched.sessions.SessionsRes
 import io.github.droidkaigi.confsched.sessions.TimetableState
-import io.github.droidkaigi.confsched.sessions.add_to_bookmark
 import io.github.droidkaigi.confsched.sessions.components.ContextMenuProviderForDesktop
-import io.github.droidkaigi.confsched.sessions.components.SimpleContextMenuItem
 import io.github.droidkaigi.confsched.sessions.components.TimetableGridItem
-import io.github.droidkaigi.confsched.sessions.go_to_timetable_detail
 import io.github.droidkaigi.confsched.sessions.rememberTimetableState
-import io.github.droidkaigi.confsched.sessions.remove_from_bookmark
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
@@ -75,7 +70,6 @@ import kotlinx.datetime.periodUntil
 import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
-import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.ExperimentalTime
@@ -131,23 +125,10 @@ fun TimetableGrid(
                 modifier = modifier,
             ) {
                 items(timetable.timetableItems) { timetableItem ->
-                    val isBookmarked = isBookmarked(timetableItem.id)
-                    val bookmarkLabel = stringResource(
-                        if (isBookmarked) {
-                            SessionsRes.string.remove_from_bookmark
-                        } else {
-                            SessionsRes.string.add_to_bookmark
-                        },
-                    )
-                    val gotoTimetableDetailLabel = stringResource(SessionsRes.string.go_to_timetable_detail)
-
                     ContextMenuProviderForDesktop(
-                        items = {
-                            listOf(
-                                SimpleContextMenuItem(gotoTimetableDetailLabel) { onTimetableItemClick(timetableItem.id) },
-                                SimpleContextMenuItem(bookmarkLabel) { onBookmarkClick(timetableItem.id) },
-                            )
-                        },
+                        isBookmarked = isBookmarked(timetableItem.id),
+                        onToggleFavorite = { onBookmarkClick(timetableItem.id) },
+                        onSelectShowDetail = { onTimetableItemClick(timetableItem.id) },
                     ) {
                         TimetableGridItem(
                             timetableItem = timetableItem,
