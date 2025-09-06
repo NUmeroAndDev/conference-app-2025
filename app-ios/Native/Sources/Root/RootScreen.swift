@@ -115,51 +115,36 @@ public struct RootScreen: View {
     @ViewBuilder
     private var tabContent: some View {
         TabView(selection: $selectedTab) {
-            Tab(
-                value: .timetable,
-                content: {
-                    timetableTab
-                        .hiddenTabBarIfNeeded()
-                },
-                label: {
-                    TabType.timetable.tabImage(selectedTab).swiftUIImage
-                }, )
-            Tab(
-                value: .map,
-                content: {
-                    mapTab
-                        .hiddenTabBarIfNeeded()
-                },
-                label: {
-                    TabType.map.tabImage(selectedTab).swiftUIImage
-                }, )
-            Tab(
-                value: .favorite,
-                content: {
-                    favoriteTab
-                        .hiddenTabBarIfNeeded()
-                },
-                label: {
-                    TabType.favorite.tabImage(selectedTab).swiftUIImage
-                }, )
-            Tab(
-                value: .info,
-                content: {
-                    infoTab
-                        .hiddenTabBarIfNeeded()
-                },
-                label: {
-                    TabType.info.tabImage(selectedTab).swiftUIImage
-                }, )
-            Tab(
-                value: .profileCard,
-                content: {
-                    profileCardTab
-                        .hiddenTabBarIfNeeded()
-                },
-                label: {
-                    TabType.profileCard.tabImage(selectedTab).swiftUIImage
-                }, )
+            Tab(value: .timetable) {
+                timetableTab
+                    .hiddenTabBarIfNeeded()
+            } label: {
+                TabType.timetable.tabImage(selectedTab).swiftUIImage
+            }
+            Tab(value: .map) {
+                mapTab
+                    .hiddenTabBarIfNeeded()
+            } label: {
+                TabType.map.tabImage(selectedTab).swiftUIImage
+            }
+            Tab(value: .favorite) {
+                favoriteTab
+                    .hiddenTabBarIfNeeded()
+            } label: {
+                TabType.favorite.tabImage(selectedTab).swiftUIImage
+            }
+            Tab(value: .info) {
+                infoTab
+                    .hiddenTabBarIfNeeded()
+            } label: {
+                TabType.info.tabImage(selectedTab).swiftUIImage
+            }
+            Tab(value: .profileCard) {
+                profileCardTab
+                    .hiddenTabBarIfNeeded()
+            } label: {
+                TabType.profileCard.tabImage(selectedTab).swiftUIImage
+            }
         }
         .tint(AssetColors.primaryFixed.swiftUIColor)
     }
