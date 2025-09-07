@@ -56,13 +56,13 @@ import io.github.droidkaigi.confsched.model.sessions.TimetableItemId
 import io.github.droidkaigi.confsched.model.sessions.fake
 import io.github.droidkaigi.confsched.sessions.ScrolledToCurrentTimeState
 import io.github.droidkaigi.confsched.sessions.TimetableState
+import io.github.droidkaigi.confsched.sessions.components.ContextMenuProviderForDesktop
 import io.github.droidkaigi.confsched.sessions.components.TimetableGridItem
 import io.github.droidkaigi.confsched.sessions.rememberTimetableState
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.atTime
@@ -79,6 +79,7 @@ fun TimetableGrid(
     timetable: Timetable,
     timeLine: TimeLine?,
     selectedDay: DroidKaigi2025Day,
+    onBookmarkClick: (TimetableItemId) -> Unit,
     onTimetableItemClick: (TimetableItemId) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
@@ -123,11 +124,17 @@ fun TimetableGrid(
                 modifier = modifier,
             ) {
                 items(timetable.timetableItems) { timetableItem ->
-                    TimetableGridItem(
-                        timetableItem = timetableItem,
-                        onTimetableItemClick = { onTimetableItemClick(it.id) },
-                        scaleState = timetableState.scaleState,
-                    )
+                    ContextMenuProviderForDesktop(
+                        isBookmarked = timetable.bookmarks.contains(timetableItem.id),
+                        onToggleFavorite = { onBookmarkClick(timetableItem.id) },
+                        onSelectShowDetail = { onTimetableItemClick(timetableItem.id) },
+                    ) {
+                        TimetableGridItem(
+                            timetableItem = timetableItem,
+                            onTimetableItemClick = { onTimetableItemClick(it.id) },
+                            scaleState = timetableState.scaleState,
+                        )
+                    }
                 }
             }
         }
@@ -373,7 +380,7 @@ private fun itemProvider(
     }
 }
 
-private interface TimetableGridScope {
+interface TimetableGridScope {
     fun <T> items(
         items: List<T>,
         key: ((item: T) -> Any)? = null,
@@ -461,6 +468,7 @@ private fun TimetableGridPreview() {
                 timetable = timetable,
                 timeLine = TimeLine.now(LocalClock.current),
                 selectedDay = DroidKaigi2025Day.ConferenceDay1,
+                onBookmarkClick = {},
                 onTimetableItemClick = {},
             )
         }
@@ -478,6 +486,7 @@ private fun TimetableGridWithTimelinePreview() {
                 timetable = timetable,
                 timeLine = TimeLine.now(LocalClock.current),
                 selectedDay = DroidKaigi2025Day.ConferenceDay1,
+                onBookmarkClick = {},
                 onTimetableItemClick = {},
             )
         }
