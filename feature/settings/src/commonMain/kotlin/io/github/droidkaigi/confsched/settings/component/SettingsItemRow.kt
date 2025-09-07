@@ -21,6 +21,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.droidkaigiui.rememberBooleanSaveable
 
+const val SettingsAccessibilityUseFontFamilySettingsItemRowTestTag = "SettingsAccessibilityUseFontFamilySettingsItemRowTestTag"
 const val SettingsItemRowCurrentValueTextTestTag = "SettingsItemRowCurrentValueTextTestTag"
 
 @Composable
@@ -39,6 +40,7 @@ fun SettingsItemRow(
     ) {
         Row(
             modifier = Modifier
+                .testTag(SettingsAccessibilityUseFontFamilySettingsItemRowTestTag)
                 .fillMaxWidth()
                 .height(93.dp)
                 .clickable { isExpand = isExpand.not() }

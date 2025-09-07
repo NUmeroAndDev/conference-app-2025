@@ -28,7 +28,6 @@ import io.github.droidkaigi.confsched.settings.section_title_accessibility
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
-const val SettingsAccessibilityUseFontFamilySettingsItemRowTestTag = "SettingsAccessibilityUseFontFamilySettingsItemRowTestTag"
 const val SettingsAccessibilityUseFontFamilySelectableItemColumnTestTagPrefix =
     "SettingsAccessibilityUseFontFamilySelectableItemColumnTestTagPrefix:"
 
@@ -46,7 +45,7 @@ fun LazyListScope.accessibility(
     }
     item {
         SettingsItemRow(
-            modifier = modifier.testTag(SettingsAccessibilityUseFontFamilySettingsItemRowTestTag),
+            modifier = modifier,
             leadingIcon = vectorResource(SettingsRes.drawable.ic_brand_family),
             itemName = stringResource(SettingsRes.string.section_item_title_font),
             currentValue = uiState.useKaigiFontFamily.displayName,
