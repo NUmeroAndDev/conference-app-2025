@@ -143,27 +143,6 @@ actual fun Modifier.enableMouseDragScroll(
         }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-actual fun Modifier.bindMouseBackForward(
-    onBackPressed: () -> Unit,
-    onForwardPressed: () -> Unit,
-): Modifier = this.onPointerEvent(
-    eventType = PointerEventType.Press,
-    pass = PointerEventPass.Initial,
-) { e ->
-    when {
-        e.buttons.isBackPressed -> {
-            onBackPressed()
-            e.changes.forEach { it.consume() }
-        }
-        e.buttons.isForwardPressed -> {
-            onForwardPressed()
-            e.changes.forEach { it.consume() }
-        }
-    }
-}
-
 private const val VerticalWheelDeltaThreshold = 0.01f
 
 private enum class ZoomDirection { ZoomIn, ZoomOut }

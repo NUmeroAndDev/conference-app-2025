@@ -10,12 +10,6 @@ actual fun Modifier.enableMouseDragScroll(
 ): Modifier = this // NOOP
 
 @Composable
-actual fun Modifier.bindMouseBackForward(
-    onBackPressed: () -> Unit,
-    onForwardPressed: () -> Unit,
-): Modifier = this // NOOP
-
-@Composable
 actual fun Modifier.enableMouseWheelZoomForDesktop(
     multiplyVerticalScaleBy: (Float) -> Unit,
     zoomStep: Float,

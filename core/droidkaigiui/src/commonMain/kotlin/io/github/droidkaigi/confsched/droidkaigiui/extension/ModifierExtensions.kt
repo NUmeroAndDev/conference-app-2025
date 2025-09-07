@@ -10,12 +10,6 @@ expect fun Modifier.enableMouseDragScroll(
 ): Modifier
 
 @Composable
-expect fun Modifier.bindMouseBackForward(
-    onBackPressed: () -> Unit,
-    onForwardPressed: () -> Unit,
-): Modifier
-
-@Composable
 expect fun Modifier.enableMouseWheelZoomForDesktop(
     multiplyVerticalScaleBy: (Float) -> Unit,
     zoomStep: Float = 1.05f,
