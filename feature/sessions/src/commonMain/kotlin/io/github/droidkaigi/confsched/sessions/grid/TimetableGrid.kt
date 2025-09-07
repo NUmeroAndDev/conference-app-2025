@@ -49,6 +49,7 @@ import androidx.compose.ui.semantics.verticalScrollAxisRange
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
+import io.github.droidkaigi.confsched.droidkaigiui.extension.enableMouseWheelZoomForDesktop
 import io.github.droidkaigi.confsched.model.core.DroidKaigi2025Day
 import io.github.droidkaigi.confsched.model.sessions.Timetable
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
@@ -268,6 +269,13 @@ private fun TimetableGrid(
                             nestedScrollDispatcher = nestedScrollDispatcher,
                         )
                     }
+                },
+            )
+            // This processing is specific to the JVM; on other platforms, no special processing is performed.
+            .enableMouseWheelZoomForDesktop(
+                multiplyVerticalScaleBy = { factor ->
+                    val before = timetableState.scaleState.verticalScale
+                    timetableState.scaleState.updateVerticalScale(before * factor)
                 },
             )
             .onGloballyPositioned { coordinates ->
