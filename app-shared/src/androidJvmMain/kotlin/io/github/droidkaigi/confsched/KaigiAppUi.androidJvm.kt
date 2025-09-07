@@ -9,6 +9,8 @@ import dev.chrisbanes.haze.rememberHazeState
 import io.github.droidkaigi.confsched.component.KaigiNavigationScaffold
 import io.github.droidkaigi.confsched.component.MainScreenTab
 import io.github.droidkaigi.confsched.component.NavDisplayWithSharedAxisX
+import io.github.droidkaigi.confsched.component.rememberOneStepForwardControllerForDesktop
+import io.github.droidkaigi.confsched.droidkaigiui.extension.bindMouseBackForward
 import io.github.droidkaigi.confsched.model.about.AboutItem
 import io.github.droidkaigi.confsched.model.core.Lang
 import io.github.droidkaigi.confsched.model.core.defaultLang
@@ -41,6 +43,7 @@ import io.github.droidkaigi.confsched.navkey.TimetableNavKey
 context(appGraph: AppGraph)
 actual fun KaigiAppUi() {
     val backStack = rememberNavBackStack(TimetableNavKey)
+    val doForward = rememberOneStepForwardControllerForDesktop(backStack)
     val externalNavController = rememberExternalNavController()
     val hazeState = rememberHazeState()
 
@@ -171,7 +174,20 @@ actual fun KaigiAppUi() {
             },
             modifier = Modifier
                 .fillMaxSize()
-                .hazeSource(hazeState),
+                .hazeSource(hazeState)
+                .bindMouseBackForward(
+                    onBackPressed = {
+                        if (backStack.size > 1) {
+                            backStack.removeLastOrNull()
+                        } else {
+                            backStack.clear()
+                            backStack.add(TimetableNavKey)
+                        }
+                    },
+                    onForwardPressed = {
+                        doForward()
+                    },
+                ),
         )
     }
 }
