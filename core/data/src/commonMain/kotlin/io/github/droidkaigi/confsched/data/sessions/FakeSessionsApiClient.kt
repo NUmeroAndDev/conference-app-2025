@@ -187,8 +187,8 @@ private fun SessionAssetResponse.Companion.fake(): SessionAssetResponse = Sessio
 )
 
 private fun SpeakerResponse.Companion.fakes(): List<SpeakerResponse> = listOf(
-    SpeakerResponse(fullName = "taka", id = "1", isTopSpeaker = true),
-    SpeakerResponse(fullName = "ry", id = "2", isTopSpeaker = true),
+    SpeakerResponse(fullName = "taka", id = "1"),
+    SpeakerResponse(fullName = "ry", id = "2"),
 )
 
 private fun SessionResponse.Companion.fakes(
