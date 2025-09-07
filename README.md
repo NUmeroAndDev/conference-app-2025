@@ -16,7 +16,6 @@ The DroidKaigi 2025 official app offers a variety of features to enhance your co
 
 <img width="300" src="assets/readme/sample-app-screenshot.png"/>
 
-
 # Try it out!
 
 ## Android
