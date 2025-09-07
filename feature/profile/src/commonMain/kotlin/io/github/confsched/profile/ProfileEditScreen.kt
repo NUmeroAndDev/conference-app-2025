@@ -19,6 +19,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
@@ -116,6 +117,7 @@ private val profileSaver: Saver<Profile, Any> = listSaver(
 fun ProfileEditScreen(
     initialProfile: Profile?,
     onCreateClick: (Profile) -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val form: Form<Profile> = rememberForm(
@@ -126,11 +128,14 @@ fun ProfileEditScreen(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val focusManager = LocalFocusManager.current
 
+    BackHandler(enabled = true, onBack = onBackClick)
+
     Scaffold(
         topBar = {
             AnimatedTextTopAppBar(
                 title = stringResource(ProfileRes.string.profile_card_title),
                 scrollBehavior = scrollBehavior,
+                onBackClick = onBackClick,
             )
         },
         contentWindowInsets = WindowInsets.safeDrawingWithBottomNavBar,
@@ -521,6 +526,7 @@ private fun ProfileEditScreenPreview() {
         ProfileEditScreen(
             initialProfile = null,
             onCreateClick = {},
+            onBackClick = {},
         )
     }
 }

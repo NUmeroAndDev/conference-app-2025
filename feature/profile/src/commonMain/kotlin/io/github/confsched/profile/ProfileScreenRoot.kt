@@ -46,6 +46,7 @@ fun ProfileScreenRoot(
                 ProfileEditScreen(
                     initialProfile = uiState.baseProfile,
                     onCreateClick = { eventFlow.tryEmit(ProfileScreenEvent.CreateProfile(it)) },
+                    onBackClick = { eventFlow.tryEmit(ProfileScreenEvent.ExitEditMode) },
                 )
             }
         }

@@ -31,6 +31,10 @@ fun profilePresenter(
                 isInEditMode = true
             }
 
+            is ProfileScreenEvent.ExitEditMode -> {
+                isInEditMode = false
+            }
+
             is ProfileScreenEvent.CreateProfile -> {
                 profileMutation.mutate(event.profile)
                 isInEditMode = false
