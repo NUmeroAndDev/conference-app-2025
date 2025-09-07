@@ -163,23 +163,19 @@ private fun RoomResponse.Companion.fakes(): List<RoomResponse> = listOf(
 private fun CategoryResponse.Companion.fakes(): List<CategoryResponse> = listOf(
     CategoryResponse(
         id = 1,
-        sort = 1,
         title = LocaledResponse(ja = "Category1 ja", en = "Category1 en"),
         items = listOf(
             CategoryItemResponse(
                 id = 1,
                 name = LocaledResponse(ja = "App Architecture ja", en = "App Architecture en"),
-                sort = 1,
             ),
             CategoryItemResponse(
                 id = 2,
                 name = LocaledResponse(ja = "Jetpack Compose ja", en = "Jetpack Compose en"),
-                sort = 2,
             ),
             CategoryItemResponse(
                 id = 3,
                 name = LocaledResponse(ja = "Other ja", en = "Other en"),
-                sort = 3,
             ),
         ),
     ),
