@@ -48,13 +48,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun TimetableItemDetailFloatingActionButtonMenu(
     isBookmarked: Boolean,
-    slideUrl: String?,
-    videoUrl: String?,
     onBookmarkToggle: () -> Unit,
     onAddCalendarClick: () -> Unit,
     onShareClick: () -> Unit,
-    onViewSlideClick: (url: String) -> Unit,
-    onWatchVideoClick: (url: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -62,14 +58,10 @@ fun TimetableItemDetailFloatingActionButtonMenu(
     TimetableItemDetailFloatingActionButtonMenu(
         expanded = expanded,
         isBookmarked = isBookmarked,
-        slideUrl = slideUrl,
-        videoUrl = videoUrl,
         onExpandedChange = { expanded = it },
         onBookmarkToggle = onBookmarkToggle,
         onAddCalendarClick = onAddCalendarClick,
         onShareClick = onShareClick,
-        onViewSlideClick = onViewSlideClick,
-        onWatchVideoClick = onWatchVideoClick,
         modifier = modifier,
     )
 }
@@ -79,14 +71,10 @@ fun TimetableItemDetailFloatingActionButtonMenu(
 private fun TimetableItemDetailFloatingActionButtonMenu(
     expanded: Boolean,
     isBookmarked: Boolean,
-    slideUrl: String?,
-    videoUrl: String?,
     onExpandedChange: (Boolean) -> Unit,
     onBookmarkToggle: () -> Unit,
     onAddCalendarClick: () -> Unit,
     onShareClick: () -> Unit,
-    onViewSlideClick: (url: String) -> Unit,
-    onWatchVideoClick: (url: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var height by remember { mutableIntStateOf(0) }
@@ -174,28 +162,6 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
             icon = { Icon(Icons.Default.Share, contentDescription = null) },
             containerColor = menuItemContainerColor,
         )
-        slideUrl?.let { url ->
-            FloatingActionButtonMenuItem(
-                onClick = {
-                    onViewSlideClick(url)
-                    onExpandedChange(false)
-                },
-                text = { Text(stringResource(SessionsRes.string.slide)) },
-                icon = { Icon(Icons.Outlined.Description, contentDescription = null) },
-                containerColor = menuItemContainerColor,
-            )
-        }
-        videoUrl?.let { url ->
-            FloatingActionButtonMenuItem(
-                onClick = {
-                    onWatchVideoClick(url)
-                    onExpandedChange(false)
-                },
-                text = { Text(stringResource(SessionsRes.string.video)) },
-                icon = { Icon(Icons.Outlined.PlayCircle, contentDescription = null) },
-                containerColor = menuItemContainerColor,
-            )
-        }
     }
 }
 
@@ -212,10 +178,6 @@ private fun TimetableItemDetailFloatingMenuPreview() {
                 onBookmarkToggle = {},
                 onAddCalendarClick = {},
                 onShareClick = {},
-                slideUrl = session.asset.slideUrl,
-                videoUrl = session.asset.videoUrl,
-                onViewSlideClick = {},
-                onWatchVideoClick = {},
             )
         }
     }
@@ -234,10 +196,6 @@ private fun TimetableItemDetailFloatingMenuExpandedPreview() {
                 onBookmarkToggle = {},
                 onAddCalendarClick = {},
                 onShareClick = {},
-                slideUrl = session.asset.slideUrl,
-                videoUrl = session.asset.videoUrl,
-                onViewSlideClick = {},
-                onWatchVideoClick = {},
             )
         }
     }
