@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
@@ -152,7 +151,6 @@ fun TimetableScreen(
                             timeLine = uiState.timetable.timeLine,
                             onTimetableItemClick = onTimetableItemClick,
                             selectedDay = selectedDay,
-                            isBookmarked = { id -> timetableGridUiState.timetable.bookmarks.contains(id) },
                             onBookmarkClick = { id -> onBookmarkClick(id.value) },
                             contentPadding = WindowInsets.safeDrawingWithBottomNavBar.excludeTop().asPaddingValues(),
                         )

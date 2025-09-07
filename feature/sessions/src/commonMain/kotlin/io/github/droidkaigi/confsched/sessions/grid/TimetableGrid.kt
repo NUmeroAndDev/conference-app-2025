@@ -79,7 +79,6 @@ fun TimetableGrid(
     timetable: Timetable,
     timeLine: TimeLine?,
     selectedDay: DroidKaigi2025Day,
-    isBookmarked: (TimetableItemId) -> Boolean,
     onBookmarkClick: (TimetableItemId) -> Unit,
     onTimetableItemClick: (TimetableItemId) -> Unit,
     modifier: Modifier = Modifier,
@@ -126,7 +125,7 @@ fun TimetableGrid(
             ) {
                 items(timetable.timetableItems) { timetableItem ->
                     ContextMenuProviderForDesktop(
-                        isBookmarked = isBookmarked(timetableItem.id),
+                        isBookmarked = timetable.bookmarks.contains(timetableItem.id),
                         onToggleFavorite = { onBookmarkClick(timetableItem.id) },
                         onSelectShowDetail = { onTimetableItemClick(timetableItem.id) },
                     ) {
@@ -469,7 +468,6 @@ private fun TimetableGridPreview() {
                 timetable = timetable,
                 timeLine = TimeLine.now(LocalClock.current),
                 selectedDay = DroidKaigi2025Day.ConferenceDay1,
-                isBookmarked = { false },
                 onBookmarkClick = {},
                 onTimetableItemClick = {},
             )
@@ -488,7 +486,6 @@ private fun TimetableGridWithTimelinePreview() {
                 timetable = timetable,
                 timeLine = TimeLine.now(LocalClock.current),
                 selectedDay = DroidKaigi2025Day.ConferenceDay1,
-                isBookmarked = { false },
                 onBookmarkClick = {},
                 onTimetableItemClick = {},
             )
