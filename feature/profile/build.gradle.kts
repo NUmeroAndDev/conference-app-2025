@@ -8,9 +8,7 @@ kotlin {
             implementation(libs.qrcodeKotlin)
             implementation(libs.soilForm)
             implementation(libs.filekitDialogsCompose)
-        }
-        androidMain.dependencies {
-            implementation(libs.androidxActivityCompose)
+            implementation(libs.uiBackHandler)
         }
     }
 }
