@@ -19,7 +19,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
@@ -137,7 +136,6 @@ fun ProfileEditScreen(
             AnimatedTextTopAppBar(
                 title = stringResource(ProfileRes.string.profile_card_title),
                 scrollBehavior = scrollBehavior,
-                onBackClick = onBackClick,
             )
         },
         contentWindowInsets = WindowInsets.safeDrawingWithBottomNavBar,
