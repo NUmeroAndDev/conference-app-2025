@@ -10,26 +10,25 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.navigation3.runtime.NavKey
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 
 @Composable
 internal fun rememberOneStepForwardControllerForDesktop(
     backStack: SnapshotStateList<NavKey>,
 ): () -> Unit {
     var redoKey by remember { mutableStateOf<NavKey?>(null) }
-    var prev by remember { mutableStateOf(backStack.toList()) }
 
     LaunchedEffect(backStack) {
+        var previous = backStack.toList()
+
         snapshotFlow { backStack.toList() }
-            .map { it to prev }
             .distinctUntilChanged()
-            .collect { (cur, old) ->
-                redoKey = if (cur.size + 1 == old.size && cur == old.dropLast(1)) {
-                    old.last()
+            .collect { current ->
+                redoKey = if (current == previous.dropLast(1)) {
+                    previous.last()
                 } else {
                     null
                 }
-                prev = cur
+                previous = current
             }
     }
 
