@@ -37,9 +37,11 @@ import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.rememberBooleanSaveable
 import io.github.droidkaigi.confsched.model.core.Lang
-import io.github.droidkaigi.confsched.model.sessions.TimetableAsset
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.fake
+import io.github.droidkaigi.confsched.model.sessions.noAssetAvailableFake
+import io.github.droidkaigi.confsched.model.sessions.onlySlideAssetAvailableFake
+import io.github.droidkaigi.confsched.model.sessions.onlyVideoAssetAvailableFake
 import io.github.droidkaigi.confsched.sessions.SessionsRes
 import io.github.droidkaigi.confsched.sessions.archive
 import io.github.droidkaigi.confsched.sessions.read_more
@@ -273,12 +275,7 @@ private fun TimetableItemDetailContentWithMixedPreview() {
 @Composable
 @Preview
 private fun TimetableItemDetailContentNoVideoPreview() {
-    val session = TimetableItem.Session.fake().copy(
-        asset = TimetableAsset(
-            videoUrl = null,
-            slideUrl = "https://droidkaigi.jp/2021/",
-        ),
-    )
+    val session = TimetableItem.Session.onlySlideAssetAvailableFake()
     KaigiPreviewContainer {
         ProvideRoomTheme(session.room.roomTheme) {
             TimetableItemDetailContent(
@@ -295,12 +292,7 @@ private fun TimetableItemDetailContentNoVideoPreview() {
 @Composable
 @Preview
 private fun TimetableItemDetailContentNoSlidePreview() {
-    val session = TimetableItem.Session.fake().copy(
-        asset = TimetableAsset(
-            videoUrl = "https://www.youtube.com/watch?v=hFdKCyJ-Z9A",
-            slideUrl = null,
-        ),
-    )
+    val session = TimetableItem.Session.onlyVideoAssetAvailableFake()
     KaigiPreviewContainer {
         ProvideRoomTheme(session.room.roomTheme) {
             TimetableItemDetailContent(
@@ -317,12 +309,7 @@ private fun TimetableItemDetailContentNoSlidePreview() {
 @Composable
 @Preview
 private fun TimetableItemDetailContentNoArchivePreview() {
-    val session = TimetableItem.Session.fake().copy(
-        asset = TimetableAsset(
-            videoUrl = null,
-            slideUrl = null,
-        ),
-    )
+    val session = TimetableItem.Session.noAssetAvailableFake()
     KaigiPreviewContainer {
         ProvideRoomTheme(session.room.roomTheme) {
             TimetableItemDetailContent(

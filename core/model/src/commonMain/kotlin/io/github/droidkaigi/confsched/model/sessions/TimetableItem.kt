@@ -214,3 +214,30 @@ fun TimetableItem.Session.Companion.fake(duration: Duration = 40.minutes): Timet
         ).toPersistentList(),
     )
 }
+
+fun TimetableItem.Session.Companion.onlySlideAssetAvailableFake(duration: Duration = 40.minutes): TimetableItem.Session {
+    return fake(duration).copy(
+        asset = TimetableAsset(
+            videoUrl = null,
+            slideUrl = "https://droidkaigi.jp/2021/",
+        ),
+    )
+}
+
+fun TimetableItem.Session.Companion.onlyVideoAssetAvailableFake(duration: Duration = 40.minutes): TimetableItem.Session {
+    return fake(duration).copy(
+        asset = TimetableAsset(
+            videoUrl = "https://www.youtube.com/watch?v=hFdKCyJ-Z9A",
+            slideUrl = null,
+        ),
+    )
+}
+
+fun TimetableItem.Session.Companion.noAssetAvailableFake(duration: Duration = 40.minutes): TimetableItem.Session {
+    return fake(duration).copy(
+        asset = TimetableAsset(
+            videoUrl = null,
+            slideUrl = null,
+        ),
+    )
+}
