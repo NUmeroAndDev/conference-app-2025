@@ -221,7 +221,6 @@ private fun SessionResponse.Companion.fakes(
                 asset = asset,
                 message = message,
                 sessionType = "WELCOME_TALK",
-                levels = listOf("UNSPECIFIED"),
             ),
         )
     }
@@ -285,7 +284,6 @@ private fun SessionResponse.Companion.fakes(
                     targetAudience = "For App developer アプリ開発者向け",
                     interpretationTarget = false,
                     asset = asset,
-                    levels = listOf("INTERMEDIATE"),
                 )
                 sessions.add(session)
             }

@@ -21,5 +21,4 @@ public data class SessionResponse(
     val targetAudience: String,
     val interpretationTarget: Boolean,
     val asset: SessionAssetResponse,
-    val levels: List<String>,
 )

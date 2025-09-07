@@ -365,7 +365,6 @@ public struct TimetableDetailScreen: View {
                 language: TimetableLanguage(langOfSpeaker: "JA", isInterpretationTarget: false),
                 asset: TimetableAsset(
                     videoUrl: "https://2025.droidkaigi.jp/", slideUrl: "https://2025.droidkaigi.jp/en/"),
-                levels: ["初級"],
                 speakers: [],
                 description: MultiLangText(jaTitle: "セッションの説明", enTitle: "Session description"),
                 message: MultiLangText(jaTitle: "このセッションは中止になりました", enTitle: "This session has been cancelled")
