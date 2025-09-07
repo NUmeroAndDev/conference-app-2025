@@ -52,9 +52,10 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 const val TargetAudienceSectionTestTag = "TargetAudienceSectionTestTag"
 const val DescriptionMoreButtonTestTag = "DescriptionMoreButtonTestTag"
 
- const val TimetableItemDetailContentArchiveSectionTestTag = "TimetableItemDetailContentArchiveSectionTestTag"
- const val TimetableItemDetailContentArchiveSectionSlideButtonTestTag = "TimetableItemDetailContentArchiveSectionSlideButtonTestTag"
- const val TimetableItemDetailContentArchiveSectionVideoButtonTestTag = "TimetableItemDetailContentArchiveSectionVideoButtonTestTag"
+const val TimetableItemDetailContentArchiveSectionTestTag = "TimetableItemDetailContentArchiveSectionTestTag"
+const val TimetableItemDetailContentArchiveSectionSlideButtonTestTag = "TimetableItemDetailContentArchiveSectionSlideButtonTestTag"
+const val TimetableItemDetailContentArchiveSectionVideoButtonTestTag = "TimetableItemDetailContentArchiveSectionVideoButtonTestTag"
+const val TimetableItemDetailContentArchiveSectionBottomTestTag = "TimetableItemDetailContentArchiveSectionBottomTestTag"
 const val TimetableItemDetailContentTargetAudienceSectionBottomTestTag = "TimetableItemDetailContentTargetAudienceSectionBottomTestTag"
 
 @Composable
@@ -214,7 +215,7 @@ private fun ArchiveSection(
                 }
             }
         }
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(8.dp).testTag(TimetableItemDetailContentArchiveSectionBottomTestTag))
     }
 }
 
