@@ -23,6 +23,9 @@ import io.github.droidkaigi.confsched.sessions.TimetableItemDetailScreenRoot
 import io.github.droidkaigi.confsched.sessions.components.DescriptionMoreButtonTestTag
 import io.github.droidkaigi.confsched.sessions.components.SummaryCardTextTag
 import io.github.droidkaigi.confsched.sessions.components.TargetAudienceSectionTestTag
+import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailContentArchiveSectionSlideButtonTestTag
+import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailContentArchiveSectionTestTag
+import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailContentArchiveSectionVideoButtonTestTag
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailContentTargetAudienceSectionBottomTestTag
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailHeadlineTestTag
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailMessageRowTestTag
@@ -205,6 +208,21 @@ class TimetableItemDetailScreenRobot(
     // TODO Verify that the video button exists, is displayed, and has a click action
     // TODO Verify that the slide button is not displayed and does not exist
     // TODO Verify that the video button is not displayed and does not exist
+
+    context(composeUiTest: ComposeUiTest)
+    fun checkBothOfSlidesButtonAndVideoButtonNotDisplayed() {
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailContentArchiveSectionTestTag)
+            .assertDoesNotExist()
+
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailContentArchiveSectionSlideButtonTestTag)
+            .assertDoesNotExist()
+
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailContentArchiveSectionVideoButtonTestTag)
+            .assertDoesNotExist()
+    }
 
     context(composeUiTest: ComposeUiTest)
     fun checkMessageDisplayed() {
