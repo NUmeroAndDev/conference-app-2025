@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched.settings.section
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -45,7 +46,7 @@ fun LazyListScope.accessibility(
     }
     item {
         SettingsItemRow(
-            modifier = modifier,
+            modifier = modifier.animateContentSize(),
             leadingIcon = vectorResource(SettingsRes.drawable.ic_brand_family),
             itemName = stringResource(SettingsRes.string.section_item_title_font),
             currentValue = uiState.useKaigiFontFamily.displayName,
