@@ -268,3 +268,69 @@ private fun TimetableItemDetailContentWithMixedPreview() {
         }
     }
 }
+
+@Composable
+@Preview
+private fun TimetableItemDetailContentNoVideoPreview() {
+    val session = TimetableItem.Session.fake().copy(
+        asset = TimetableAsset(
+            videoUrl = null,
+            slideUrl = "https://droidkaigi.jp/2021/",
+        ),
+    )
+    KaigiPreviewContainer {
+        ProvideRoomTheme(session.room.roomTheme) {
+            TimetableItemDetailContent(
+                timetableItem = session,
+                currentLang = Lang.JAPANESE,
+                onLinkClick = {},
+                onViewSlideClick = {},
+                onWatchVideoClick = {},
+            )
+        }
+    }
+}
+
+@Composable
+@Preview
+private fun TimetableItemDetailContentNoSlidePreview() {
+    val session = TimetableItem.Session.fake().copy(
+        asset = TimetableAsset(
+            videoUrl = "https://www.youtube.com/watch?v=hFdKCyJ-Z9A",
+            slideUrl = null,
+        ),
+    )
+    KaigiPreviewContainer {
+        ProvideRoomTheme(session.room.roomTheme) {
+            TimetableItemDetailContent(
+                timetableItem = session,
+                currentLang = Lang.JAPANESE,
+                onLinkClick = {},
+                onViewSlideClick = {},
+                onWatchVideoClick = {},
+            )
+        }
+    }
+}
+
+@Composable
+@Preview
+private fun TimetableItemDetailContentNoArchivePreview() {
+    val session = TimetableItem.Session.fake().copy(
+        asset = TimetableAsset(
+            videoUrl = null,
+            slideUrl = null,
+        ),
+    )
+    KaigiPreviewContainer {
+        ProvideRoomTheme(session.room.roomTheme) {
+            TimetableItemDetailContent(
+                timetableItem = session,
+                currentLang = Lang.JAPANESE,
+                onLinkClick = {},
+                onViewSlideClick = {},
+                onWatchVideoClick = {},
+            )
+        }
+    }
+}
