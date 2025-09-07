@@ -63,6 +63,8 @@ fun TimetableItemDetailContent(
     currentLang: Lang,
     modifier: Modifier = Modifier,
     onLinkClick: (url: String) -> Unit,
+    onViewSlideClick: (url: String) -> Unit,
+    onWatchVideoClick: (url: String) -> Unit,
 ) {
     Column(modifier = modifier) {
         DescriptionSection(
@@ -73,6 +75,15 @@ fun TimetableItemDetailContent(
             onLinkClick = onLinkClick,
         )
         TargetAudienceSection(targetAudience = timetableItem.targetAudience)
+
+        if (timetableItem.asset.slideUrl != null || timetableItem.asset.videoUrl != null) {
+            ArchiveSection(
+                slideUrl = timetableItem.asset.slideUrl,
+                videoUrl = timetableItem.asset.videoUrl,
+                onViewSlideClick = onViewSlideClick,
+                onWatchVideoClick = onWatchVideoClick,
+            )
+        }
     }
 }
 
@@ -217,6 +228,8 @@ private fun TimetableItemDetailContentPreview() {
                 timetableItem = session,
                 currentLang = Lang.JAPANESE,
                 onLinkClick = {},
+                onViewSlideClick = {},
+                onWatchVideoClick = {},
             )
         }
     }
@@ -232,6 +245,8 @@ private fun TimetableItemDetailContentWithEnglishPreview() {
                 timetableItem = session,
                 currentLang = Lang.ENGLISH,
                 onLinkClick = {},
+                onViewSlideClick = {},
+                onWatchVideoClick = {},
             )
         }
     }
@@ -247,6 +262,8 @@ private fun TimetableItemDetailContentWithMixedPreview() {
                 timetableItem = session,
                 currentLang = Lang.MIXED,
                 onLinkClick = {},
+                onViewSlideClick = {},
+                onWatchVideoClick = {},
             )
         }
     }

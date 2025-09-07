@@ -119,6 +119,8 @@ fun TimetableItemDetailScreen(
                         timetableItem = uiState.timetableItem,
                         currentLang = uiState.currentLang,
                         onLinkClick = onLinkClick,
+                        onViewSlideClick = onLinkClick,
+                        onWatchVideoClick = onLinkClick,
                     )
                 }
             }
