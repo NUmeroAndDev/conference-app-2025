@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -126,6 +128,7 @@ fun TimetableItemDetailHeadline(
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun LanguageSwitcher(
     currentLang: Lang,
@@ -148,6 +151,7 @@ private fun LanguageSwitcher(
             val isSelected = normalizedCurrentLang == lang
             TextButton(
                 onClick = { onLanguageSelect(lang) },
+                shapes = ButtonDefaults.shapes(),
                 contentPadding = PaddingValues(12.dp),
             ) {
                 val contentColor = if (isSelected) {

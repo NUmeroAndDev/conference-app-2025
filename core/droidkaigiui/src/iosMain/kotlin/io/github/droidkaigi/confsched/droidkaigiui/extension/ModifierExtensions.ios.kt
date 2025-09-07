@@ -6,3 +6,9 @@ import androidx.compose.ui.Modifier
 
 @Composable
 actual fun Modifier.enableMouseDragScroll(scrollableState: ScrollableState): Modifier = this // NOOP
+
+@Composable
+actual fun Modifier.bindMouseBackForward(
+    onBackPressed: () -> Unit,
+    onForwardPressed: () -> Unit,
+): Modifier = this // NOOP
