@@ -34,14 +34,14 @@ fun SettingsItemRow(
     var isExpand by rememberBooleanSaveable(false)
 
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable { isExpand = isExpand.not() },
+        modifier = modifier,
         verticalArrangement = Arrangement.Center,
     ) {
         Row(
             modifier = Modifier
+                .fillMaxWidth()
                 .height(93.dp)
+                .clickable { isExpand = isExpand.not() }
                 .padding(horizontal = 12.dp)
                 .align(
                     alignment = Alignment.Start,
