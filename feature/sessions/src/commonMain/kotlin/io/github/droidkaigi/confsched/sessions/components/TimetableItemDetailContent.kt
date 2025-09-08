@@ -16,6 +16,7 @@ import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.PlayCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -36,7 +37,6 @@ import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.rememberBooleanSaveable
-import io.github.droidkaigi.confsched.model.core.DroidKaigi2025Day
 import io.github.droidkaigi.confsched.model.core.Lang
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.fake
@@ -91,6 +91,7 @@ fun TimetableItemDetailContent(
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun DescriptionSection(
     description: String,
@@ -122,6 +123,7 @@ private fun DescriptionSection(
         ) {
             OutlinedButton(
                 modifier = Modifier.fillMaxWidth(),
+                shapes = ButtonDefaults.shapes(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = LocalRoomTheme.current.dimColor,
                 ),
