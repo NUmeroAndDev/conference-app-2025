@@ -132,6 +132,7 @@ fun TimetableGrid(
                     ) {
                         TimetableGridItem(
                             timetableItem = timetableItem,
+                            isBookmarked = timetable.bookmarks.contains(timetableItem.id),
                             onTimetableItemClick = { onTimetableItemClick(it.id) },
                             scaleState = timetableState.scaleState,
                         )
