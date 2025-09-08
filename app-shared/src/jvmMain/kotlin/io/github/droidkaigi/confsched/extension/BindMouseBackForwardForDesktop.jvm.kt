@@ -9,7 +9,7 @@ import androidx.compose.ui.input.pointer.isForwardPressed
 import androidx.compose.ui.input.pointer.onPointerEvent
 
 @OptIn(ExperimentalComposeUiApi::class)
-actual fun Modifier.bindMouseBackForwardForDesktop(
+internal actual fun Modifier.bindMouseBackForwardForDesktop(
     onBackPressed: () -> Unit,
     onForwardPressed: () -> Unit,
 ): Modifier = this.onPointerEvent(
