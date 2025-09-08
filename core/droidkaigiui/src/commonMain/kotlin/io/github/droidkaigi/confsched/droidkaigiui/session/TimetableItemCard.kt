@@ -48,12 +48,12 @@ import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.DroidkaigiuiRes
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.SubcomposeAsyncImage
-import io.github.droidkaigi.confsched.droidkaigiui.bookmarked
+import io.github.droidkaigi.confsched.droidkaigiui.add_to_bookmark
 import io.github.droidkaigi.confsched.droidkaigiui.component.OutlinedToolTip
 import io.github.droidkaigi.confsched.droidkaigiui.component.RoomToolTip
 import io.github.droidkaigi.confsched.droidkaigiui.extension.icon
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
-import io.github.droidkaigi.confsched.droidkaigiui.not_bookmarked
+import io.github.droidkaigi.confsched.droidkaigiui.remove_from_bookmark
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.TimetableSpeaker
 import io.github.droidkaigi.confsched.model.sessions.fake
@@ -248,16 +248,15 @@ private fun FavoriteButton(
         ),
         modifier = modifier.testTag(TimetableItemCardBookmarkButtonTestTag),
     ) {
-        // TODO: Fix contentDescription
         if (isBookmarked) {
             Icon(
                 Icons.Filled.Favorite,
-                contentDescription = stringResource(DroidkaigiuiRes.string.bookmarked),
+                contentDescription = stringResource(DroidkaigiuiRes.string.remove_from_bookmark),
             )
         } else {
             Icon(
                 Icons.Outlined.FavoriteBorder,
-                contentDescription = stringResource(DroidkaigiuiRes.string.not_bookmarked),
+                contentDescription = stringResource(DroidkaigiuiRes.string.add_to_bookmark),
             )
         }
     }
