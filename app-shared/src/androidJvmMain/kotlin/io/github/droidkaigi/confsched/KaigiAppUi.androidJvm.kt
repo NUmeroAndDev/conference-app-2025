@@ -1,7 +1,5 @@
 package io.github.droidkaigi.confsched
 
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -92,13 +90,7 @@ actual fun KaigiAppUi() {
                         }
                         backStack.add(TimetableItemDetailNavKey(it))
                     },
-                    timeTableEntryMetadata = NavDisplay.transitionSpec {
-                        materialFadeIn() togetherWith materialFadeOut()
-                    } + NavDisplay.popTransitionSpec {
-                        materialFadeIn() togetherWith materialFadeOut()
-                    } + NavDisplay.predictivePopTransitionSpec {
-                        materialFadeIn() togetherWith materialFadeOut()
-                    },
+                    timeTableEntryMetadata = NavDisplay.topLevelTransition(),
                 )
                 contributorsEntry(
                     onBackClick = { backStack.safeRemoveLastOrNull() },
@@ -122,23 +114,11 @@ actual fun KaigiAppUi() {
                         }
                         backStack.add(TimetableItemDetailNavKey(it))
                     },
-                    metadata = NavDisplay.transitionSpec {
-                        materialFadeIn() togetherWith materialFadeOut()
-                    } + NavDisplay.popTransitionSpec {
-                        materialFadeIn() togetherWith materialFadeOut()
-                    } + NavDisplay.predictivePopTransitionSpec {
-                        materialFadeIn() togetherWith materialFadeOut()
-                    },
+                    metadata = NavDisplay.topLevelTransition(),
                 )
                 eventMapEntry(
                     onClickReadMore = externalNavController::navigate,
-                    metadata = NavDisplay.transitionSpec {
-                        materialFadeIn() togetherWith materialFadeOut()
-                    } + NavDisplay.popTransitionSpec {
-                        materialFadeIn() togetherWith materialFadeOut()
-                    } + NavDisplay.predictivePopTransitionSpec {
-                        materialFadeIn() togetherWith materialFadeOut()
-                    },
+                    metadata = NavDisplay.topLevelTransition(),
                 )
                 aboutEntries(
                     onAboutItemClick = { item ->
@@ -192,23 +172,11 @@ actual fun KaigiAppUi() {
                         }
                     },
                     onBackClick = { backStack.safeRemoveLastOrNull() },
-                    aboutEntryMetadata = NavDisplay.transitionSpec {
-                        materialFadeIn() togetherWith materialFadeOut()
-                    } + NavDisplay.popTransitionSpec {
-                        materialFadeIn() togetherWith materialFadeOut()
-                    } + NavDisplay.predictivePopTransitionSpec {
-                        materialFadeIn() togetherWith materialFadeOut()
-                    },
+                    aboutEntryMetadata = NavDisplay.topLevelTransition(),
                 )
                 profileNavEntry(
                     onShareProfileCardClick = externalNavController::onShareProfileCardClick,
-                    metadata = NavDisplay.transitionSpec {
-                        materialFadeIn() togetherWith materialFadeOut()
-                    } + NavDisplay.popTransitionSpec {
-                        materialFadeIn() togetherWith materialFadeOut()
-                    } + NavDisplay.predictivePopTransitionSpec {
-                        materialFadeIn() togetherWith materialFadeOut()
-                    },
+                    metadata = NavDisplay.topLevelTransition(),
                 )
             },
             modifier = Modifier
@@ -219,4 +187,12 @@ actual fun KaigiAppUi() {
                 ),
         )
     }
+}
+
+private fun NavDisplay.topLevelTransition() = transitionSpec {
+    materialFadeIn() togetherWith materialFadeOut()
+} + NavDisplay.popTransitionSpec {
+    materialFadeIn() togetherWith materialFadeOut()
+} + NavDisplay.predictivePopTransitionSpec {
+    materialFadeIn() togetherWith materialFadeOut()
 }
