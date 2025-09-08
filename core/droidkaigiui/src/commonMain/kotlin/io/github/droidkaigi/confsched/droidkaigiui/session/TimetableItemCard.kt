@@ -86,7 +86,7 @@ fun TimetableItemCard(
                 DroidkaigiuiRes.string.remove_from_bookmark
             } else {
                 DroidkaigiuiRes.string.add_to_bookmark
-            }
+            },
         )
         Row(
             verticalAlignment = Alignment.Top,
@@ -98,7 +98,7 @@ fun TimetableItemCard(
                             action = {
                                 onBookmarkClick()
                                 true
-                            }
+                            },
                         ),
                     )
                     this[TimetableItemCardSemanticsKey] = timetableItem
