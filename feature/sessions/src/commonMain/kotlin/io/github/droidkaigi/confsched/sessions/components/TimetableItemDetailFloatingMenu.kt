@@ -5,9 +5,7 @@ import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.PlayCircle
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButtonMenu
 import androidx.compose.material3.FloatingActionButtonMenuItem
@@ -28,6 +26,7 @@ import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.testTag
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
@@ -39,11 +38,13 @@ import io.github.droidkaigi.confsched.sessions.add_to_bookmark
 import io.github.droidkaigi.confsched.sessions.add_to_calendar
 import io.github.droidkaigi.confsched.sessions.remove_from_bookmark
 import io.github.droidkaigi.confsched.sessions.share_link
-import io.github.droidkaigi.confsched.sessions.slide
-import io.github.droidkaigi.confsched.sessions.video
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
+const val TimetableItemDetailBookmarkFabButtonTestTag = "TimetableItemDetailBookmarkFabButtonTestTag"
+const val TimetableItemDetailBookmarkMenuItemTestTag = "TimetableItemDetailBookmarkMenuItemTestTag"
+const val TimetableItemDetailBookmarkIconTestTag = "TimetableItemDetailBookmarkIconTestTag"
 
 @Composable
 fun TimetableItemDetailFloatingActionButtonMenu(
@@ -97,6 +98,7 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
         expanded = expanded,
         button = {
             ToggleFloatingActionButton(
+                modifier = Modifier.testTag(TimetableItemDetailBookmarkFabButtonTestTag),
                 checked = expanded,
                 onCheckedChange = onExpandedChange,
                 containerColor = { _ -> menuItemContainerColor },
@@ -108,6 +110,7 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
                     )
                 } else {
                     Icon(
+                        modifier = Modifier.testTag("$TimetableItemDetailBookmarkIconTestTag:$isBookmarked"),
                         imageVector = if (isBookmarked) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
                         contentDescription = null,
                     )
@@ -120,6 +123,7 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
         horizontalAlignment = Alignment.End,
     ) {
         FloatingActionButtonMenuItem(
+            modifier = Modifier.testTag(TimetableItemDetailBookmarkMenuItemTestTag),
             onClick = {
                 if (!isBookmarked) {
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)

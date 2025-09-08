@@ -29,8 +29,6 @@ import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailSum
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailTopAppBar
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-// TODO https://github.com/DroidKaigi/conference-app-2025/issues/218
-// const val TimetableItemDetailBookmarkIconTestTag = "TimetableItemDetailBookmarkIconTestTag"
 const val TimetableItemDetailScreenLazyColumnTestTag = "TimetableItemDetailScreenLazyColumnTestTag"
 
 @Composable
