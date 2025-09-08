@@ -35,7 +35,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.SemanticsPropertyKey
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -78,10 +81,26 @@ fun TimetableItemCard(
     val haptic = LocalHapticFeedback.current
 
     ProvideRoomTheme(timetableItem.room.roomTheme) {
+        val bookmarkActionLabel = stringResource(
+            if (isBookmarked) {
+                DroidkaigiuiRes.string.remove_from_bookmark
+            } else {
+                DroidkaigiuiRes.string.add_to_bookmark
+            }
+        )
         Row(
             verticalAlignment = Alignment.Top,
             modifier = modifier
                 .semantics {
+                    customActions = listOf(
+                        CustomAccessibilityAction(
+                            label = bookmarkActionLabel,
+                            action = {
+                                onBookmarkClick()
+                                true
+                            }
+                        ),
+                    )
                     this[TimetableItemCardSemanticsKey] = timetableItem
                 }
                 .clip(RoundedCornerShape(16.dp))
@@ -161,7 +180,9 @@ fun TimetableItemCard(
                         }
                         onBookmarkClick()
                     },
-                    modifier = Modifier.padding(end = 12.dp),
+                    modifier = Modifier
+                        .clearAndSetSemantics {}
+                        .padding(end = 12.dp),
                 )
             }
         }
