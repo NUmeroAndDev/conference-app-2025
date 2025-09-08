@@ -95,8 +95,13 @@ fun CardFrontBackgroundImage(
     isDark: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    /**
+     * Displaying high-resolution WebP images directly with painterResource results in poor performance, so we use Coil.
+     *
+     * Care must be taken when renaming resources, as Coil does not support Compose Multiplatform Resources and specifies files as strings.
+     * ref: https://github.com/coil-kt/coil/issues/2812
+     */
     AsyncImage(
-        // ref: https://github.com/coil-kt/coil/issues/2812
         model = if (isDark) {
             ProfileRes.getUri("drawable/card_front_background_night.webp")
         } else {
