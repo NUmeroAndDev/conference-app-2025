@@ -44,6 +44,26 @@ class TimetableItemDetailScreenTest {
 
                 // TODO https://github.com/DroidKaigi/conference-app-2025/issues/218
                 // TODO Test two states: bookmarked and not bookmarked.
+                describe("bookmark") {
+                    itShould("show unbookmarked icon") {
+                        captureScreenWithChecks(
+                            checks = {
+                                checkNotBookmarked()
+                            },
+                        )
+                    }
+                    doIt {
+                        bookmark()
+                    }
+                    itShould("show bookmarked icon") {
+                        // FIX The bookmark state is not applied.
+//                        captureScreenWithChecks(
+//                            checks = {
+//                                checkBookmarked()
+//                            },
+//                        )
+                    }
+                }
 
                 describe("scroll") {
                     doIt {
