@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import io.github.confsched.profile.ProfileUiState
+import io.github.confsched.profile.hologramaticEffect
 import io.github.confsched.profile.tiltEffect
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.WithDeviceOrientation
@@ -121,6 +122,7 @@ private fun ProfileCard(
                     profileImageBitmap = uiState.profileImageBitmap,
                     nickName = uiState.profile.nickName,
                     occupation = uiState.profile.occupation,
+                    modifier = Modifier.hologramaticEffect(this@WithDeviceOrientation),
                 )
             } else {
                 ProfileCardBack(
