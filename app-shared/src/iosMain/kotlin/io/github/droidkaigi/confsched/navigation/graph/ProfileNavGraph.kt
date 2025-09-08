@@ -11,11 +11,14 @@ import io.github.droidkaigi.confsched.navigation.route.ProfileTabRoute
 context(appGraph: AppGraph)
 fun NavGraphBuilder.profileTabNavGraph(
     onShareProfileCardClick: (String, ImageBitmap) -> Unit,
+    onNavigateBack: () -> Unit,
 ) {
     composable<ProfileTabRoute> {
         with(rememberProfileScreenContextRetained()) {
             ProfileScreenRoot(
                 onShareClick = onShareProfileCardClick,
+                onNavigateBack = onNavigateBack,
+
             )
         }
     }

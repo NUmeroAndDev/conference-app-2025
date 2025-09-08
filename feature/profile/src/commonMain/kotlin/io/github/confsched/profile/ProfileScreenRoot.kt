@@ -2,6 +2,8 @@ package io.github.confsched.profile
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.graphics.ImageBitmap
 import io.github.droidkaigi.confsched.common.compose.rememberEventFlow
 import io.github.droidkaigi.confsched.droidkaigiui.architecture.SoilDataBoundary
@@ -12,11 +14,12 @@ import io.github.droidkaigi.confsched.profile.share_description
 import org.jetbrains.compose.resources.stringResource
 import soil.query.compose.rememberSubscription
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 context(screenContext: ProfileScreenContext)
 fun ProfileScreenRoot(
     onShareClick: (String, ImageBitmap) -> Unit,
+    onNavigateBack: () -> Unit,
 ) {
     SoilDataBoundary(
         state = rememberSubscription(screenContext.profileSubscriptionKey),
@@ -43,10 +46,17 @@ fun ProfileScreenRoot(
             }
 
             is ProfileUiState.Edit -> {
+                BackHandler(enabled = true) {
+                    if (uiState.baseProfile != null) {
+                        eventFlow.tryEmit(ProfileScreenEvent.ExitEditMode)
+                    } else {
+                        onNavigateBack()
+                    }
+                }
+
                 ProfileEditScreen(
                     initialProfile = uiState.baseProfile,
                     onCreateClick = { eventFlow.tryEmit(ProfileScreenEvent.CreateProfile(it)) },
-                    onBackClick = { eventFlow.tryEmit(ProfileScreenEvent.ExitEditMode) },
                 )
             }
         }

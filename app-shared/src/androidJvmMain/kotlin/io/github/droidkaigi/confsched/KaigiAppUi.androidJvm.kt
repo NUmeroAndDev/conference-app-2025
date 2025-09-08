@@ -170,6 +170,7 @@ actual fun KaigiAppUi() {
                 )
                 profileNavEntry(
                     onShareProfileCardClick = externalNavController::onShareProfileCardClick,
+                    onNavigateBack = { backStack.safeRemoveLastOrNull() },
                 )
             },
             modifier = Modifier
