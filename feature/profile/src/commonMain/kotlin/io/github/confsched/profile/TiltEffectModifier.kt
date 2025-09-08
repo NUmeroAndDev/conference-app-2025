@@ -19,10 +19,9 @@ import kotlin.math.roundToInt
  * @param deviceOrientationScope The scope containing the device orientation information.
  * @return A [Modifier] with the tilt effect applied.
  */
-fun Modifier.tiltEffect(deviceOrientationScope: DeviceOrientationScope) =
-    this then TiltEffectElement(
-        orientation = deviceOrientationScope.orientation,
-    )
+fun Modifier.tiltEffect(deviceOrientationScope: DeviceOrientationScope) = this then TiltEffectElement(
+    orientation = deviceOrientationScope.orientation,
+)
 
 /**
  * Modifier element to handle tilt effect based on device orientation.
@@ -55,7 +54,8 @@ private data class TiltEffectNode(
     var orientation: Orientation,
     var previousTiltRoll: Float = 0f,
     var previousTiltPitch: Float = 0f,
-) : Modifier.Node(), LayoutModifierNode {
+) : Modifier.Node(),
+    LayoutModifierNode {
 
     /** Maximum tilt angle applied to the element. */
     private val maxTiltAngle = 5f
