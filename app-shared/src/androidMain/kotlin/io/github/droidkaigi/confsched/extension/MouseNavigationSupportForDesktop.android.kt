@@ -6,6 +6,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavKey
 
 @Composable
-internal expect fun Modifier.mouseNavigationSupportForDesktop(
+internal actual fun Modifier.mouseNavigationSupportForDesktop(
     backStack: SnapshotStateList<NavKey>,
-): Modifier
+): Modifier = this // NOOP
