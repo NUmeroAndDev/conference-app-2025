@@ -36,6 +36,7 @@ import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.rememberBooleanSaveable
+import io.github.droidkaigi.confsched.model.core.DroidKaigi2025Day
 import io.github.droidkaigi.confsched.model.core.Lang
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.fake
@@ -189,14 +190,25 @@ private fun ArchiveSection(
                     modifier = Modifier
                         .testTag(TimetableItemDetailContentArchiveSectionSlideButtonTestTag)
                         .weight(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = LocalRoomTheme.current.dimColor,
+                    ),
                     onClick = { onViewSlideClick(url) },
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        Icon(Icons.Outlined.Description, contentDescription = null)
-                        Text(stringResource(SessionsRes.string.slide))
+                        Icon(
+                            Icons.Outlined.Description,
+                            contentDescription = null,
+                            tint = LocalRoomTheme.current.primaryColor,
+                        )
+                        Text(
+                            text = stringResource(SessionsRes.string.slide),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = LocalRoomTheme.current.primaryColor,
+                        )
                     }
                 }
             }
@@ -205,14 +217,25 @@ private fun ArchiveSection(
                     modifier = Modifier
                         .testTag(TimetableItemDetailContentArchiveSectionVideoButtonTestTag)
                         .weight(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = LocalRoomTheme.current.dimColor,
+                    ),
                     onClick = { onWatchVideoClick(url) },
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        Icon(Icons.Outlined.PlayCircle, contentDescription = null)
-                        Text(stringResource(SessionsRes.string.video))
+                        Icon(
+                            Icons.Outlined.PlayCircle,
+                            contentDescription = null,
+                            tint = LocalRoomTheme.current.primaryColor,
+                        )
+                        Text(
+                            text = stringResource(SessionsRes.string.video),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = LocalRoomTheme.current.primaryColor,
+                        )
                     }
                 }
             }
