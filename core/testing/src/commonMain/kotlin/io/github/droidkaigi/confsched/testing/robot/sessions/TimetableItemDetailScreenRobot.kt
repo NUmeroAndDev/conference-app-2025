@@ -24,6 +24,7 @@ import io.github.droidkaigi.confsched.sessions.TimetableItemDetailScreenRoot
 import io.github.droidkaigi.confsched.sessions.components.DescriptionMoreButtonTestTag
 import io.github.droidkaigi.confsched.sessions.components.SummaryCardTextTag
 import io.github.droidkaigi.confsched.sessions.components.TargetAudienceSectionTestTag
+import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailBookmarkIconTestTag
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailContentArchiveSectionBottomTestTag
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailContentArchiveSectionSlideButtonTestTag
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailContentArchiveSectionTestTag
@@ -165,8 +166,41 @@ class TimetableItemDetailScreenRobot(
             .assertTextEquals(FakeSessionsApiClient.defaultSession.title.ja)
     }
 
-    // TODO https://github.com/DroidKaigi/conference-app-2025/issues/218
-    // TODO Please prepare a method to check bookmarked and unbookmarked items.
+    context(composeUiTest: ComposeUiTest)
+    fun checkNotBookmarked() {
+        composeUiTest
+            .onNodeWithTag(
+                "$TimetableItemDetailBookmarkIconTestTag:true",
+                useUnmergedTree = true,
+            )
+            .assertDoesNotExist()
+
+        composeUiTest
+            .onNodeWithTag(
+                "$TimetableItemDetailBookmarkIconTestTag:false",
+                useUnmergedTree = true,
+            )
+            .assertExists()
+            .assertIsDisplayed()
+    }
+
+    context(composeUiTest: ComposeUiTest)
+    fun checkBookmarked() {
+        composeUiTest
+            .onNodeWithTag(
+                "$TimetableItemDetailBookmarkIconTestTag:true",
+                useUnmergedTree = true,
+            )
+            .assertExists()
+            .assertIsDisplayed()
+
+        composeUiTest
+            .onNodeWithTag(
+                "$TimetableItemDetailBookmarkIconTestTag:false",
+                useUnmergedTree = true,
+            )
+            .assertDoesNotExist()
+    }
 
     context(composeUiTest: ComposeUiTest)
     fun checkTargetAudience() {
