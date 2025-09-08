@@ -11,6 +11,7 @@ import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
@@ -24,7 +25,9 @@ import io.github.droidkaigi.confsched.sessions.TimetableItemDetailScreenRoot
 import io.github.droidkaigi.confsched.sessions.components.DescriptionMoreButtonTestTag
 import io.github.droidkaigi.confsched.sessions.components.SummaryCardTextTag
 import io.github.droidkaigi.confsched.sessions.components.TargetAudienceSectionTestTag
+import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailBookmarkFabButtonTestTag
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailBookmarkIconTestTag
+import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailBookmarkMenuItemTestTag
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailContentArchiveSectionBottomTestTag
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailContentArchiveSectionSlideButtonTestTag
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailContentArchiveSectionTestTag
@@ -82,6 +85,19 @@ class TimetableItemDetailScreenRobot(
 
     // TODO https://github.com/DroidKaigi/conference-app-2025/issues/218
     // TODO Prepare a method to click on bookmarks to test whether they are bookmarked or not.
+    // FIX This function doesn't affect the bookmark state.
+    context(composeUiTest: ComposeUiTest)
+    fun bookmark() {
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailBookmarkFabButtonTestTag)
+            .performClick()
+        waitUntilIdle()
+
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailBookmarkMenuItemTestTag)
+            .performClick()
+        waitUntilIdle()
+    }
 
     context(composeUiTest: ComposeUiTest)
     fun scroll() {
