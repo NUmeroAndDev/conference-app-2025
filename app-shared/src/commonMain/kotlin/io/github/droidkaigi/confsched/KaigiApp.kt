@@ -17,8 +17,6 @@ import soil.query.SwrCacheScope
 import soil.query.annotation.ExperimentalSoilQueryApi
 import soil.query.compose.SwrClientProvider
 import soil.query.compose.rememberSubscription
-import soil.query.core.getOrNull
-import soil.query.core.map
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalSoilQueryApi::class)
 @Composable
@@ -48,12 +46,11 @@ private fun rememberKaigiFontFamily(): FontFamily? {
         key = appGraph.settingsSubscriptionKey,
         select = { it.useKaigiFontFamily },
     )
-    return subscription.reply.map {
-        when (it) {
-            KaigiFontFamily.ChangoRegular -> changoFontFamily()
-            KaigiFontFamily.RobotoRegular -> robotoRegularFontFamily()
-            KaigiFontFamily.RobotoMedium -> robotoMediumFontFamily()
-            KaigiFontFamily.SystemDefault -> null
-        }
-    }.getOrNull()
+    return when (subscription.data) {
+        KaigiFontFamily.ChangoRegular -> changoFontFamily()
+        KaigiFontFamily.RobotoRegular -> robotoRegularFontFamily()
+        KaigiFontFamily.RobotoMedium -> robotoMediumFontFamily()
+        KaigiFontFamily.SystemDefault -> null
+        null -> null
+    }
 }
