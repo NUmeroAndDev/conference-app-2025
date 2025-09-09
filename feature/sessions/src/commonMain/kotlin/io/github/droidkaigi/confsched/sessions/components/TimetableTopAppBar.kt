@@ -39,30 +39,15 @@ fun TimetableTopAppBar(
     onUiTypeChangeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isXrFullSpace = rememberXrEnvironment().isFullSpace
+    val xrEnvironment = rememberXrEnvironment()
     AnimatedTextTopAppBar(
         title = stringResource(SessionsRes.string.timetable),
         actions = {
-            val xrEnvironment = rememberXrEnvironment()
             if (xrEnvironment.enabledSpacialControl) {
-                IconButton(
-                    onClick = {
-                        xrEnvironment.toggleSpaceMode()
-                    },
-                    shapes = IconButtonDefaults.shapes(),
-                ) {
-                    if (xrEnvironment.isFullSpace) {
-                        Icon(
-                            painter = painterResource(SessionsRes.drawable.ic_request_home_space),
-                            contentDescription = stringResource(SessionsRes.string.request_full_space),
-                        )
-                    } else {
-                        Icon(
-                            painter = painterResource(SessionsRes.drawable.ic_request_full_space),
-                            contentDescription = stringResource(SessionsRes.string.request_home_space),
-                        )
-                    }
-                }
+                XrSpaceToggleIconButton(
+                    onClick = xrEnvironment::toggleSpaceMode,
+                    isXrFullSpace = xrEnvironment.isFullSpace,
+                )
             }
             IconButton(
                 onClick = onSearchClick,
@@ -92,10 +77,36 @@ fun TimetableTopAppBar(
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = if (isXrFullSpace) Color.Unspecified else Color.Transparent,
+            containerColor = if (xrEnvironment.isFullSpace) Color.Unspecified else Color.Transparent,
         ),
         modifier = modifier,
     )
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun XrSpaceToggleIconButton(
+    onClick: () -> Unit,
+    isXrFullSpace: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    IconButton(
+        onClick = onClick,
+        shapes = IconButtonDefaults.shapes(),
+        modifier = modifier,
+    ) {
+        if (isXrFullSpace) {
+            Icon(
+                painter = painterResource(SessionsRes.drawable.ic_request_home_space),
+                contentDescription = stringResource(SessionsRes.string.request_full_space),
+            )
+        } else {
+            Icon(
+                painter = painterResource(SessionsRes.drawable.ic_request_full_space),
+                contentDescription = stringResource(SessionsRes.string.request_home_space),
+            )
+        }
+    }
 }
 
 @Preview
