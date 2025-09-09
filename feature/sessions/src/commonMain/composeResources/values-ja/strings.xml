@@ -37,4 +37,7 @@
     <string name="go_to_timetable_detail">詳細を開く</string>
     <string name="request_full_space">フルスペースに切り替え</string>
     <string name="request_home_space">ホームスペースに切り替え</string>
+    <string name="bookmark_menu">お気に入りメニュー</string>
+    <string name="collapsed_menu">閉じた状態</string>
+    <string name="expanded_menu">開いた状態</string>
 </resources>
