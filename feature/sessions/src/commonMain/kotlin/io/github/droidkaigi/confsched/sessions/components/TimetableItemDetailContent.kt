@@ -223,7 +223,7 @@ private fun AssetButton(
     Button(
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(
-            containerColor = LocalRoomTheme.current.dimColor,
+            containerColor = LocalRoomTheme.current.primaryColor,
         ),
         onClick = onClick,
     ) {
@@ -234,12 +234,12 @@ private fun AssetButton(
             Icon(
                 imageVector = iconVector,
                 contentDescription = null,
-                tint = LocalRoomTheme.current.primaryColor,
+                tint = MaterialTheme.colorScheme.onPrimary,
             )
             Text(
                 text = text,
                 style = MaterialTheme.typography.labelLarge,
-                color = LocalRoomTheme.current.primaryColor,
+                color = MaterialTheme.colorScheme.onPrimary,
             )
         }
     }
