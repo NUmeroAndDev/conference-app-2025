@@ -109,6 +109,7 @@ fun TimetableList(
                             .onSizeChanged { timetableTimeSlotHeight = it.height }
                             .offset { IntOffset(0, timetableTimeSlotOffsetY) },
                     )
+                    // Since LazyList cannot be placed within LazyList, AnimatedContent is used instead.
                     AnimatedContent(
                         targetState = timetableItems,
                         contentKey = { items -> items.map { it.id } },
@@ -153,7 +154,6 @@ fun TimetableList(
                                                 .fillMaxHeight()
                                         )
                                     }
-                                    // 最後の行で要素が不足している場合、空のスペースを追加
                                     if (rowItems.size < columnCount) {
                                         repeat(columnCount - rowItems.size) {
                                             Spacer(modifier = Modifier.weight(1f))
