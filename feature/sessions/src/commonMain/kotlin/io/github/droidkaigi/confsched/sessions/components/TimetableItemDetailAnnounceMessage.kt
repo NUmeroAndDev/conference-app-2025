@@ -20,7 +20,6 @@ import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 const val TimetableItemDetailMessageRowTestTag = "TimetableItemDetailMessageRowTestTag"
-const val TimetableItemDetailMessageRowTextTestTag = "TimetableItemDetailMessageRowTextTestTag"
 
 @Composable
 fun TimetableItemDetailAnnounceMessage(
@@ -41,7 +40,6 @@ fun TimetableItemDetailAnnounceMessage(
             tint = MaterialTheme.colorScheme.error,
         )
         Text(
-            modifier = Modifier.testTag(TimetableItemDetailMessageRowTextTestTag),
             text = message,
             fontSize = 16.sp,
             color = MaterialTheme.colorScheme.error,

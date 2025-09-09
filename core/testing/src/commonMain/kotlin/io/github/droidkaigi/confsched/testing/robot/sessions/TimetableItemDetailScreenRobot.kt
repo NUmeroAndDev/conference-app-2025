@@ -26,7 +26,6 @@ import io.github.droidkaigi.confsched.sessions.components.TargetAudienceSectionT
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailContentTargetAudienceSectionBottomTestTag
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailHeadlineTestTag
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailMessageRowTestTag
-import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailMessageRowTextTestTag
 import io.github.droidkaigi.confsched.testing.compose.TestDefaultsProvider
 import io.github.droidkaigi.confsched.testing.robot.core.CaptureScreenRobot
 import io.github.droidkaigi.confsched.testing.robot.core.DefaultCaptureScreenRobot
@@ -209,7 +208,7 @@ class TimetableItemDetailScreenRobot(
     context(composeUiTest: ComposeUiTest)
     fun checkMessageDisplayed() {
         composeUiTest
-            .onAllNodesWithTag(TimetableItemDetailMessageRowTextTestTag)
+            .onAllNodesWithTag(TimetableItemDetailMessageRowTestTag)
             .onFirst()
             .assertExists()
             .assertIsDisplayed()
