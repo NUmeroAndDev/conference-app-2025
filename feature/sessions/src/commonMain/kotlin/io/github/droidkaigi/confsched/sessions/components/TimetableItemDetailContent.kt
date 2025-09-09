@@ -28,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -188,61 +189,59 @@ private fun ArchiveSection(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             slideUrl?.let { url ->
-                Button(
+                AssetButton(
                     modifier = Modifier
                         .testTag(TimetableItemDetailContentArchiveSectionSlideButtonTestTag)
                         .weight(1f),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = LocalRoomTheme.current.dimColor,
-                    ),
+                    iconVector = Icons.Outlined.Description,
+                    text = stringResource(SessionsRes.string.slide),
                     onClick = { onViewSlideClick(url) },
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        Icon(
-                            Icons.Outlined.Description,
-                            contentDescription = null,
-                            tint = LocalRoomTheme.current.primaryColor,
-                        )
-                        Text(
-                            text = stringResource(SessionsRes.string.slide),
-                            style = MaterialTheme.typography.labelLarge,
-                            color = LocalRoomTheme.current.primaryColor,
-                        )
-                    }
-                }
+                )
             }
             videoUrl?.let { url ->
-                Button(
+                AssetButton(
                     modifier = Modifier
                         .testTag(TimetableItemDetailContentArchiveSectionVideoButtonTestTag)
                         .weight(1f),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = LocalRoomTheme.current.dimColor,
-                    ),
+                    iconVector = Icons.Outlined.PlayCircle,
+                    text = stringResource(SessionsRes.string.video),
                     onClick = { onWatchVideoClick(url) },
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        Icon(
-                            Icons.Outlined.PlayCircle,
-                            contentDescription = null,
-                            tint = LocalRoomTheme.current.primaryColor,
-                        )
-                        Text(
-                            text = stringResource(SessionsRes.string.video),
-                            style = MaterialTheme.typography.labelLarge,
-                            color = LocalRoomTheme.current.primaryColor,
-                        )
-                    }
-                }
+                )
             }
         }
         Spacer(Modifier.height(8.dp).testTag(TimetableItemDetailContentArchiveSectionBottomTestTag))
+    }
+}
+
+@Composable
+private fun AssetButton(
+    iconVector: ImageVector,
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Button(
+        modifier = modifier,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = LocalRoomTheme.current.dimColor,
+        ),
+        onClick = onClick,
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Icon(
+                imageVector = iconVector,
+                contentDescription = null,
+                tint = LocalRoomTheme.current.primaryColor,
+            )
+            Text(
+                text = text,
+                style = MaterialTheme.typography.labelLarge,
+                color = LocalRoomTheme.current.primaryColor,
+            )
+        }
     }
 }
 
