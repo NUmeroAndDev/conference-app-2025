@@ -45,7 +45,7 @@ fun KaigiApp() {
 context(appGraph: AppGraph)
 private fun rememberKaigiFontFamily(): FontFamily? {
     val subscription = rememberSubscription(
-        key = appGraph.createSettingsScreenContext().settingsSubscriptionKey,
+        key = appGraph.settingsSubscriptionKey,
         select = { it.useKaigiFontFamily },
     )
     return subscription.reply.map {
