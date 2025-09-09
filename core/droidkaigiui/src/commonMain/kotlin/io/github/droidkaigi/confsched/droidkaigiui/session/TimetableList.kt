@@ -11,8 +11,9 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -37,7 +38,6 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastForEach
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiWindowSizeClassConstants
 import io.github.droidkaigi.confsched.droidkaigiui.component.TimetableTimeSlot
@@ -53,7 +53,6 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 const val TimetableListTestTag = "TimetableList"
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TimetableList(
     timetableItemMap: PersistentMap<out TimeSlotItem, List<TimetableItem>>,
@@ -132,27 +131,35 @@ fun TimetableList(
                         },
                         label = "TimetableItemsAnimation"
                     ) { items ->
-                        FlowRow(
-                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        Column(
                             verticalArrangement = Arrangement.spacedBy(12.dp),
-                            modifier = Modifier.fillMaxSize(),
-                            maxItemsInEachRow = columnCount
+                            modifier = Modifier.fillMaxSize()
                         ) {
-                            items.fastForEach { item ->
-                                TimetableItemCard(
-                                    timetableItem = item,
-                                    isBookmarked = isBookmarked(item.id),
-                                    isDateTagVisible = isDateTagVisible,
-                                    highlightWord = highlightWord,
-                                    onBookmarkClick = { onBookmarkClick(item.id) },
-                                    onTimetableItemClick = { onTimetableItemClick(item.id) },
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .fillMaxHeight()
-                                )
-                            }
-                            repeat (columnCount - timetableItems.size % columnCount) {
-                                Spacer(Modifier.weight(1f))
+                            items.chunked(columnCount).forEach { rowItems ->
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                    modifier = Modifier.height(IntrinsicSize.Max)
+                                ) {
+                                    rowItems.forEach { item ->
+                                        TimetableItemCard(
+                                            timetableItem = item,
+                                            isBookmarked = isBookmarked(item.id),
+                                            isDateTagVisible = isDateTagVisible,
+                                            highlightWord = highlightWord,
+                                            onBookmarkClick = { onBookmarkClick(item.id) },
+                                            onTimetableItemClick = { onTimetableItemClick(item.id) },
+                                            modifier = Modifier
+                                                .weight(1f)
+                                                .fillMaxHeight()
+                                        )
+                                    }
+                                    // 最後の行で要素が不足している場合、空のスペースを追加
+                                    if (rowItems.size < columnCount) {
+                                        repeat(columnCount - rowItems.size) {
+                                            Spacer(modifier = Modifier.weight(1f))
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
