@@ -187,28 +187,6 @@ public struct TimetableDetailScreen: View {
                 .foregroundStyle(presenter.timetableItem.timetableItem.room.roomTheme.primaryColor)
 
             HStack(spacing: 12) {
-                // Watch video button
-                if let videoUrlString = presenter.timetableItem.timetableItem.asset.videoUrl,
-                   let videoUrl = URL(string: videoUrlString) {
-                    Button {
-                        showingURL = videoUrl
-                    } label: {
-                        HStack(spacing: 8) {
-                            AssetImages.icPlayCircle.swiftUIImage
-                                .resizable()
-                                .frame(width: 18, height: 18)
-                            Text(String(localized: "Video", bundle: .module))
-                                .font(Typography.labelLarge)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
-                        .padding(.horizontal, 16)
-                        .foregroundColor(AssetColors.surface.swiftUIColor)
-                        .background(presenter.timetableItem.timetableItem.room.roomTheme.primaryColor)
-                        .clipShape(RoundedRectangle(cornerRadius: 28))
-                    }
-                }
-
                 // Open slides button
                 if let slideUrlString = presenter.timetableItem.timetableItem.asset.slideUrl,
                    let slideUrl = URL(string: slideUrlString) {
@@ -220,6 +198,28 @@ public struct TimetableDetailScreen: View {
                                 .resizable()
                                 .frame(width: 18, height: 18)
                             Text(String(localized: "Slides", bundle: .module))
+                                .font(Typography.labelLarge)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 16)
+                        .foregroundColor(AssetColors.surface.swiftUIColor)
+                        .background(presenter.timetableItem.timetableItem.room.roomTheme.primaryColor)
+                        .clipShape(RoundedRectangle(cornerRadius: 28))
+                    }
+                }
+
+                // Watch video button
+                if let videoUrlString = presenter.timetableItem.timetableItem.asset.videoUrl,
+                   let videoUrl = URL(string: videoUrlString) {
+                    Button {
+                        showingURL = videoUrl
+                    } label: {
+                        HStack(spacing: 8) {
+                            AssetImages.icPlayCircle.swiftUIImage
+                                .resizable()
+                                .frame(width: 18, height: 18)
+                            Text(String(localized: "Video", bundle: .module))
                                 .font(Typography.labelLarge)
                         }
                         .frame(maxWidth: .infinity)
