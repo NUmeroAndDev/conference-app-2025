@@ -177,23 +177,6 @@
         }
       }
     },
-    "Open presentation slides" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open presentation slides"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "発表スライドを開く"
-          }
-        }
-      }
-    },
     "Read more" : {
       "localizations" : {
         "en" : {
@@ -350,23 +333,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "一覧を見る"
-          }
-        }
-      }
-    },
-    "Watch video" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Watch video"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "動画を見る"
           }
         }
       }
