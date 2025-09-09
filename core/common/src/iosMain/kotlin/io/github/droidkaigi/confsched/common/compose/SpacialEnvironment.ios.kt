@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 
 @Composable
-actual fun rememberSpacialEnvironment(): SpacialEnvironment {
+actual fun rememberXrEnvironment(): XrEnvironment {
     return remember {
-        object : SpacialEnvironment {
+        object : XrEnvironment {
             override val enabledSpacialControl: Boolean = false
             override val isFullSpace: Boolean = false
 

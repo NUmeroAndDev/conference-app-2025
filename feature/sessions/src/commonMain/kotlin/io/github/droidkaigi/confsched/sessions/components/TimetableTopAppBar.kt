@@ -11,7 +11,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import io.github.droidkaigi.confsched.common.compose.rememberSpacialEnvironment
+import io.github.droidkaigi.confsched.common.compose.rememberXrEnvironment
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.component.AnimatedTextTopAppBar
 import io.github.droidkaigi.confsched.model.sessions.TimetableUiType
@@ -39,19 +39,19 @@ fun TimetableTopAppBar(
     onUiTypeChangeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isFullSpace = rememberSpacialEnvironment().isFullSpace
+    val isXrFullSpace = rememberXrEnvironment().isFullSpace
     AnimatedTextTopAppBar(
         title = stringResource(SessionsRes.string.timetable),
         actions = {
-            val spacialEnvironment = rememberSpacialEnvironment()
-            if (spacialEnvironment.enabledSpacialControl) {
+            val xrEnvironment = rememberXrEnvironment()
+            if (xrEnvironment.enabledSpacialControl) {
                 IconButton(
                     onClick = {
-                        spacialEnvironment.toggleSpaceMode()
+                        xrEnvironment.toggleSpaceMode()
                     },
                     shapes = IconButtonDefaults.shapes(),
                 ) {
-                    if (spacialEnvironment.isFullSpace) {
+                    if (xrEnvironment.isFullSpace) {
                         Icon(
                             painter = painterResource(SessionsRes.drawable.ic_request_home_space),
                             contentDescription = stringResource(SessionsRes.string.request_full_space),
@@ -92,7 +92,7 @@ fun TimetableTopAppBar(
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = if (isFullSpace) Color.Unspecified else Color.Transparent,
+            containerColor = if (isXrFullSpace) Color.Unspecified else Color.Transparent,
         ),
         modifier = modifier,
     )

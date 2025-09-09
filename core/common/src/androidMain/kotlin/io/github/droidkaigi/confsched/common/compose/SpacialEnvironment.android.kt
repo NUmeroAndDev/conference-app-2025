@@ -7,12 +7,12 @@ import androidx.xr.compose.platform.LocalSpatialCapabilities
 import androidx.xr.compose.platform.LocalSpatialConfiguration
 
 @Composable
-actual fun rememberSpacialEnvironment(): SpacialEnvironment {
+actual fun rememberXrEnvironment(): XrEnvironment {
     val spatialCapabilities = LocalSpatialCapabilities.current
     val config = LocalSpatialConfiguration.current
     val session = LocalSession.current
     return remember(spatialCapabilities, session) {
-        object : SpacialEnvironment {
+        object : XrEnvironment {
             override val enabledSpacialControl: Boolean
                 get() = session != null
 
