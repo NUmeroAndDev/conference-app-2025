@@ -5,10 +5,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-actual fun Modifier.enableMouseDragScroll(scrollableState: ScrollableState): Modifier = this // NOOP
+actual fun Modifier.enableMouseDragScroll(
+    scrollableState: ScrollableState,
+): Modifier = this // NOOP
 
 @Composable
-actual fun Modifier.bindMouseBackForward(
-    onBackPressed: () -> Unit,
-    onForwardPressed: () -> Unit,
+actual fun Modifier.enableMouseWheelZoomForDesktop(
+    multiplyVerticalScaleBy: (Float) -> Unit,
+    zoomStep: Float,
+    requireModifierKey: Boolean,
 ): Modifier = this // NOOP

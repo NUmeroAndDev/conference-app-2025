@@ -1,16 +1,22 @@
 package io.github.droidkaigi.confsched.sessions
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
@@ -44,6 +50,7 @@ fun TimetableItemDetailScreen(
 ) {
     ProvideRoomTheme(uiState.timetableItem.room.roomTheme) {
         val listState = rememberLazyListState()
+        var fabHeight by remember { mutableStateOf(0.dp) }
         Scaffold(
             topBar = {
                 TimetableItemDetailTopAppBar(
@@ -51,12 +58,17 @@ fun TimetableItemDetailScreen(
                 )
             },
             floatingActionButton = {
+                val density = LocalDensity.current
                 TimetableItemDetailFloatingActionButtonMenu(
                     isBookmarked = uiState.isBookmarked,
                     onBookmarkToggle = onBookmarkToggle,
                     onAddCalendarClick = { onAddCalendarClick(uiState.timetableItem) },
                     onShareClick = { onShareClick(uiState.timetableItem) },
-                    modifier = Modifier.padding(bottom = WindowInsets.safeGestures.asPaddingValues().calculateBottomPadding()),
+                    modifier = Modifier.onGloballyPositioned {
+                        with(density) {
+                            fabHeight = it.size.height.toDp()
+                        }
+                    }.padding(bottom = WindowInsets.safeGestures.asPaddingValues().calculateBottomPadding()),
                 )
             },
             contentWindowInsets = WindowInsets(),
@@ -68,7 +80,7 @@ fun TimetableItemDetailScreen(
                     .fillMaxSize()
                     .enableMouseDragScroll(listState)
                     .testTag(TimetableItemDetailScreenLazyColumnTestTag),
-                contentPadding = contentPadding + WindowInsets.navigationBars.asPaddingValues(),
+                contentPadding = contentPadding + PaddingValues(bottom = WindowInsets.safeGestures.asPaddingValues().calculateBottomPadding() + fabHeight),
             ) {
                 item {
                     TimetableItemDetailHeadline(

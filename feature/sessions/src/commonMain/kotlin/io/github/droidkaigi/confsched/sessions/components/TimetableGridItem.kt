@@ -41,6 +41,7 @@ import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
 import io.github.droidkaigi.confsched.model.core.MultiLangText
 import io.github.droidkaigi.confsched.model.core.Room
 import io.github.droidkaigi.confsched.model.core.RoomType
+import io.github.droidkaigi.confsched.model.core.toRoom
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.TimetableSpeaker
 import io.github.droidkaigi.confsched.model.sessions.fake
@@ -54,6 +55,7 @@ import kotlin.time.Duration.Companion.minutes
 @Composable
 fun TimetableGridItem(
     timetableItem: TimetableItem,
+    isBookmarked: Boolean,
     onTimetableItemClick: (timetableItem: TimetableItem) -> Unit,
     scaleState: TimetableScaleState = remember { TimetableScaleState() },
     modifier: Modifier = Modifier,
@@ -78,7 +80,13 @@ fun TimetableGridItem(
                 .padding(all = TimetableGridItemDefaults.contentMargin)
                 .border(1.dp, LocalRoomTheme.current.primaryColor, shape)
                 .clip(shape)
-                .background(LocalRoomTheme.current.containerColor)
+                .background(
+                    if (isBookmarked) {
+                        LocalRoomTheme.current.containerHighlightColor
+                    } else {
+                        LocalRoomTheme.current.containerColor
+                    },
+                )
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = ripple(bounded = true),
@@ -105,6 +113,7 @@ fun TimetableGridItem(
                 if (isShowingAllContent) {
                     TimetableSchedule(
                         schedule = timetableItem.formattedTimeString,
+                        isBookmarked = isBookmarked,
                         icon = timetableItem.room.icon,
                     )
                 }
@@ -112,7 +121,10 @@ fun TimetableGridItem(
                 if (timetableItem.minutes > 30) {
                     Spacer(modifier = Modifier.height(TimetableGridItemDefaults.scheduleToTitleSpace))
                 }
-                TimetableTitle(timetableItem.title.currentLangTitle)
+                TimetableTitle(
+                    title = timetableItem.title.currentLangTitle,
+                    isBookmarked = isBookmarked,
+                )
             }
             if (isShowingAllContent) {
                 timetableItem.speakers.firstOrNull()?.let { speaker ->
@@ -121,6 +133,7 @@ fun TimetableGridItem(
                     ) {
                         TimetableSpeaker(
                             scale = scaleState.verticalScale,
+                            isBookmarked = isBookmarked,
                             speaker = speaker,
                             modifier = Modifier.weight(1f),
                         )
@@ -143,15 +156,22 @@ fun TimetableGridItem(
 @Composable
 private fun TimetableSchedule(
     schedule: String,
+    isBookmarked: Boolean,
     icon: DrawableResource?,
     modifier: Modifier = Modifier,
 ) {
+    val iconAndTextColor = if (isBookmarked) {
+        MaterialTheme.colorScheme.surface
+    } else {
+        LocalRoomTheme.current.primaryColor
+    }
+
     Row(modifier) {
         if (icon != null) {
             Icon(
                 imageVector = vectorResource(icon),
                 contentDescription = null,
-                tint = LocalRoomTheme.current.primaryColor,
+                tint = iconAndTextColor,
                 modifier = Modifier.height(TimetableGridItemDefaults.scheduleHeight),
             )
         }
@@ -159,7 +179,7 @@ private fun TimetableSchedule(
         Text(
             text = schedule,
             style = MaterialTheme.typography.labelSmall,
-            color = LocalRoomTheme.current.primaryColor,
+            color = iconAndTextColor,
         )
     }
 }
@@ -167,6 +187,7 @@ private fun TimetableSchedule(
 @Composable
 private fun TimetableSpeaker(
     scale: Float,
+    isBookmarked: Boolean,
     speaker: TimetableSpeaker,
     modifier: Modifier = Modifier,
 ) {
@@ -193,7 +214,11 @@ private fun TimetableSpeaker(
                 minFontSize = TimetableGridItemDefaults.minTitleFontSize,
                 maxFontSize = TimetableGridItemDefaults.maxTitleFontSize,
             ),
-            color = MaterialTheme.colorScheme.onSurface,
+            color = if (isBookmarked) {
+                MaterialTheme.colorScheme.surface
+            } else {
+                MaterialTheme.colorScheme.onSurface
+            },
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .padding(start = 8.dp),
@@ -204,10 +229,15 @@ private fun TimetableSpeaker(
 @Composable
 private fun TimetableTitle(
     title: String,
+    isBookmarked: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val textStyle = MaterialTheme.typography.labelLarge.copy(
-        color = LocalRoomTheme.current.primaryColor,
+        color = if (isBookmarked) {
+            MaterialTheme.colorScheme.surface
+        } else {
+            LocalRoomTheme.current.primaryColor
+        },
     )
     Text(
         text = title,
@@ -236,16 +266,39 @@ private object TimetableGridItemDefaults {
     val titleLineHeight = 20.dp
 }
 
-@Preview
+@Preview(heightDp = 950)
 @Composable
 private fun TimetableGridItemPreview() {
     KaigiPreviewContainer {
-        TimetableGridItem(
-            timetableItem = TimetableItem.Session.fake().copy(
-                message = null,
-            ),
-            onTimetableItemClick = {},
-        )
+        Row {
+            Column {
+                RoomType.entries.forEach {
+                    TimetableGridItem(
+                        timetableItem = TimetableItem.Session.fake().copy(
+                            message = null,
+                            room = it.toRoom(),
+                        ),
+                        isBookmarked = false,
+                        onTimetableItemClick = {},
+                        modifier = Modifier.padding(bottom = 24.dp),
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.width(16.dp))
+            Column {
+                RoomType.entries.forEach {
+                    TimetableGridItem(
+                        timetableItem = TimetableItem.Session.fake().copy(
+                            message = null,
+                            room = it.toRoom(),
+                        ),
+                        isBookmarked = true,
+                        onTimetableItemClick = {},
+                        modifier = Modifier.padding(bottom = 24.dp),
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -257,6 +310,7 @@ private fun TimetableGridItemPreview_80min() {
             timetableItem = TimetableItem.Session.fake(80.minutes).copy(
                 message = null,
             ),
+            isBookmarked = false,
             onTimetableItemClick = {},
         )
     }
@@ -281,6 +335,7 @@ private fun TimetableGridItemPreview_WelcomeTalk() {
                     sort = 1,
                 ),
             ),
+            isBookmarked = false,
             onTimetableItemClick = {},
         )
     }
@@ -298,6 +353,7 @@ private fun TimetableGridItemPreview_LongTitle() {
                     enTitle = "Material3 Migration Material3 Migration Material3 Migration Material3 Migration",
                 ),
             ),
+            isBookmarked = false,
             onTimetableItemClick = {},
         )
     }
@@ -309,6 +365,7 @@ private fun TimetableGridItemPreview_WithError() {
     KaigiPreviewContainer {
         TimetableGridItem(
             timetableItem = TimetableItem.Session.fake(),
+            isBookmarked = false,
             onTimetableItemClick = {},
         )
     }
@@ -322,6 +379,7 @@ private fun TimetableGridItemPreview_NoSpeaker() {
             timetableItem = TimetableItem.Session.fake().copy(
                 speakers = persistentListOf(),
             ),
+            isBookmarked = false,
             onTimetableItemClick = {},
         )
     }

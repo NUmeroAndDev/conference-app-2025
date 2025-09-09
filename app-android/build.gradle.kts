@@ -25,7 +25,7 @@ android {
 
     defaultConfig {
         applicationId = "io.github.droidkaigi.confsched2025"
-        versionCode = 2
+        versionCode = 3
         minSdk = 24
         targetSdk = 36
     }
@@ -137,4 +137,8 @@ dependencies {
     implementation(libs.soilQueryCompose)
     // need this for compile success
     implementation(libs.androidxDatastorePreferencesCore)
+
+    implementation(libs.androidxXrCompose)
+    implementation(libs.androidxXrComposeMaterial3)
+    compileOnly(libs.androidXrExtensions)
 }
