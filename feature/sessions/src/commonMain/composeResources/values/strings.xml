@@ -20,11 +20,6 @@
     <string name="english">English</string>
     <string name="timetable">Timetable</string>
     <string name="content_description_share">Share</string>
-    <string name="content_description_calendar">Calendar</string>
-    <string name="content_description_schedule">Schedule</string>
-    <string name="content_description_location">Location</string>
-    <string name="content_description_language">Language</string>
-    <string name="content_description_category">Category</string>
     <string name="schedule_title">Date/Time</string>
     <string name="location_title">Location</string>
     <string name="language_title">Supported Languages</string>
