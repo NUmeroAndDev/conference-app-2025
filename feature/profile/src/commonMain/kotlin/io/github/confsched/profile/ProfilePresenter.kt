@@ -45,6 +45,7 @@ fun profilePresenter(
     if (!isAllowedToShowCard || isInEditMode) {
         ProfileUiState.Edit(
             baseProfile = profileWithImages.profile,
+            canBackToCardScreen = isAllowedToShowCard,
         )
     } else {
         ProfileUiState.Card(

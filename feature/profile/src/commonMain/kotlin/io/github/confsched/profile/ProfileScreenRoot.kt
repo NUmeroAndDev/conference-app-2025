@@ -19,7 +19,6 @@ import soil.query.compose.rememberSubscription
 context(screenContext: ProfileScreenContext)
 fun ProfileScreenRoot(
     onShareClick: (String, ImageBitmap) -> Unit,
-    onNavigateBack: () -> Unit,
 ) {
     SoilDataBoundary(
         state = rememberSubscription(screenContext.profileSubscriptionKey),
@@ -46,12 +45,8 @@ fun ProfileScreenRoot(
             }
 
             is ProfileUiState.Edit -> {
-                BackHandler(enabled = true) {
-                    if (uiState.baseProfile != null) {
-                        eventFlow.tryEmit(ProfileScreenEvent.ExitEditMode)
-                    } else {
-                        onNavigateBack()
-                    }
+                BackHandler(enabled = uiState.canBackToCardScreen) {
+                    eventFlow.tryEmit(ProfileScreenEvent.ExitEditMode)
                 }
 
                 ProfileEditScreen(
