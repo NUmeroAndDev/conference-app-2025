@@ -1,0 +1,25 @@
+{
+  "sourceLanguage" : "ja",
+  "strings" : {
+    "|" : {
+
+    },
+    "Add to favorites" : {
+
+    },
+    "Remove from favorites" : {
+
+    },
+    "Select Theme" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "テーマ選択"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

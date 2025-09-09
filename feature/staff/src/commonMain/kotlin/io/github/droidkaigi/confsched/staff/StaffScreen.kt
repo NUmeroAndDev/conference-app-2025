@@ -3,20 +3,26 @@ package io.github.droidkaigi.confsched.staff
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.component.AnimatedMediumTopAppBar
+import io.github.droidkaigi.confsched.droidkaigiui.extension.enableMouseDragScroll
 import io.github.droidkaigi.confsched.model.staff.Staff
 import io.github.droidkaigi.confsched.model.staff.fakes
 import io.github.droidkaigi.confsched.staff.component.StaffItem
 import kotlinx.collections.immutable.PersistentList
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
+const val StaffScreenLazyColumnTestTag = "StaffScreenLazyColumnTestTag"
+const val StaffItemTestTagPrefix = "StaffItemTestTag:"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,6 +33,7 @@ fun StaffScreen(
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val listState = rememberLazyListState()
 
     Scaffold(
         topBar = {
@@ -39,7 +46,11 @@ fun StaffScreen(
         modifier = modifier,
     ) { contentPadding ->
         LazyColumn(
-            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+            state = listState,
+            modifier = Modifier
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
+                .enableMouseDragScroll(listState)
+                .testTag(StaffScreenLazyColumnTestTag),
             contentPadding = contentPadding,
         ) {
             items(
@@ -49,7 +60,9 @@ fun StaffScreen(
                 StaffItem(
                     staff = staff,
                     onStaffItemClick = { staff.profileUrl?.let(onStaffItemClick) },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag(StaffItemTestTagPrefix.plus(staff.id)),
                 )
             }
         }

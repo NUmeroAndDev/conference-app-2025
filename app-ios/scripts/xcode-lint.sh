@@ -12,6 +12,12 @@ if [ -z "$SRCROOT" ]; then
     exit 1
 fi
 
+# Skip linting in CI environment
+if [ -n "$CI" ] || [ -n "$GITHUB_ACTIONS" ]; then
+    echo "Skipping SwiftLint in CI environment"
+    exit 0
+fi
+
 # Path to SwiftLint - check multiple possible locations
 SWIFTLINT_PATH=""
 
@@ -94,7 +100,7 @@ echo "Running SwiftLint on $FILE_COUNT modified Swift file(s)..."
 # Use --config to specify our configuration file
 echo -e "$FILTERED_FILES" | while IFS= read -r file; do
     if [ -n "$file" ] && [ -f "$file" ]; then
-        "$SWIFTLINT_PATH" lint --config "$SRCROOT/.swiftlint.yml" --quiet --path "$file"
+        "$SWIFTLINT_PATH" lint --config "$SRCROOT/.swiftlint.yml" --quiet "$file"
     fi
 done
 

@@ -1,11 +1,11 @@
 package io.github.droidkaigi.confsched.droidkaigiui.session
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,11 +18,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -32,24 +34,36 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.SemanticsPropertyKey
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.DroidkaigiuiRes
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
+import io.github.droidkaigi.confsched.droidkaigiui.SubcomposeAsyncImage
 import io.github.droidkaigi.confsched.droidkaigiui.bookmarked
+import io.github.droidkaigi.confsched.droidkaigiui.component.OutlinedToolTip
+import io.github.droidkaigi.confsched.droidkaigiui.component.RoomToolTip
 import io.github.droidkaigi.confsched.droidkaigiui.extension.icon
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.not_bookmarked
-import io.github.droidkaigi.confsched.droidkaigiui.rememberAsyncImagePainter
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.TimetableSpeaker
 import io.github.droidkaigi.confsched.model.sessions.fake
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
+const val TimetableItemCardTestTag = "TimetableItemCard"
+const val TimetableItemCardTitleTextTestTag = "TimetableItemCardTitleText"
+const val TimetableItemCardBookmarkButtonTestTag = "TimetableItemCardBookmarkButton"
+val TimetableItemCardSemanticsKey = SemanticsPropertyKey<TimetableItem>("TimetableItem")
 
 @Composable
 fun TimetableItemCard(
@@ -67,6 +81,9 @@ fun TimetableItemCard(
         Row(
             verticalAlignment = Alignment.Top,
             modifier = modifier
+                .semantics {
+                    this[TimetableItemCardSemanticsKey] = timetableItem
+                }
                 .clip(RoundedCornerShape(16.dp))
                 .clickable { onTimetableItemClick() }
                 .background(Color.Transparent)
@@ -76,7 +93,8 @@ fun TimetableItemCard(
                     top = TimetableItemCardDefaults.tagRowTopPadding,
                     bottom = TimetableItemCardDefaults.contentPadding,
                     start = TimetableItemCardDefaults.contentPadding,
-                ),
+                )
+                .testTag(TimetableItemCardTestTag),
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -84,21 +102,22 @@ fun TimetableItemCard(
                     .weight(1f)
                     .padding(top = TimetableItemCardDefaults.rippleTopPadding),
             ) {
-                Row(
+                FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    itemVerticalAlignment = Alignment.CenterVertically,
                 ) {
-                    TimetableItemRoomTag(
+                    RoomToolTip(
                         icon = timetableItem.room.icon,
-                        text = timetableItem.room.name.currentLangTitle,
+                        text = timetableItem.room.name.currentLangTitle.toUpperCase(Locale.current),
                         color = LocalRoomTheme.current.primaryColor,
-                        modifier = Modifier.background(LocalRoomTheme.current.containerColor),
                     )
                     timetableItem.language.labels.forEach { label ->
-                        TimetableItemLangTag(label)
+                        OutlinedToolTip(label)
                     }
                     if (isDateTagVisible) {
                         timetableItem.day?.let {
-                            TimetableItemDateTag("${it.month}/${it.dayOfMonth}")
+                            OutlinedToolTip("${it.month}/${it.dayOfMonth}")
                         }
                     }
                 }
@@ -142,6 +161,7 @@ fun TimetableItemCard(
                         }
                         onBookmarkClick()
                     },
+                    modifier = Modifier.padding(end = 12.dp),
                 )
             }
         }
@@ -207,28 +227,37 @@ private fun TimetableItemTitle(
     }
 
     Text(
+        modifier = Modifier.testTag(TimetableItemCardTitleTextTestTag),
         text = highlightedTitle,
         style = MaterialTheme.typography.titleLarge,
     )
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun FavoriteButton(
     isBookmarked: Boolean,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    TextButton(onClick) {
+    IconButton(
+        onClick = onClick,
+        shapes = IconButtonDefaults.shapes(),
+        colors = IconButtonDefaults.iconButtonColors(
+            contentColor = LocalRoomTheme.current.primaryColor,
+        ),
+        modifier = modifier.testTag(TimetableItemCardBookmarkButtonTestTag),
+    ) {
+        // TODO: Fix contentDescription
         if (isBookmarked) {
             Icon(
                 Icons.Filled.Favorite,
                 contentDescription = stringResource(DroidkaigiuiRes.string.bookmarked),
-                tint = MaterialTheme.colorScheme.primaryFixed,
             )
         } else {
             Icon(
                 Icons.Outlined.FavoriteBorder,
                 contentDescription = stringResource(DroidkaigiuiRes.string.not_bookmarked),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
@@ -244,9 +273,8 @@ private fun TimetableItemSpeaker(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier,
     ) {
-        val painter = rememberAsyncImagePainter(speaker.iconUrl)
-        Image(
-            painter = painter,
+        SubcomposeAsyncImage(
+            model = speaker.iconUrl,
             contentDescription = null,
             modifier = Modifier
                 .width(32.dp)
@@ -304,10 +332,12 @@ private fun TimetableItemCardPreview_WithError() {
 @Composable
 private fun FavoriteButton() {
     KaigiPreviewContainer {
-        FavoriteButton(
-            isBookmarked = false,
-            onClick = {},
-        )
+        ProvideRoomTheme(TimetableItem.Session.fake().room.roomTheme) {
+            FavoriteButton(
+                isBookmarked = false,
+                onClick = {},
+            )
+        }
     }
 }
 
@@ -315,10 +345,12 @@ private fun FavoriteButton() {
 @Composable
 private fun FavoriteButton_Bookmarked() {
     KaigiPreviewContainer {
-        FavoriteButton(
-            isBookmarked = true,
-            onClick = {},
-        )
+        ProvideRoomTheme(TimetableItem.Session.fake().room.roomTheme) {
+            FavoriteButton(
+                isBookmarked = true,
+                onClick = {},
+            )
+        }
     }
 }
 

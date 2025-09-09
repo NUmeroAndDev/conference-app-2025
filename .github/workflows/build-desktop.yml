@@ -1,0 +1,41 @@
+name: build desktop
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    paths:
+      - '**/*.kt'
+      - '**/*.kts'
+      - '**/*.xml'
+      - 'gradle/libs.versions.toml'
+      - '.github/workflows/build-desktop.yml'
+  merge_group:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-15]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.7
+
+      - uses: ./.github/actions/setup-java
+
+      - run: ./gradlew :app-desktop:createDistributable --stacktrace
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-app-build-${{ matrix.os }}
+          path: app-desktop/build/compose/binaries/main/**/*
+          retention-days: 14

@@ -46,18 +46,16 @@ extension Model.MultiLangText {
 extension Model.RoomType {
     init(from shared: shared.RoomType) {
         switch shared {
-        case .roomF:
-            self = .roomF
-        case .roomG:
-            self = .roomG
-        case .roomH:
-            self = .roomH
-        case .roomI:
-            self = .roomI
         case .roomJ:
             self = .roomJ
-        case .roomIj:
-            self = .roomIJ
+        case .roomK:
+            self = .roomK
+        case .roomL:
+            self = .roomL
+        case .roomM:
+            self = .roomM
+        case .roomN:
+            self = .roomN
         }
     }
 }
@@ -224,7 +222,7 @@ extension Model.TimetableItemWithFavorite {
                 room: Model.Room(
                     id: 0,
                     name: Model.MultiLangText(jaTitle: "未定", enTitle: "TBD"),
-                    type: .roomIJ,
+                    type: .roomJ,
                     sort: 999
                 ),
                 targetAudience: "All",
@@ -248,7 +246,7 @@ extension Model.TimetableItemWithFavorite {
 // MARK: - Timetable Converters
 
 extension Model.Timetable {
-    init(from shared: shared.Timetable) {
+    public init(from shared: shared.Timetable) {
         let timetableItems: [any Model.TimetableItem] = shared.timetableItems.map { item in
             if let session = item as? shared.TimetableItem.Session {
                 return Model.TimetableItemSession(from: session)
@@ -269,7 +267,7 @@ extension Model.Timetable {
                     room: Model.Room(
                         id: 0,
                         name: Model.MultiLangText(jaTitle: "未定", enTitle: "TBD"),
-                        type: .roomIJ,
+                        type: .roomJ,
                         sort: 999
                     ),
                     targetAudience: "All",
@@ -350,13 +348,13 @@ extension Model.Staff {
     init(from shared: shared.Staff) {
         // Use FileManager URL as a safe fallback
         let fallbackURL = URL(fileURLWithPath: "/")
-        let iconURL = URL(string: shared.icon) ?? fallbackURL
+        let iconURL = URL(string: shared.iconUrl) ?? fallbackURL
 
         self.init(
-            id: shared.id,
-            name: shared.name,
+            id: String(shared.id),
+            name: shared.username,
             iconUrl: iconURL,
-            profileUrl: shared.profileUrl.flatMap { URL(string: $0) },
+            profileUrl: URL(string: shared.profileUrl),
             role: nil  // KMP Staff doesn't have role field
         )
     }
@@ -400,6 +398,145 @@ extension shared.KotlinInstant {
     var date: Date {
         Date(timeIntervalSince1970: TimeInterval(epochSeconds))
     }
+}
+
+// MARK: - Profile Converters
+
+extension Model.Profile {
+    init?(from shared: shared.Profile, imageData: Data) {
+        guard !shared.link.isEmpty, let url = URL(string: shared.link) else {
+            return nil
+        }
+
+        self.init(
+            name: shared.nickName,
+            occupation: shared.occupation,
+            url: url,
+            image: imageData,
+            cardVariant: Model.ProfileCardVariant(from: shared.theme)
+        )
+    }
+
+    init?(from shared: shared.ProfileWithImages) {
+        guard let sharedProfile = shared.profile else {
+            return nil
+        }
+
+        // Convert KMP ByteArray to Swift Data
+        let imageData: Data
+        if let byteArray = shared.profileImageByteArray {
+            imageData = convertKotlinByteArrayToData(byteArray)
+        } else {
+            return nil
+        }
+
+        self.init(from: sharedProfile, imageData: imageData)
+    }
+}
+
+extension Model.ProfileCardVariant {
+    init(from shared: shared.ProfileCardTheme) {
+        switch shared {
+        case .darkPill:
+            self = .nightPill
+        case .lightPill:
+            self = .dayPill
+        case .darkDiamond:
+            self = .nightDiamond
+        case .lightDiamond:
+            self = .dayDiamond
+        case .darkFlower:
+            self = .nightFlower
+        case .lightFlower:
+            self = .dayFlower
+        }
+    }
+}
+
+extension shared.ProfileCardTheme {
+    init(from swift: Model.ProfileCardVariant) {
+        switch swift {
+        case .nightPill:
+            self = .darkPill
+        case .dayPill:
+            self = .lightPill
+        case .nightDiamond:
+            self = .darkDiamond
+        case .dayDiamond:
+            self = .lightDiamond
+        case .nightFlower:
+            self = .darkFlower
+        case .dayFlower:
+            self = .lightFlower
+        }
+    }
+}
+
+extension shared.Profile {
+    convenience init(from swift: Model.Profile) {
+        let theme = shared.ProfileCardTheme(from: swift.cardVariant)
+
+        // Save image data to file and get the path
+        let imagePath = Self.saveImageDataToFile(swift.image)
+
+        self.init(
+            nickName: swift.name,
+            occupation: swift.occupation,
+            link: swift.url.absoluteString,
+            imagePath: imagePath,
+            theme: theme
+        )
+    }
+
+    private static func saveImageDataToFile(_ imageData: Data) -> String {
+        guard !imageData.isEmpty else { return "" }
+
+        // Create documents directory path for profile images
+        guard let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            print(
+                "Failed to get documents directory. This may be due to missing permissions, "
+                    + "sandbox restrictions, or an unexpected system error. Please ensure the app has "
+                    + "access to the file system and try again."
+            )
+            return ""
+        }
+        let profileImagesDirectory = documentsPath.appendingPathComponent("ProfileImages")
+
+        // Create directory if it doesn't exist
+        do {
+            try FileManager.default.createDirectory(
+                at: profileImagesDirectory, withIntermediateDirectories: true, attributes: nil)
+        } catch {
+            print("Failed to create profile images directory at \(profileImagesDirectory.path): \(error)")
+            return ""
+        }
+
+        // Generate unique filename
+        let filename = "profile_\(UUID().uuidString).jpg"
+        let fileURL = profileImagesDirectory.appendingPathComponent(filename)
+
+        do {
+            try imageData.write(to: fileURL)
+            return fileURL.path
+        } catch {
+            print("Failed to save image data: \(error)")
+            return ""
+        }
+    }
+}
+
+// MARK: - ByteArray Conversion Functions
+
+private func convertKotlinByteArrayToData(_ byteArray: shared.KotlinByteArray) -> Data {
+    let size = Int(byteArray.size)
+    guard size > 0 else { return Data() }
+
+    var data = Data(capacity: size)
+    for i in 0..<size {
+        let byte = byteArray.get(index: Int32(i))
+        data.append(UInt8(bitPattern: byte))
+    }
+    return data
 }
 
 // MARK: - Utility Functions

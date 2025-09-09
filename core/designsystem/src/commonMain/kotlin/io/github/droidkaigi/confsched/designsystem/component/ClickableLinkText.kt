@@ -40,6 +40,8 @@ fun ClickableLinkText(
     modifier: Modifier = Modifier,
     overflow: TextOverflow = TextOverflow.Clip,
     maxLines: Int = Int.MAX_VALUE,
+    hasUnderLine: Boolean = true,
+    underLineAndLinkTextColor: Color = LightBlue,
     onOverflow: (Boolean) -> Unit = {},
 ) {
     val findResults = findResults(
@@ -60,6 +62,8 @@ fun ClickableLinkText(
             ),
         text = buildClickableAnnotatedString(
             content = content,
+            hasUnderLine = hasUnderLine,
+            underLineColor = underLineAndLinkTextColor,
             findUrlResults = findResults,
             onLinkClick = onLinkClick,
         ),
@@ -85,13 +89,15 @@ private fun findResults(
 @Composable
 private fun buildClickableAnnotatedString(
     content: String,
+    hasUnderLine: Boolean = true,
+    underLineColor: Color,
     findUrlResults: Sequence<MatchResult>,
     onLinkClick: (url: String) -> Unit,
 ): AnnotatedString {
     return buildAnnotatedString {
         pushStyle(
             style = SpanStyle(
-                color = MaterialTheme.colorScheme.inverseSurface,
+                color = MaterialTheme.colorScheme.onSurface,
             ),
         )
 
@@ -112,8 +118,12 @@ private fun buildClickableAnnotatedString(
                     url = urlString,
                     styles = TextLinkStyles(
                         style = SpanStyle(
-                            color = LightBlue,
-                            textDecoration = TextDecoration.Underline,
+                            color = underLineColor,
+                            textDecoration = if (hasUnderLine) {
+                                TextDecoration.Underline
+                            } else {
+                                null
+                            },
                         ),
                     ),
                     linkInteractionListener = { linkAnnotation ->

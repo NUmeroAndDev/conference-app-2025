@@ -13,7 +13,7 @@ plugins {
     id("droidkaigi.primitive.kmp")
     id("droidkaigi.primitive.kmp.ios")
     id("droidkaigi.primitive.kmp.compose")
-    id("droidkaigi.primitive.kmp.compose.resources")
+    id("droidkaigi.primitive.compose.resources")
     id("droidkaigi.primitive.kmp.roborazzi")
     id("droidkaigi.primitive.metro")
     id("droidkaigi.primitive.spotless")
@@ -32,6 +32,8 @@ kotlin {
 
             implementation(libs.library("soilQueryCompose"))
             implementation(libs.library("soilReacty"))
+
+            implementation(libs.library("lifecycleRuntimeCompose"))
         }
 
         commonTest.dependencies {
@@ -41,10 +43,6 @@ kotlin {
             implementation(libs.library("kotlinTest"))
             implementation(libs.library("lifecycleViewmodelCompose"))
             implementation(libs.library("lifecycleRuntimeCompose"))
-        }
-
-        androidMain.dependencies {
-            implementation(libs.library("lifecycleViewmodelNavigation3"))
         }
 
         jvmMain.dependencies {

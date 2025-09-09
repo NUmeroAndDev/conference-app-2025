@@ -1,0 +1,51 @@
+name: spotless-check-comment
+
+on:
+  workflow_run:
+    workflows:
+      - spotless-check
+    types:
+      - completed
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}-${{ github.event.workflow_run.id }}
+  cancel-in-progress: true
+
+jobs:
+  handle-spotless-comment:
+    if: github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write # for creating or deleting a comment on pull requests
+      actions: read # for downloading artifacts
+    timeout-minutes: 2
+    steps:
+      - name: Download PR number
+        uses: dawidd6/action-download-artifact@ac66b43f0e6a346234dd65d4d0c8fbb31cb316e5 # v11
+        with:
+          name: pr_number
+          path: ./
+          run_id: ${{ github.event.workflow_run.id }}
+      - name: Read PR number
+        id: pr_number
+        run: echo "number=$(cat pr_number.txt)" >> $GITHUB_OUTPUT
+      - name: Post Spotless Check Failure Comment
+        if: github.event.workflow_run.conclusion == 'failure'
+        uses: marocchino/sticky-pull-request-comment@v2.9.4
+        with:
+          recreate: true
+          number: ${{ steps.pr_number.outputs.number }}
+          header: Spotless Check Failed 🚨
+          message: |
+            Spotless check failed. Run the following command to fix it:
+            ```
+            ./gradlew spotlessApply
+            ```
+            Commit the changes to update this pull request.
+      - name: Clean up Spotless Check Failure Comment
+        if: github.event.workflow_run.conclusion == 'success'
+        uses: marocchino/sticky-pull-request-comment@v2.9.4
+        with:
+          number: ${{ steps.pr_number.outputs.number }}
+          header: Spotless Check Failed 🚨
+          delete: true

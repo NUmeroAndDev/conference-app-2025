@@ -49,13 +49,15 @@ import androidx.compose.ui.semantics.verticalScrollAxisRange
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
+import io.github.droidkaigi.confsched.droidkaigiui.extension.enableMouseWheelZoomForDesktop
 import io.github.droidkaigi.confsched.model.core.DroidKaigi2025Day
 import io.github.droidkaigi.confsched.model.sessions.Timetable
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.TimetableItemId
 import io.github.droidkaigi.confsched.model.sessions.fake
 import io.github.droidkaigi.confsched.sessions.ScrolledToCurrentTimeState
-import io.github.droidkaigi.confsched.sessions.TimetableScrollState
+import io.github.droidkaigi.confsched.sessions.TimetableState
+import io.github.droidkaigi.confsched.sessions.components.ContextMenuProviderForDesktop
 import io.github.droidkaigi.confsched.sessions.components.TimetableGridItem
 import io.github.droidkaigi.confsched.sessions.rememberTimetableState
 import kotlinx.collections.immutable.PersistentList
@@ -70,6 +72,7 @@ import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import kotlin.time.Duration.Companion.hours
 import kotlin.time.ExperimentalTime
 
 @Composable
@@ -77,17 +80,19 @@ fun TimetableGrid(
     timetable: Timetable,
     timeLine: TimeLine?,
     selectedDay: DroidKaigi2025Day,
+    onBookmarkClick: (TimetableItemId) -> Unit,
     onTimetableItemClick: (TimetableItemId) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
     scrolledToCurrentTimeState: ScrolledToCurrentTimeState = remember { ScrolledToCurrentTimeState() },
 ) {
     val timetableState = rememberTimetableState()
-    val scrollState = timetableState.timetableScrollState
+
     Row {
         TimetableGridHours(
             hoursCount = { hoursList.size },
-            scrollState = scrollState,
+            scrollState = timetableState.scrollState,
+            scaleState = timetableState.scaleState,
             timeLine = timeLine,
             selectedDay = selectedDay,
         ) {
@@ -101,7 +106,7 @@ fun TimetableGrid(
         Column {
             TimetableGridRooms(
                 roomCount = { timetable.rooms.size },
-                scrollState = scrollState,
+                scrollState = timetableState.scrollState,
             ) {
                 items(timetable.rooms) { room ->
                     RoomItem(
@@ -116,14 +121,22 @@ fun TimetableGrid(
                 selectedDay = selectedDay,
                 contentPadding = contentPadding,
                 scrolledToCurrentTimeState = scrolledToCurrentTimeState,
-                scrollState = scrollState,
+                timetableState = timetableState,
                 modifier = modifier,
             ) {
                 items(timetable.timetableItems) { timetableItem ->
-                    TimetableGridItem(
-                        timetableItem = timetableItem,
-                        onTimetableItemClick = { onTimetableItemClick(it.id) },
-                    )
+                    ContextMenuProviderForDesktop(
+                        isBookmarked = timetable.bookmarks.contains(timetableItem.id),
+                        onToggleFavorite = { onBookmarkClick(timetableItem.id) },
+                        onSelectShowDetail = { onTimetableItemClick(timetableItem.id) },
+                    ) {
+                        TimetableGridItem(
+                            timetableItem = timetableItem,
+                            isBookmarked = timetable.bookmarks.contains(timetableItem.id),
+                            onTimetableItemClick = { onTimetableItemClick(it.id) },
+                            scaleState = timetableState.scaleState,
+                        )
+                    }
                 }
             }
         }
@@ -138,19 +151,21 @@ private fun TimetableGrid(
     selectedDay: DroidKaigi2025Day,
     contentPadding: PaddingValues,
     scrolledToCurrentTimeState: ScrolledToCurrentTimeState,
-    scrollState: TimetableScrollState,
+    timetableState: TimetableState,
     modifier: Modifier = Modifier,
     content: TimetableGridScope.() -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val density = LocalDensity.current
     val clock = LocalClock.current
+    val verticalScale = timetableState.scaleState.verticalScale
     val timetableGridState = rememberTimetableGridState(
         timetable = timetable,
         timeLine = timeLine,
         selectedDay = selectedDay,
-        scrollState = scrollState,
+        scrollState = timetableState.scrollState,
         density = density,
+        verticalScale = verticalScale,
     )
 
     val nestedScrollConnection = remember { object : NestedScrollConnection {} }
@@ -164,6 +179,8 @@ private fun TimetableGrid(
     val timetableGridScope = TimetableGridScopeImpl().apply(content)
     val itemProvider = itemProvider({ timetableGridScope.itemList.size }) { index ->
         timetableGridScope.itemList[index]()
+        val itemHeightPx = timetableGridState.timetableLayout.timetableLayouts[index].height
+        timetableGridScope.itemHeightPx = itemHeightPx
     }
 
     LaunchedEffect(Unit) {
@@ -183,7 +200,7 @@ private fun TimetableGrid(
                         .periodUntil(this, timeZone)
                 }
                 val minuteHeightPx =
-                    with(density) { TimetableGridDefaults.minuteHeight.toPx() }
+                    with(density) { TimetableGridDefaults.minuteHeight.times(verticalScale).toPx() }
                 val scrollOffsetY =
                     -with(period) { hours * minuteHeightPx * 60 + minutes * minuteHeightPx }
                 timetableGridState.scroll(
@@ -241,6 +258,10 @@ private fun TimetableGrid(
             }
             .transformable(
                 state = rememberTransformableState { zoomChange, panChange, _ ->
+                    timetableState.scaleState.updateVerticalScale(
+                        timetableState.scaleState.verticalScale * zoomChange,
+                    )
+
                     coroutineScope.launch {
                         timetableGridState.scroll(
                             dragAmount = panChange,
@@ -249,6 +270,13 @@ private fun TimetableGrid(
                             nestedScrollDispatcher = nestedScrollDispatcher,
                         )
                     }
+                },
+            )
+            // This processing is specific to the JVM; on other platforms, no special processing is performed.
+            .enableMouseWheelZoomForDesktop(
+                multiplyVerticalScaleBy = { factor ->
+                    val before = timetableState.scaleState.verticalScale
+                    timetableState.scaleState.updateVerticalScale(before * factor)
                 },
             )
             .onGloballyPositioned { coordinates ->
@@ -315,6 +343,12 @@ private fun TimetableGrid(
                 height = constraint.maxHeight,
                 bottomPadding = contentPadding.calculateBottomPadding(),
             )
+            val originalContentHeight = timetableGridState.timetableLayout.timetableHeight *
+                timetableState.scaleState.verticalScale
+            val layoutHeight = constraint.maxHeight
+            timetableState.scaleState.updateVerticalScaleLowerBound(
+                layoutHeight.toFloat() / originalContentHeight,
+            )
         }
 
         val items = timetableGridState.visibleItemLayouts.map { (index, timetableLayout) ->
@@ -355,16 +389,19 @@ private fun itemProvider(
     }
 }
 
-private interface TimetableGridScope {
+interface TimetableGridScope {
     fun <T> items(
         items: List<T>,
         key: ((item: T) -> Any)? = null,
         content: @Composable (T) -> Unit,
     )
+
+    val itemHeightPx: Int
 }
 
 private class TimetableGridScopeImpl : TimetableGridScope {
     val itemList = mutableListOf<@Composable () -> Unit>()
+    override var itemHeightPx: Int = 0
 
     override fun <T> items(
         items: List<T>,
@@ -440,6 +477,25 @@ private fun TimetableGridPreview() {
                 timetable = timetable,
                 timeLine = TimeLine.now(LocalClock.current),
                 selectedDay = DroidKaigi2025Day.ConferenceDay1,
+                onBookmarkClick = {},
+                onTimetableItemClick = {},
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun TimetableGridWithTimelinePreview() {
+    val timetable = remember { Timetable.fake() }
+    val currentTime = DroidKaigi2025Day.ConferenceDay1.start + 11.hours
+    CompositionLocalProvider(LocalClock provides FakeClock(currentTime)) {
+        KaigiPreviewContainer(Modifier.fillMaxSize()) {
+            TimetableGrid(
+                timetable = timetable,
+                timeLine = TimeLine.now(LocalClock.current),
+                selectedDay = DroidKaigi2025Day.ConferenceDay1,
+                onBookmarkClick = {},
                 onTimetableItemClick = {},
             )
         }

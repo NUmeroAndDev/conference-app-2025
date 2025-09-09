@@ -12,6 +12,20 @@
         }
       }
     },
+    "Profile Card" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロフィールカード"
+          }
+        }
+      }
+    },
+    "QRCode" : {
+
+    },
     "Share" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -19,6 +33,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "共有する"
+          }
+        }
+      }
+    },
+    "Share Message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check out my DroidKaigi Profile Card! Let's connect at the event. #DroidKaigi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DroidKaigiのプロフィールカードを作成しました！イベントでつながりましょう。 #DroidKaigi"
           }
         }
       }

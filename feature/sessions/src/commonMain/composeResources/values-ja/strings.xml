@@ -18,7 +18,7 @@
     <string name="select_language">言語選択</string>
     <string name="japanese">日本語</string>
     <string name="english">English</string>
-    <string name="timetable">タイムテーブル</string>
+    <string name="timetable">Timetable</string>
     <string name="content_description_share">共有</string>
     <string name="content_description_calendar">カレンダー</string>
     <string name="content_description_schedule">スケジュール</string>
@@ -41,4 +41,7 @@
     <string name="remove_from_bookmark">ブックマークを削除</string>
     <string name="add_to_calendar">カレンダーに登録</string>
     <string name="share_link">リンクをシェア</string>
+    <string name="go_to_timetable_detail">詳細を開く</string>
+    <string name="request_full_space">フルスペースに切り替え</string>
+    <string name="request_home_space">ホームスペースに切り替え</string>
 </resources>

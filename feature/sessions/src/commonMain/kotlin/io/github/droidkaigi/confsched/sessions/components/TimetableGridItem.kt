@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,7 +21,10 @@ import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,15 +35,17 @@ import androidx.compose.ui.unit.sp
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
+import io.github.droidkaigi.confsched.droidkaigiui.SubcomposeAsyncImage
 import io.github.droidkaigi.confsched.droidkaigiui.extension.icon
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
-import io.github.droidkaigi.confsched.droidkaigiui.rememberAsyncImagePainter
 import io.github.droidkaigi.confsched.model.core.MultiLangText
 import io.github.droidkaigi.confsched.model.core.Room
 import io.github.droidkaigi.confsched.model.core.RoomType
+import io.github.droidkaigi.confsched.model.core.toRoom
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.TimetableSpeaker
 import io.github.droidkaigi.confsched.model.sessions.fake
+import io.github.droidkaigi.confsched.sessions.TimetableScaleState
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.vectorResource
@@ -49,53 +55,97 @@ import kotlin.time.Duration.Companion.minutes
 @Composable
 fun TimetableGridItem(
     timetableItem: TimetableItem,
+    isBookmarked: Boolean,
     onTimetableItemClick: (timetableItem: TimetableItem) -> Unit,
+    scaleState: TimetableScaleState = remember { TimetableScaleState() },
     modifier: Modifier = Modifier,
 ) {
-    val height = remember(timetableItem) {
-        TimetableGridItemDefaults.unitOfHeight * (timetableItem.minutes)
+    val scaledHeight = remember(timetableItem, scaleState.verticalScale) {
+        (TimetableGridItemDefaults.unitOfHeight * scaleState.verticalScale) * timetableItem.minutes
+    }
+    val isShowingAllContent by remember(scaledHeight) {
+        derivedStateOf {
+            // maxLine is 3
+            scaledHeight > (TimetableGridItemDefaults.titleLineHeight + TimetableGridItemDefaults.contentPadding) * 3
+        }
     }
 
     ProvideRoomTheme(timetableItem.room.roomTheme) {
+        val shape = RoundedCornerShape(16.dp)
         Column(
             verticalArrangement = Arrangement.Center,
             modifier = modifier
-                .clickable { onTimetableItemClick(timetableItem) }
-                .background(LocalRoomTheme.current.containerColor)
                 .width(TimetableGridItemDefaults.width)
-                .height(height)
-                .border(1.dp, LocalRoomTheme.current.primaryColor, RoundedCornerShape(16.dp))
-                .padding(TimetableGridItemDefaults.contentPadding),
+                .height(scaledHeight)
+                .padding(all = TimetableGridItemDefaults.contentMargin)
+                .border(1.dp, LocalRoomTheme.current.primaryColor, shape)
+                .clip(shape)
+                .background(
+                    if (isBookmarked) {
+                        LocalRoomTheme.current.containerHighlightColor
+                    } else {
+                        LocalRoomTheme.current.containerColor
+                    },
+                )
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = ripple(bounded = true),
+                ) { onTimetableItemClick(timetableItem) }
+                .padding(
+                    horizontal = TimetableGridItemDefaults.contentPadding,
+                    vertical =
+                    when {
+                        isShowingAllContent -> {
+                            TimetableGridItemDefaults.contentPadding
+                        }
+
+                        (timetableItem.minutes < 30) && (scaledHeight < TimetableGridItemDefaults.titleLineHeight + TimetableGridItemDefaults.contentPadding) -> 0.dp
+
+                        else -> {
+                            TimetableGridItemDefaults.contentPadding / 2
+                        }
+                    },
+                ),
         ) {
             Column(
                 modifier = Modifier.weight(1f),
             ) {
-                TimetableSchedule(
-                    schedule = timetableItem.formattedTimeString,
-                    icon = timetableItem.room.icon,
-                )
+                if (isShowingAllContent) {
+                    TimetableSchedule(
+                        schedule = timetableItem.formattedTimeString,
+                        isBookmarked = isBookmarked,
+                        icon = timetableItem.room.icon,
+                    )
+                }
                 //  Trim spacing to prevent the title from overflowing if minutes is < 30min
                 if (timetableItem.minutes > 30) {
                     Spacer(modifier = Modifier.height(TimetableGridItemDefaults.scheduleToTitleSpace))
                 }
-                TimetableTitle(timetableItem.title.currentLangTitle)
+                TimetableTitle(
+                    title = timetableItem.title.currentLangTitle,
+                    isBookmarked = isBookmarked,
+                )
             }
-            timetableItem.speakers.firstOrNull()?.let { speaker ->
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    TimetableSpeaker(
-                        speaker = speaker,
-                        modifier = Modifier.weight(1f),
-                    )
-                    if (timetableItem.message != null) {
-                        Icon(
-                            imageVector = Icons.Default.Error,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.error,
-                            modifier = Modifier
-                                .size(TimetableGridItemDefaults.errorSize),
+            if (isShowingAllContent) {
+                timetableItem.speakers.firstOrNull()?.let { speaker ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        TimetableSpeaker(
+                            scale = scaleState.verticalScale,
+                            isBookmarked = isBookmarked,
+                            speaker = speaker,
+                            modifier = Modifier.weight(1f),
                         )
+                        if (timetableItem.message != null) {
+                            Icon(
+                                imageVector = Icons.Default.Error,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.error,
+                                modifier = Modifier
+                                    .size(TimetableGridItemDefaults.errorSize),
+                            )
+                        }
                     }
                 }
             }
@@ -106,15 +156,22 @@ fun TimetableGridItem(
 @Composable
 private fun TimetableSchedule(
     schedule: String,
+    isBookmarked: Boolean,
     icon: DrawableResource?,
     modifier: Modifier = Modifier,
 ) {
+    val iconAndTextColor = if (isBookmarked) {
+        MaterialTheme.colorScheme.surface
+    } else {
+        LocalRoomTheme.current.primaryColor
+    }
+
     Row(modifier) {
         if (icon != null) {
             Icon(
                 imageVector = vectorResource(icon),
                 contentDescription = null,
-                tint = LocalRoomTheme.current.primaryColor,
+                tint = iconAndTextColor,
                 modifier = Modifier.height(TimetableGridItemDefaults.scheduleHeight),
             )
         }
@@ -122,23 +179,25 @@ private fun TimetableSchedule(
         Text(
             text = schedule,
             style = MaterialTheme.typography.labelSmall,
-            color = LocalRoomTheme.current.primaryColor,
+            color = iconAndTextColor,
         )
     }
 }
 
 @Composable
 private fun TimetableSpeaker(
+    scale: Float,
+    isBookmarked: Boolean,
     speaker: TimetableSpeaker,
     modifier: Modifier = Modifier,
 ) {
-    val painter = rememberAsyncImagePainter(speaker.iconUrl)
-    Row(modifier) {
-        Image(
-            painter = painter,
+    val size = (TimetableGridItemDefaults.speakerHeight * scale).coerceAtLeast(16.dp)
+    Row(modifier.height(size)) {
+        SubcomposeAsyncImage(
+            model = speaker.iconUrl,
             contentDescription = null,
             modifier = Modifier
-                .size(32.dp)
+                .size(size)
                 .clip(CircleShape)
                 .border(
                     width = 1.dp,
@@ -148,8 +207,18 @@ private fun TimetableSpeaker(
         )
         Text(
             text = speaker.name,
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.labelMedium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            autoSize = TextAutoSize.StepBased(
+                minFontSize = TimetableGridItemDefaults.minTitleFontSize,
+                maxFontSize = TimetableGridItemDefaults.maxTitleFontSize,
+            ),
+            color = if (isBookmarked) {
+                MaterialTheme.colorScheme.surface
+            } else {
+                MaterialTheme.colorScheme.onSurface
+            },
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .padding(start = 8.dp),
@@ -160,10 +229,15 @@ private fun TimetableSpeaker(
 @Composable
 private fun TimetableTitle(
     title: String,
+    isBookmarked: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val textStyle = MaterialTheme.typography.labelLarge.copy(
-        color = LocalRoomTheme.current.primaryColor,
+        color = if (isBookmarked) {
+            MaterialTheme.colorScheme.surface
+        } else {
+            LocalRoomTheme.current.primaryColor
+        },
     )
     Text(
         text = title,
@@ -181,24 +255,50 @@ private fun TimetableTitle(
 private object TimetableGridItemDefaults {
     val width = 192.dp
     val unitOfHeight = 4.dp // 1 minute = 4dp
+    val contentMargin = 1.dp
     val contentPadding = 12.dp
     val scheduleToTitleSpace = 6.dp
     val scheduleHeight = 16.dp
+    val speakerHeight = 32.dp
     val errorSize = 16.dp
     val minTitleFontSize = 10.sp
     val maxTitleFontSize = 14.sp
+    val titleLineHeight = 20.dp
 }
 
-@Preview
+@Preview(heightDp = 950)
 @Composable
 private fun TimetableGridItemPreview() {
     KaigiPreviewContainer {
-        TimetableGridItem(
-            timetableItem = TimetableItem.Session.fake().copy(
-                message = null,
-            ),
-            onTimetableItemClick = {},
-        )
+        Row {
+            Column {
+                RoomType.entries.forEach {
+                    TimetableGridItem(
+                        timetableItem = TimetableItem.Session.fake().copy(
+                            message = null,
+                            room = it.toRoom(),
+                        ),
+                        isBookmarked = false,
+                        onTimetableItemClick = {},
+                        modifier = Modifier.padding(bottom = 24.dp),
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.width(16.dp))
+            Column {
+                RoomType.entries.forEach {
+                    TimetableGridItem(
+                        timetableItem = TimetableItem.Session.fake().copy(
+                            message = null,
+                            room = it.toRoom(),
+                        ),
+                        isBookmarked = true,
+                        onTimetableItemClick = {},
+                        modifier = Modifier.padding(bottom = 24.dp),
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -210,6 +310,7 @@ private fun TimetableGridItemPreview_80min() {
             timetableItem = TimetableItem.Session.fake(80.minutes).copy(
                 message = null,
             ),
+            isBookmarked = false,
             onTimetableItemClick = {},
         )
     }
@@ -229,11 +330,12 @@ private fun TimetableGridItemPreview_WelcomeTalk() {
                 speakers = persistentListOf(),
                 room = Room(
                     id = 1,
-                    name = MultiLangText("Jellyfish", "Jellyfish"),
-                    type = RoomType.RoomJ,
+                    name = MultiLangText("NARWHAL", "NARWHAL"),
+                    type = RoomType.RoomN,
                     sort = 1,
                 ),
             ),
+            isBookmarked = false,
             onTimetableItemClick = {},
         )
     }
@@ -241,7 +343,7 @@ private fun TimetableGridItemPreview_WelcomeTalk() {
 
 @Preview
 @Composable
-private fun TimetableGridItemPreview_LongTitme() {
+private fun TimetableGridItemPreview_LongTitle() {
     KaigiPreviewContainer {
         TimetableGridItem(
             timetableItem = TimetableItem.Session.fake().copy(
@@ -251,6 +353,7 @@ private fun TimetableGridItemPreview_LongTitme() {
                     enTitle = "Material3 Migration Material3 Migration Material3 Migration Material3 Migration",
                 ),
             ),
+            isBookmarked = false,
             onTimetableItemClick = {},
         )
     }
@@ -262,6 +365,7 @@ private fun TimetableGridItemPreview_WithError() {
     KaigiPreviewContainer {
         TimetableGridItem(
             timetableItem = TimetableItem.Session.fake(),
+            isBookmarked = false,
             onTimetableItemClick = {},
         )
     }
@@ -275,6 +379,7 @@ private fun TimetableGridItemPreview_NoSpeaker() {
             timetableItem = TimetableItem.Session.fake().copy(
                 speakers = persistentListOf(),
             ),
+            isBookmarked = false,
             onTimetableItemClick = {},
         )
     }

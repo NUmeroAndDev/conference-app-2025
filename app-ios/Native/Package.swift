@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "Native",
+    defaultLocalization: "ja",
     platforms: [
         .iOS(.v18),
         .macOS(.v15),
@@ -19,6 +20,7 @@ let package = Package(
         .package(path: "../Core"),
         .package(url: "https://github.com/pointfreeco/swift-dependencies.git", exact: "1.9.2"),
         .package(url: "https://github.com/SwiftGen/SwiftGenPlugin", from: "6.6.2"),
+        .package(url: "https://github.com/cybozu/LicenseList.git", exact: "2.2.0"),
     ],
     targets: [
         .target(
@@ -65,9 +67,13 @@ let package = Package(
                 .target(name: "SponsorFeature"),
                 .target(name: "StaffFeature"),
                 .target(name: "ProfileCardFeature"),
+                .target(name: "ProfileCardEditFeature"),
+                .target(name: "SettingsFeature"),
+                .target(name: "LicenseFeature"),
                 .target(name: "KMPFramework"),
                 .product(name: "UseCase", package: "Core"),
                 .product(name: "Model", package: "Core"),
+                .product(name: "Presentation", package: "Core"),
                 .product(name: "Dependencies", package: "swift-dependencies"),
                 .target(name: "Extension"),
             ],
@@ -88,7 +94,7 @@ let package = Package(
                 .process("Resources")
             ],
         ),
-        
+
         // Feature targets without resources
         .target(
             name: "TimetableDetailFeature",
@@ -101,13 +107,14 @@ let package = Package(
             ],
             path: "Sources/Feature/TimetableDetail",
         ),
-        
+
         .target(
             name: "AboutFeature",
             dependencies: [
                 .product(name: "Presentation", package: "Core"),
                 .product(name: "Model", package: "Core"),
                 .target(name: "Component"),
+                .target(name: "DependencyExtra"),
                 .target(name: "Extension"),
                 .target(name: "Theme"),
             ],
@@ -116,7 +123,7 @@ let package = Package(
                 .process("Resources")
             ],
         ),
-        
+
         .target(
             name: "ContributorFeature",
             dependencies: [
@@ -131,7 +138,7 @@ let package = Package(
                 .process("Resources")
             ],
         ),
-        
+
         .target(
             name: "EventMapFeature",
             dependencies: [
@@ -144,7 +151,7 @@ let package = Package(
             ],
             path: "Sources/Feature/EventMap",
         ),
-        
+
         .target(
             name: "FavoriteFeature",
             dependencies: [
@@ -159,7 +166,7 @@ let package = Package(
                 .process("Resources")
             ],
         ),
-        
+
         .target(
             name: "SearchFeature",
             dependencies: [
@@ -174,7 +181,7 @@ let package = Package(
                 .process("Resources")
             ],
         ),
-        
+
         .target(
             name: "SponsorFeature",
             dependencies: [
@@ -186,7 +193,7 @@ let package = Package(
             ],
             path: "Sources/Feature/Sponsor",
         ),
-        
+
         .target(
             name: "StaffFeature",
             dependencies: [
@@ -201,7 +208,7 @@ let package = Package(
                 .process("Resources")
             ],
         ),
-        
+
         .target(
             name: "ProfileCardFeature",
             dependencies: [
@@ -215,6 +222,50 @@ let package = Package(
         ),
 
         .target(
+            name: "SettingsFeature",
+            dependencies: [
+                .product(name: "Presentation", package: "Core"),
+                .product(name: "Model", package: "Core"),
+                .product(name: "UseCase", package: "Core"),
+                .target(name: "Component"),
+                .target(name: "Extension"),
+                .target(name: "Theme"),
+                .target(name: "DependencyExtra"),
+            ],
+            path: "Sources/Feature/Settings",
+            resources: [
+                .process("Resources")
+            ],
+        ),
+        
+        .target(
+            name: "LicenseFeature",
+            dependencies: [
+                .product(name: "LicenseList", package: "LicenseList"),
+                .target(name: "Theme"),
+            ],
+            path: "Sources/Feature/License",
+            resources: [
+                .process("Resources")
+            ]
+        ),
+
+        .target(
+            name: "ProfileCardEditFeature",
+            dependencies: [
+                .product(name: "Presentation", package: "Core"),
+                .product(name: "Model", package: "Core"),
+                .target(name: "Component"),
+                .target(name: "Extension"),
+                .target(name: "Theme"),
+            ],
+            path: "Sources/Feature/ProfileCardEdit",
+            resources: [
+                .process("Resources")
+            ],
+        ),
+
+        .target(
             name: "Theme",
             resources: [
                 .process("Resources"),
@@ -224,7 +275,7 @@ let package = Package(
                 .plugin(name: "SwiftGenPlugin", package: "SwiftGenPlugin")
             ]
         ),
-        // Please run ./gradlew app-shared:assembleSharedXCFramework first
+        // Please run ./gradlew app-shared:assembleSharedDebugXCFramework first
         .binaryTarget(name: "KMPFramework", path: "../../app-shared/build/XCFrameworks/debug/shared.xcframework"),
     ],
     swiftLanguageModes: [.v6]

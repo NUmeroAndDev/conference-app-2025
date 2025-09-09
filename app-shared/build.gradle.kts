@@ -11,7 +11,7 @@ plugins {
     id("droidkaigi.primitive.kmp.skie")
     id("droidkaigi.primitive.metro")
     id("droidkaigi.primitive.kmp.compose")
-    id("droidkaigi.primitive.kmp.compose.resources")
+    id("droidkaigi.primitive.compose.resources")
     id("droidkaigi.primitive.buildkonfig")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("droidkaigi.primitive.aboutlibraries")
@@ -43,6 +43,8 @@ kotlin {
             implementation(libs.soilQueryCompose)
             implementation(libs.androidxDatastorePreferencesCore)
             implementation(libs.haze)
+            implementation(libs.filekitCoil)
+            implementation(libs.material3Adaptive)
         }
 
         androidMain.dependencies {
@@ -50,6 +52,10 @@ kotlin {
             implementation(libs.androidxActivityCompose)
             implementation(libs.navigation3Adaptive)
             implementation(libs.androidxBrowser)
+        }
+
+        jvmMain.dependencies {
+            implementation(libs.lifecycleViewmodelCompose)
         }
 
         androidJvmMain.dependencies {

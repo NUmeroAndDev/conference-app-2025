@@ -1,6 +1,47 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%lld" : {
+
+    },
+    "9/11" : {
+
+    },
+    "9/12" : {
+
+    },
+    "All" : {
+
+    },
+    "Clear search" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear search"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "検索をクリア"
+          }
+        }
+      }
+    },
+    "English" : {
+
+    },
+    "Japanese" : {
+
+    },
+    "Mixed" : {
+
+    },
+    "Results" : {
+
+    },
     "Search" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -14,23 +55,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "検索"
-          }
-        }
-      }
-    },
-    "Search sessions" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Search sessions"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "セッションを検索"
           }
         }
       }
@@ -52,22 +76,31 @@
         }
       }
     },
-    "Clear search" : {
+    "Search sessions" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Clear search"
+            "value" : "Search sessions"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "検索をクリア"
+            "value" : "セッションを検索"
           }
         }
       }
+    },
+    "カテゴリ" : {
+
+    },
+    "言語" : {
+
+    },
+    "開催日" : {
+
     }
   },
   "version" : "1.0"

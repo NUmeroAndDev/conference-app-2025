@@ -17,7 +17,6 @@ import io.github.droidkaigi.confsched.model.sessions.Timetable
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.sessions.TimetableScrollState
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
@@ -25,6 +24,7 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.math.roundToInt
+import kotlin.time.Instant
 
 private val timeZone = TimeZone.of("Asia/Tokyo")
 
@@ -35,9 +35,10 @@ fun rememberTimetableGridState(
     selectedDay: DroidKaigi2025Day,
     scrollState: TimetableScrollState,
     density: Density = LocalDensity.current,
-) = remember(timetable, timeLine, selectedDay, scrollState, density) {
+    verticalScale: Float,
+) = remember(timetable, timeLine, selectedDay, scrollState, density, verticalScale) {
     TimetableGridState(
-        timetableLayout = timetable.toLayout(density),
+        timetableLayout = timetable.toLayout(density, verticalScale),
         timeLine = timeLine,
         selectedDay = selectedDay,
         scrollState = scrollState,
@@ -195,6 +196,7 @@ data class TimetableLayout(
 
 private fun Timetable.toLayout(
     density: Density,
+    verticalScale: Float = 1f,
 ): TimetableLayout {
     val dayStartTime = timetableItems.minOfOrNull { it.startsAt }
     val dayToStartTime = run {
@@ -215,7 +217,7 @@ private fun Timetable.toLayout(
             ).toInstant(timeZone)
         }
     }
-    val minutePx = with(density) { TimetableGridDefaults.minuteHeight.toPx() }
+    val minutePx = with(density) { TimetableGridDefaults.minuteHeight.times(verticalScale).toPx() }
     var timetableHeight = 0
     var timetableWidth = 0
     val timetableLayouts = timetableItems.map {
@@ -287,9 +289,8 @@ private fun TimetableItem.toLayout(
         )
         dayStartLocalTime.toInstant(timeZone)
     }
-    val displayEndsAt = endsAt.minus(1, DateTimeUnit.MINUTE)
     val height =
-        ((displayEndsAt - startsAt).inWholeMinutes * minutePx).roundToInt()
+        ((endsAt - startsAt).inWholeMinutes * minutePx).roundToInt()
     val width = with(density) { TimetableGridDefaults.columnWidth.roundToPx() }
     val left = rooms.indexOf(room) * width
     val top = ((startsAt - dayStart).inWholeMinutes * minutePx).toInt()

@@ -1,3 +1,4 @@
+import Model
 import SwiftUI
 import Theme
 
@@ -5,9 +6,28 @@ struct FrontCard: View {
     let userRole: String
     let userName: String
     let cardType: ProfileCardType
+    let cardShape: ProfileCardShape
+    let image: Data
     let normal: (Float, Float, Float)
+    let effectEnabled: Bool
 
-    let shaderFunction = ShaderFunction(library: .bundle(.module), name: "kiraEffect")
+    init(
+        userRole: String, userName: String, cardVariant: ProfileCardVariant, image: Data,
+        normal: (Float, Float, Float) = (0, 0, 0), effectEnabled: Bool = true
+    ) {
+        self.userRole = userRole
+        self.userName = userName
+        self.cardType = cardVariant.type
+        self.cardShape = cardVariant.shape
+        self.image = image
+        self.normal = normal
+        self.effectEnabled = effectEnabled
+    }
+
+    private let shaderFunction = ShaderFunction(library: .bundle(.module), name: "kiraEffect")
+    private let avatarSize: CGFloat = 160
+    private let cardWidth: CGFloat = 300
+    private let cardHeight: CGFloat = 380
 
     var body: some View {
         let lightContentColor = Color(
@@ -19,7 +39,8 @@ struct FrontCard: View {
                 .kiraEffect(
                     function: shaderFunction,
                     normal: normal,
-                    monochromeImage: Image("front_effect", bundle: .module)
+                    monochromeImage: Image("front_effect", bundle: .module),
+                    isEnabled: effectEnabled
                 )
             VStack(alignment: .center, spacing: 20) {
                 Image("\(cardType.rawValue)_card_title", bundle: .module)
@@ -44,13 +65,14 @@ struct FrontCard: View {
                 }
                 Spacer()
             }
-            .padding(.horizontal, 30)
+            .padding(.horizontal, 24)
             .padding(.vertical, 40)
+            .frame(width: cardWidth, height: cardHeight)
             Image("\(cardType.rawValue)_front_wave", bundle: .module)
                 .resizable()
-                .frame(width: 300, height: 380)
+                .frame(width: cardWidth, height: cardHeight)
         }
-        .frame(width: 300, height: 380)
+        .frame(width: cardWidth, height: cardHeight)
         .cornerRadius(12)
         // Figma shadow: may be replaced by Metal shader
         .shadow(color: .black.opacity(0.12), radius: 10, x: 3, y: 3)
@@ -67,11 +89,35 @@ struct FrontCard: View {
         .clipped(antialiased: true)
     }
 
-    // TODO: Replace user image
     private var avatarImage: some View {
-        Image(systemName: "person.circle.fill")
+        let image =
+            if let uiImage = UIImage(data: image) {
+                Image(uiImage: uiImage)
+            } else {
+                Image(systemName: "person.fill")
+            }
+        return
+            image
             .resizable()
-            .frame(width: 131, height: 131)
+            .aspectRatio(contentMode: .fill)
+            .frame(width: avatarSize, height: avatarSize)
+            .background(.white)
             .foregroundColor(.accentColor)
+            .mask {
+                maskImage
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+            }
+    }
+
+    private var maskImage: Image {
+        switch cardShape {
+        case .pill:
+            Image(.pill)
+        case .diamond:
+            Image(.diamond)
+        case .flower:
+            Image(.flower)
+        }
     }
 }
