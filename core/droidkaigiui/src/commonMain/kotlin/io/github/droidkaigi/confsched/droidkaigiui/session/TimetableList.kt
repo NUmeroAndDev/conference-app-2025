@@ -1,17 +1,25 @@
 package io.github.droidkaigi.confsched.droidkaigiui.session
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,6 +37,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastForEach
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiWindowSizeClassConstants
 import io.github.droidkaigi.confsched.droidkaigiui.component.TimetableTimeSlot
@@ -39,10 +48,12 @@ import io.github.droidkaigi.confsched.model.sessions.TimetableItemId
 import io.github.droidkaigi.confsched.model.sessions.fake
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.toPersistentList
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 const val TimetableListTestTag = "TimetableList"
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TimetableList(
     timetableItemMap: PersistentMap<out TimeSlotItem, List<TimetableItem>>,
@@ -101,33 +112,47 @@ fun TimetableList(
                     )
                     AnimatedContent(
                         targetState = timetableItems,
-                        contentKey = { it.map { item -> item.id } },
-                    ) {
-                        Column(
+                        contentKey = { items -> items.map { it.id } },
+                        transitionSpec = {
+                            val enter = fadeIn(animationSpec = tween(300)) + scaleIn(
+                                initialScale = 0.95f,
+                                animationSpec = spring(
+                                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                                    stiffness = Spring.StiffnessLow
+                                )
+                            )
+                            val exit = fadeOut(animationSpec = tween(200)) + scaleOut(
+                                targetScale = 0.95f,
+                                animationSpec = spring(
+                                    dampingRatio = Spring.DampingRatioNoBouncy,
+                                    stiffness = Spring.StiffnessMedium
+                                )
+                            )
+                            enter.togetherWith(exit)
+                        },
+                        label = "TimetableItemsAnimation"
+                    ) { items ->
+                        FlowRow(
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
                             verticalArrangement = Arrangement.spacedBy(12.dp),
+                            modifier = Modifier.fillMaxSize(),
+                            maxItemsInEachRow = columnCount
                         ) {
-                            timetableItems.chunked(columnCount).forEach { chunkedItems ->
-                                Row(
-                                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                                    modifier = Modifier.height(IntrinsicSize.Max),
-                                ) {
-                                    chunkedItems.forEach { item ->
-                                        TimetableItemCard(
-                                            timetableItem = item,
-                                            isBookmarked = isBookmarked(item.id),
-                                            isDateTagVisible = isDateTagVisible,
-                                            highlightWord = highlightWord,
-                                            onBookmarkClick = { onBookmarkClick(item.id) },
-                                            onTimetableItemClick = { onTimetableItemClick(item.id) },
-                                            modifier = Modifier
-                                                .weight(1f)
-                                                .fillMaxHeight()
-                                        )
-                                    }
-                                    if (chunkedItems.size < columnCount) {
-                                        Spacer(Modifier.weight(1f))
-                                    }
-                                }
+                            items.fastForEach { item ->
+                                TimetableItemCard(
+                                    timetableItem = item,
+                                    isBookmarked = isBookmarked(item.id),
+                                    isDateTagVisible = isDateTagVisible,
+                                    highlightWord = highlightWord,
+                                    onBookmarkClick = { onBookmarkClick(item.id) },
+                                    onTimetableItemClick = { onTimetableItemClick(item.id) },
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .fillMaxHeight()
+                                )
+                            }
+                            repeat (columnCount - timetableItems.size % columnCount) {
+                                Spacer(Modifier.weight(1f))
                             }
                         }
                     }
@@ -152,6 +177,10 @@ private fun TimetableListPreview() {
         override val key: String,
     ) : TimeSlotItem
 
+    // Create items with varying number of speakers to demonstrate layout adaptability
+    val items = List(2) { TimetableItem.Session.fake() }
+        .mapIndexed { index, item -> item.copy(speakers = item.speakers.drop(index).toPersistentList()) }
+
     KaigiPreviewContainer {
         TimetableList(
             timetableItemMap = persistentMapOf(
@@ -159,7 +188,7 @@ private fun TimetableListPreview() {
                     startTimeString = "11:20",
                     endTimeString = "12:00",
                     key = "11:20-12:00",
-                ) to List(2) { TimetableItem.Session.fake() },
+                ) to items,
                 PreviewTimeSlot(
                     startTimeString = "12:00",
                     endTimeString = "13:00",
