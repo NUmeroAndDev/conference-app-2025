@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
@@ -97,7 +98,11 @@ fun TimetableItemDetailHeadline(
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            modifier = Modifier.testTag(TimetableItemDetailHeadlineTestTag),
+            modifier = Modifier
+                .testTag(TimetableItemDetailHeadlineTestTag)
+                .semantics {
+                    heading()
+                },
             text = timetableItem.title.getByLang(currentLang),
             style = MaterialTheme.typography.headlineSmall,
         )
@@ -105,6 +110,7 @@ fun TimetableItemDetailHeadline(
         timetableItem.speakers.forEach { speaker ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.semantics(mergeDescendants = true) {}
             ) {
                 SubcomposeAsyncImage(
                     model = speaker.iconUrl,
