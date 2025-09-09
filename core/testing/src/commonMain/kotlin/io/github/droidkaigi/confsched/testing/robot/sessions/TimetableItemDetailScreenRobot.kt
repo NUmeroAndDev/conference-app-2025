@@ -83,9 +83,6 @@ class TimetableItemDetailScreenRobot(
     context(composeUiTest: ComposeUiTest)
     fun setupTimetableItemDetailScreenContentWithLongDescription() = setupTimetableItemDetailScreenContent(TimetableItemId(FakeSessionsApiClient.defaultSessionIdWithLongDescription))
 
-    // TODO https://github.com/DroidKaigi/conference-app-2025/issues/218
-    // TODO Prepare a method to click on bookmarks to test whether they are bookmarked or not.
-    // FIX This function doesn't affect the bookmark state.
     context(composeUiTest: ComposeUiTest)
     fun bookmark() {
         composeUiTest
