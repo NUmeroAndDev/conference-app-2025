@@ -110,7 +110,7 @@ fun TimetableItemDetailHeadline(
         timetableItem.speakers.forEach { speaker ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.semantics(mergeDescendants = true) {}
+                modifier = Modifier.semantics(mergeDescendants = true) {},
             ) {
                 SubcomposeAsyncImage(
                     model = speaker.iconUrl,
@@ -168,7 +168,7 @@ private fun LanguageSwitcher(
                 modifier = Modifier.semantics {
                     role = Role.RadioButton
                     selected = isSelected
-                }
+                },
             ) {
                 val contentColor = if (isSelected) {
                     LocalRoomTheme.current.primaryColor
@@ -191,7 +191,7 @@ private fun LanguageSwitcher(
                             Lang.JAPANESE -> SessionsRes.string.japanese
                             Lang.ENGLISH,
                             Lang.MIXED,
-                                -> SessionsRes.string.english
+                            -> SessionsRes.string.english
                         },
                     ),
                     color = contentColor,

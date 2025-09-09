@@ -121,7 +121,7 @@ private fun DescriptionSection(
                     style = MaterialTheme.typography.labelLarge,
                     modifier = Modifier.semantics {
                         hideFromAccessibility()
-                    }
+                    },
                 )
             }
         }

@@ -61,7 +61,7 @@ fun TimetableItemDetailScreen(
                     onBackClick = onBackClick,
                     modifier = Modifier.semantics {
                         traversalIndex = -1f
-                    }
+                    },
                 )
             },
             floatingActionButton = {
