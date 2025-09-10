@@ -74,7 +74,7 @@ fun TimetableScreen(
         else -> DroidKaigi2025Day.ConferenceDay1
     }
 
-    val conferenceDays = listOf(DroidKaigi2025Day.ConferenceDay1, DroidKaigi2025Day.ConferenceDay2)
+    val conferenceDays = DroidKaigi2025Day.visibleDays()
     val listStates = rememberListStatesByDay(conferenceDays)
     val lazyListState = listStates.getValue(selectedDay)
 
