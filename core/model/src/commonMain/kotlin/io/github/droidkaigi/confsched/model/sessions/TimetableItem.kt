@@ -32,7 +32,6 @@ sealed class TimetableItem {
     abstract val targetAudience: String
     abstract val language: TimetableLanguage
     abstract val asset: TimetableAsset
-    abstract val levels: PersistentList<String>
     abstract val speakers: PersistentList<TimetableSpeaker>
     abstract val description: MultiLangText
     abstract val message: MultiLangText?
@@ -51,7 +50,6 @@ sealed class TimetableItem {
         override val targetAudience: String,
         override val language: TimetableLanguage,
         override val asset: TimetableAsset,
-        override val levels: PersistentList<String>,
         override val speakers: PersistentList<TimetableSpeaker>,
         override val description: MultiLangText,
         override val message: MultiLangText?,
@@ -71,7 +69,6 @@ sealed class TimetableItem {
         override val targetAudience: String,
         override val language: TimetableLanguage,
         override val asset: TimetableAsset,
-        override val levels: PersistentList<String>,
         override val speakers: PersistentList<TimetableSpeaker>,
         override val description: MultiLangText,
         override val message: MultiLangText?,
@@ -209,9 +206,6 @@ fun TimetableItem.Session.Companion.fake(duration: Duration = 40.minutes): Timet
             jaTitle = "このセッションは事情により中止となりました",
             enTitle = "This session has been cancelled due to circumstances.",
         ),
-        levels = listOf(
-            "INTERMEDIATE",
-        ).toPersistentList(),
     )
 }
 

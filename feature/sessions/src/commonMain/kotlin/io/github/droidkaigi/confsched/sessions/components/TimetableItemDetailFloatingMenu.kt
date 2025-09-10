@@ -27,16 +27,23 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
+import io.github.droidkaigi.confsched.droidkaigiui.DroidkaigiuiRes
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
+import io.github.droidkaigi.confsched.droidkaigiui.add_to_bookmark
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
+import io.github.droidkaigi.confsched.droidkaigiui.remove_from_bookmark
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.fake
 import io.github.droidkaigi.confsched.sessions.SessionsRes
-import io.github.droidkaigi.confsched.sessions.add_to_bookmark
 import io.github.droidkaigi.confsched.sessions.add_to_calendar
-import io.github.droidkaigi.confsched.sessions.remove_from_bookmark
+import io.github.droidkaigi.confsched.sessions.bookmark_menu
+import io.github.droidkaigi.confsched.sessions.collapsed_menu
+import io.github.droidkaigi.confsched.sessions.expanded_menu
 import io.github.droidkaigi.confsched.sessions.share_link
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.stringResource
@@ -97,11 +104,16 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
     FloatingActionButtonMenu(
         expanded = expanded,
         button = {
+            val fabMenuStateDescription = stringResource(if (expanded) SessionsRes.string.expanded_menu else SessionsRes.string.collapsed_menu)
+            val fabMenuDescription = stringResource(SessionsRes.string.bookmark_menu)
             ToggleFloatingActionButton(
-                modifier = Modifier.testTag(TimetableItemDetailBookmarkFabButtonTestTag),
                 checked = expanded,
                 onCheckedChange = onExpandedChange,
                 containerColor = { _ -> menuItemContainerColor },
+                modifier = Modifier.semantics {
+                    stateDescription = fabMenuStateDescription
+                    contentDescription = fabMenuDescription
+                }.testTag(TimetableItemDetailBookmarkFabButtonTestTag),
             ) {
                 if (expanded) {
                     Icon(
@@ -134,9 +146,9 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
             text = {
                 Text(
                     if (isBookmarked) {
-                        stringResource(SessionsRes.string.remove_from_bookmark)
+                        stringResource(DroidkaigiuiRes.string.remove_from_bookmark)
                     } else {
-                        stringResource(SessionsRes.string.add_to_bookmark)
+                        stringResource(DroidkaigiuiRes.string.add_to_bookmark)
                     },
                 )
             },
