@@ -189,7 +189,8 @@ public struct TimetableDetailScreen: View {
             HStack(spacing: 12) {
                 // Open slides button
                 if let slideUrlString = presenter.timetableItem.timetableItem.asset.slideUrl,
-                   let slideUrl = URL(string: slideUrlString) {
+                    let slideUrl = URL(string: slideUrlString)
+                {
                     Button {
                         showingURL = slideUrl
                     } label: {
@@ -211,7 +212,8 @@ public struct TimetableDetailScreen: View {
 
                 // Watch video button
                 if let videoUrlString = presenter.timetableItem.timetableItem.asset.videoUrl,
-                   let videoUrl = URL(string: videoUrlString) {
+                    let videoUrl = URL(string: videoUrlString)
+                {
                     Button {
                         showingURL = videoUrl
                     } label: {
