@@ -41,8 +41,6 @@ import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailSum
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailTopAppBar
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-// TODO https://github.com/DroidKaigi/conference-app-2025/issues/218
-// const val TimetableItemDetailBookmarkIconTestTag = "TimetableItemDetailBookmarkIconTestTag"
 const val TimetableItemDetailScreenLazyColumnTestTag = "TimetableItemDetailScreenLazyColumnTestTag"
 
 @Composable
@@ -73,13 +71,9 @@ fun TimetableItemDetailScreen(
                 val density = LocalDensity.current
                 TimetableItemDetailFloatingActionButtonMenu(
                     isBookmarked = uiState.isBookmarked,
-                    slideUrl = uiState.timetableItem.asset.slideUrl,
-                    videoUrl = uiState.timetableItem.asset.videoUrl,
                     onBookmarkToggle = onBookmarkToggle,
                     onAddCalendarClick = { onAddCalendarClick(uiState.timetableItem) },
                     onShareClick = { onShareClick(uiState.timetableItem) },
-                    onViewSlideClick = onLinkClick,
-                    onWatchVideoClick = onLinkClick,
                     modifier = Modifier.onGloballyPositioned {
                         with(density) {
                             fabHeight = it.size.height.toDp()
@@ -149,6 +143,8 @@ fun TimetableItemDetailScreen(
                         timetableItem = uiState.timetableItem,
                         currentLang = uiState.currentLang,
                         onLinkClick = onLinkClick,
+                        onViewSlideClick = onLinkClick,
+                        onWatchVideoClick = onLinkClick,
                     )
                 }
             }
