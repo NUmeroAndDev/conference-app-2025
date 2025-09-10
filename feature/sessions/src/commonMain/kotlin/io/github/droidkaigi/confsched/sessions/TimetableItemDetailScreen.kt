@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
@@ -57,6 +59,9 @@ fun TimetableItemDetailScreen(
             topBar = {
                 TimetableItemDetailTopAppBar(
                     onBackClick = onBackClick,
+                    modifier = Modifier.semantics {
+                        traversalIndex = -1f
+                    },
                 )
             },
             floatingActionButton = {
