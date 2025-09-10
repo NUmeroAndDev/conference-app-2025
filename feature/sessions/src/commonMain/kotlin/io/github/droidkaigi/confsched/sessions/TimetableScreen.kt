@@ -167,8 +167,8 @@ fun TimetableScreen(
                         LaunchedEffect(selectedDay) {
                             pagerState.animateScrollToPage(selectedDay.tabIndex())
                         }
-                        LaunchedEffect(pagerState.targetPage) {
-                            onDaySelected(conferenceDays[pagerState.targetPage])
+                        LaunchedEffect(pagerState.settledPage) {
+                            onDaySelected(conferenceDays[pagerState.settledPage])
                         }
 
                         HorizontalPager(state = pagerState) { page ->
