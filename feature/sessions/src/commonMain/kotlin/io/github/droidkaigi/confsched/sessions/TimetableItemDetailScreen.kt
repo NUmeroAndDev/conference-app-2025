@@ -98,7 +98,7 @@ fun TimetableItemDetailScreen(
                         modifier = Modifier
                             .background(roomTheme.dimColor)
                             .fillMaxWidth()
-                            .height(contentPadding.calculateTopPadding())
+                            .height(contentPadding.calculateTopPadding()),
                     )
                 }
                 item {
