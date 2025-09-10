@@ -162,7 +162,7 @@ fun TimetableScreen(
                     is TimetableUiState.ListTimetable -> {
                         val pagerState = rememberPagerState(
                             initialPage = selectedDay.tabIndex(),
-                            pageCount = { conferenceDays.size }
+                            pageCount = { conferenceDays.size },
                         )
                         LaunchedEffect(selectedDay) {
                             pagerState.animateScrollToPage(selectedDay.tabIndex())
