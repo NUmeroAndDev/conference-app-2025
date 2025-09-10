@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -72,10 +73,10 @@ fun TimetableScreen(
         is TimetableUiState.ListTimetable -> uiState.timetable.selectedDay
         else -> DroidKaigi2025Day.ConferenceDay1
     }
-    val listStates = remember { mutableMapOf<DroidKaigi2025Day, LazyListState>() }
-    val lazyListState = listStates.getOrPut(selectedDay) {
-        LazyListState()
-    }
+
+    val conferenceDays = DroidKaigi2025Day.visibleDays()
+    val listStates = rememberListStatesByDay(conferenceDays)
+    val lazyListState = listStates.getValue(selectedDay)
 
     val completelyScrolledToTop by remember(selectedDay) {
         derivedStateOf {
@@ -192,6 +193,15 @@ fun TimetableScreen(
 
 private object TimetableDefaults {
     val dayTabWidth = 104.dp
+}
+
+@Composable
+private fun rememberListStatesByDay(
+    days: List<DroidKaigi2025Day>,
+): Map<DroidKaigi2025Day, LazyListState> {
+    return days.associateWith { day ->
+        rememberSaveable(day, saver = LazyListState.Saver) { LazyListState() }
+    }
 }
 
 @Preview
