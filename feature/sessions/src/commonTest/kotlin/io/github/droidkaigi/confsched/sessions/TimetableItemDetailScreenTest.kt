@@ -64,17 +64,10 @@ class TimetableItemDetailScreenTest {
                         captureScreenWithChecks(
                             checks = {
                                 checkTargetAudience()
+                                checkBothOfSlidesButtonAndVideoButtonNotDisplayed()
                             },
                         )
                     }
-                }
-
-                itShould("not show the slides button and video button") {
-                    captureScreenWithChecks(
-                        checks = {
-                            checkBothOfSlidesButtonAndVideoButtonNotDisplayed()
-                        },
-                    )
                 }
             }
             describe("when the description is lengthy") {
