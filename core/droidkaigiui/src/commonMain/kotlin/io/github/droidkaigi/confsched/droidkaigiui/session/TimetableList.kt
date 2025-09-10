@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +20,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.lazy.LazyColumn
@@ -100,7 +100,7 @@ fun TimetableList(
 
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.animateItem()
+                    modifier = Modifier.animateItem(),
                 ) {
                     TimetableTimeSlot(
                         startTimeText = timeSlot.startTimeString,
@@ -118,28 +118,28 @@ fun TimetableList(
                                 initialScale = 0.95f,
                                 animationSpec = spring(
                                     dampingRatio = Spring.DampingRatioMediumBouncy,
-                                    stiffness = Spring.StiffnessLow
-                                )
+                                    stiffness = Spring.StiffnessLow,
+                                ),
                             )
                             val exit = fadeOut(animationSpec = tween(200)) + scaleOut(
                                 targetScale = 0.95f,
                                 animationSpec = spring(
                                     dampingRatio = Spring.DampingRatioNoBouncy,
-                                    stiffness = Spring.StiffnessMedium
-                                )
+                                    stiffness = Spring.StiffnessMedium,
+                                ),
                             )
                             enter.togetherWith(exit)
                         },
-                        label = "TimetableItemsAnimation"
+                        label = "TimetableItemsAnimation",
                     ) { items ->
                         Column(
                             verticalArrangement = Arrangement.spacedBy(12.dp),
-                            modifier = Modifier.fillMaxSize()
+                            modifier = Modifier.fillMaxSize(),
                         ) {
                             items.chunked(columnCount).forEach { rowItems ->
                                 Row(
                                     horizontalArrangement = Arrangement.spacedBy(12.dp),
-                                    modifier = Modifier.height(IntrinsicSize.Max)
+                                    modifier = Modifier.height(IntrinsicSize.Max),
                                 ) {
                                     rowItems.forEach { item ->
                                         TimetableItemCard(
@@ -151,7 +151,7 @@ fun TimetableList(
                                             onTimetableItemClick = { onTimetableItemClick(item.id) },
                                             modifier = Modifier
                                                 .weight(1f)
-                                                .fillMaxHeight()
+                                                .fillMaxHeight(),
                                         )
                                     }
                                     if (rowItems.size < columnCount) {
