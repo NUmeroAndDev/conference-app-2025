@@ -1,9 +1,13 @@
 package io.github.droidkaigi.confsched.sessions
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,10 +25,10 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.unit.dp
+import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.extension.enableMouseDragScroll
-import io.github.droidkaigi.confsched.droidkaigiui.extension.plus
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
 import io.github.droidkaigi.confsched.model.core.Lang
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
@@ -55,6 +59,7 @@ fun TimetableItemDetailScreen(
     ProvideRoomTheme(uiState.timetableItem.room.roomTheme) {
         val listState = rememberLazyListState()
         var fabHeight by remember { mutableStateOf(0.dp) }
+        val roomTheme = LocalRoomTheme.current
         Scaffold(
             topBar = {
                 TimetableItemDetailTopAppBar(
@@ -91,8 +96,16 @@ fun TimetableItemDetailScreen(
                     .fillMaxSize()
                     .enableMouseDragScroll(listState)
                     .testTag(TimetableItemDetailScreenLazyColumnTestTag),
-                contentPadding = contentPadding + PaddingValues(bottom = WindowInsets.safeGestures.asPaddingValues().calculateBottomPadding() + fabHeight),
+                contentPadding = PaddingValues(bottom = WindowInsets.safeGestures.asPaddingValues().calculateBottomPadding() + fabHeight),
             ) {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .background(roomTheme.dimColor)
+                            .fillMaxWidth()
+                            .height(contentPadding.calculateTopPadding()),
+                    )
+                }
                 item {
                     TimetableItemDetailHeadline(
                         currentLang = uiState.currentLang,
