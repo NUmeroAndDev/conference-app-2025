@@ -44,18 +44,26 @@ fun SubcomposeAsyncImage(
         )
     },
 ) {
-    CoilSubcomposeAsyncImage(
-        model = model,
-        contentDescription = contentDescription,
-        contentScale = contentScale,
-        modifier = modifier,
-        loading = loading,
-        success = {
-            Image(
-                painter = painter,
-                contentDescription = contentDescription,
-            )
-        },
-        error = error,
-    )
+    if (model != null) {
+        CoilSubcomposeAsyncImage(
+            model = model,
+            contentDescription = contentDescription,
+            contentScale = contentScale,
+            modifier = modifier,
+            loading = loading,
+            success = {
+                Image(
+                    painter = painter,
+                    contentDescription = contentDescription,
+                )
+            },
+            error = error,
+        )
+    } else {
+        Image(
+            painter = painterResource(DroidkaigiuiRes.drawable.fallback_app_icon),
+            contentDescription = null,
+            modifier = modifier,
+        )
+    }
 }

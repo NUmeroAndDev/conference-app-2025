@@ -55,7 +55,7 @@ public fun SessionsAllResponse.toTimetable(): Timetable {
                     id = apiSpeaker.id,
                     name = apiSpeaker.fullName,
                     bio = apiSpeaker.bio ?: "",
-                    iconUrl = apiSpeaker.profilePicture.orEmpty(),
+                    iconUrl = apiSpeaker.profilePicture,
                     tagLine = apiSpeaker.tagLine ?: "",
                 )
             }.first()
