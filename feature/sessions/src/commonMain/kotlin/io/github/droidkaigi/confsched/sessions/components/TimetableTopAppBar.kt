@@ -11,6 +11,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import io.github.droidkaigi.confsched.common.compose.rememberXrEnvironment
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.component.AnimatedTextTopAppBar
@@ -30,6 +31,8 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
+const val TimetableUiTypeChangeTestTag = "TimetableUiTypeChangeTestTag"
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -61,6 +64,7 @@ fun TimetableTopAppBar(
             IconButton(
                 onClick = onUiTypeChangeClick,
                 shapes = IconButtonDefaults.shapes(),
+                modifier = Modifier.testTag(TimetableUiTypeChangeTestTag),
             ) {
                 val iconRes = when (timetableUiType) {
                     TimetableUiType.List -> SessionsRes.drawable.ic_view_grid

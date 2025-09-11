@@ -29,6 +29,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.common.compose.rememberXrEnvironment
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
@@ -54,6 +55,9 @@ import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toPersistentMap
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Duration.Companion.hours
+
+const val TimetableScreenTestTag = "TimetableScreenTestTag"
+const val TimetableConferenceDayTestTag = "TimetableConferenceDayTestTag"
 
 @Composable
 fun TimetableScreen(
@@ -100,7 +104,9 @@ fun TimetableScreen(
         },
         containerColor = if (isFullSpace) MaterialTheme.colorScheme.surface else Color.Transparent,
         contentWindowInsets = WindowInsets(),
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .testTag(TimetableScreenTestTag),
     ) { paddingValues ->
         if (!isFullSpace) {
             TimetableBackground()
@@ -131,7 +137,9 @@ fun TimetableScreen(
                                     inactiveContainerColor = MaterialTheme.colorScheme.surface,
                                 ),
                                 selected = selectedDay == droidKaigi2025Day,
-                                modifier = Modifier.width(TimetableDefaults.dayTabWidth),
+                                modifier = Modifier
+                                    .width(TimetableDefaults.dayTabWidth)
+                                    .testTag(TimetableConferenceDayTestTag.plus(droidKaigi2025Day.ordinal)),
                             ) {
                                 Text(droidKaigi2025Day.monthAndDay())
                             }

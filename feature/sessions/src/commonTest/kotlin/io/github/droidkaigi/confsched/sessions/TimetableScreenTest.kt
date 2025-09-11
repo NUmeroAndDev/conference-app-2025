@@ -53,6 +53,65 @@ class TimetableScreenTest {
                         clickFirstSessionBookmark()
                     }
                 }
+                describe("click first session") {
+                    doIt {
+                        clickFirstSession()
+                    }
+                    itShould("show session detail") {
+                        checkClickedItemsExists()
+                    }
+                }
+                describe("scroll timetable") {
+                    doIt {
+                        scrollTimetable()
+                    }
+                    itShould("first session is not displayed") {
+                        captureScreenWithChecks(checks = {
+                            checkTimetableListFirstItemNotDisplayed()
+                        })
+                    }
+                }
+                describe("click conference day2 tab") {
+                    doIt {
+                        clickTimetableTab(DroidKaigi2025Day.ConferenceDay2)
+                    }
+                    itShould("change displayed day") {
+                        captureScreenWithChecks(checks = {
+                            checkTimetableListItemsDisplayed()
+                        })
+                    }
+                }
+                describe("click timetable ui type change") {
+                    doIt {
+                        clickTimetableUiTypeChangeButton()
+                    }
+                    itShould("change timetable ui type") {
+                        captureScreenWithChecks(checks = {
+                            checkTimetableGridDisplayed()
+                            checkTimetableGridItemsDisplayed()
+                        })
+                    }
+                    describe("scroll timetable") {
+                        doIt {
+                            scrollTimetable()
+                        }
+                        itShould("first session is not displayed") {
+                            captureScreenWithChecks(checks = {
+                                checkTimetableGridFirstItemNotDisplayed()
+                            })
+                        }
+                    }
+                    describe("click conference day2 tab") {
+                        doIt {
+                            clickTimetableTab(DroidKaigi2025Day.ConferenceDay2)
+                        }
+                        itShould("change displayed day") {
+                            captureScreenWithChecks(checks = {
+                                checkTimetableGridItemsDisplayed()
+                            })
+                        }
+                    }
+                }
             }
         }
         describe("when server is error") {
