@@ -64,7 +64,7 @@ fun TimetableTopAppBar(
             IconButton(
                 onClick = onUiTypeChangeClick,
                 shapes = IconButtonDefaults.shapes(),
-                modifier = Modifier.testTag(TimetableUiTypeChangeTestTag)
+                modifier = Modifier.testTag(TimetableUiTypeChangeTestTag),
             ) {
                 val iconRes = when (timetableUiType) {
                     TimetableUiType.List -> SessionsRes.drawable.ic_view_grid
