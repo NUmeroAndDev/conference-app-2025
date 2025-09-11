@@ -28,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,6 +51,8 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Duration.Companion.minutes
+
+const val TimetableGridItemTestTag = "TimetableGridItem"
 
 @Composable
 fun TimetableGridItem(
@@ -104,7 +107,8 @@ fun TimetableGridItem(
                             TimetableGridItemDefaults.contentPadding / 2
                         }
                     },
-                ),
+                )
+                .testTag(TimetableGridItemTestTag),
         ) {
             Column(
                 modifier = Modifier.weight(1f),

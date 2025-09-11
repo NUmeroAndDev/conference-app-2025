@@ -41,6 +41,7 @@ import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.ScrollAxisRange
 import androidx.compose.ui.semantics.horizontalScrollAxisRange
 import androidx.compose.ui.semantics.scrollBy
@@ -74,6 +75,8 @@ import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.ExperimentalTime
+
+const val TimetableGridTestTag = "TimetableGridTestTag"
 
 @Composable
 fun TimetableGrid(
@@ -332,7 +335,8 @@ private fun TimetableGrid(
                         true
                     },
                 )
-            },
+            }
+            .testTag(TimetableGridTestTag),
     ) { constraint ->
         data class ItemData(val placeable: Placeable, val timetableItem: TimetableItemLayout)
         if (timetableGridState.width != constraint.maxWidth ||
