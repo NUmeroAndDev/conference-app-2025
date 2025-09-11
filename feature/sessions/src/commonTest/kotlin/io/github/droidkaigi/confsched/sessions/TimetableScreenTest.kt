@@ -95,7 +95,7 @@ class TimetableScreenTest {
                         doIt {
                             scrollTimetable()
                         }
-                        // TODO: Fix flaky test - Grid scroll behavior needs investigation
+                        // TODO: Fix fail test - Grid scroll behavior needs investigation
 //                        itShould("first session is not displayed") {
 //                            captureScreenWithChecks(checks = {
 //                                checkTimetableGridFirstItemNotDisplayed()
