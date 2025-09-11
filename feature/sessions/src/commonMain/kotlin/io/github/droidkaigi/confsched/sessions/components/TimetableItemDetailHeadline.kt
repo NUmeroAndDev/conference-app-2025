@@ -35,11 +35,11 @@ import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
-import io.github.droidkaigi.confsched.droidkaigiui.SubcomposeAsyncImage
 import io.github.droidkaigi.confsched.droidkaigiui.component.OutlinedToolTip
 import io.github.droidkaigi.confsched.droidkaigiui.component.RoomToolTip
 import io.github.droidkaigi.confsched.droidkaigiui.extension.icon
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
+import io.github.droidkaigi.confsched.droidkaigiui.session.TimetableProfileIcon
 import io.github.droidkaigi.confsched.model.core.Lang
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.fake
@@ -101,9 +101,8 @@ fun TimetableItemDetailHeadline(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                SubcomposeAsyncImage(
-                    model = speaker.iconUrl,
-                    contentDescription = null,
+                TimetableProfileIcon(
+                    speakerUrl = speaker.iconUrl,
                     modifier = Modifier
                         .border(border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.onSurfaceVariant), shape = CircleShape)
                         .clip(CircleShape)

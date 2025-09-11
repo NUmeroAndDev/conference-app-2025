@@ -47,7 +47,6 @@ import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.DroidkaigiuiRes
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
-import io.github.droidkaigi.confsched.droidkaigiui.SubcomposeAsyncImage
 import io.github.droidkaigi.confsched.droidkaigiui.bookmarked
 import io.github.droidkaigi.confsched.droidkaigiui.component.OutlinedToolTip
 import io.github.droidkaigi.confsched.droidkaigiui.component.RoomToolTip
@@ -274,9 +273,8 @@ private fun TimetableItemSpeaker(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier,
     ) {
-        SubcomposeAsyncImage(
-            model = speaker.iconUrl,
-            contentDescription = null,
+        TimetableProfileIcon(
+            speakerUrl = speaker.iconUrl,
             modifier = Modifier
                 .width(32.dp)
                 .height(32.dp)
