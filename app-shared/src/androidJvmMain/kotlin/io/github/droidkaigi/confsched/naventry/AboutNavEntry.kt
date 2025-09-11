@@ -9,6 +9,7 @@ import io.github.droidkaigi.confsched.about.LicensesScreenRoot
 import io.github.droidkaigi.confsched.about.rememberAboutScreenContextRetained
 import io.github.droidkaigi.confsched.about.rememberLicensesScreenContextRetained
 import io.github.droidkaigi.confsched.model.about.AboutItem
+import io.github.droidkaigi.confsched.navigation.listDetailSceneStrategyDetailPaneMetaData
 import io.github.droidkaigi.confsched.navigation.listDetailSceneStrategyListPaneMetaData
 import io.github.droidkaigi.confsched.navkey.AboutNavKey
 import io.github.droidkaigi.confsched.navkey.LicensesNavKey
@@ -43,7 +44,9 @@ context(appGraph: AppGraph)
 fun EntryProviderBuilder<NavKey>.licensesEntry(
     onBackClick: () -> Unit,
 ) {
-    entry<LicensesNavKey> {
+    entry<LicensesNavKey>(
+        metadata = listDetailSceneStrategyDetailPaneMetaData(),
+    ) {
         with(rememberLicensesScreenContextRetained()) {
             LicensesScreenRoot(
                 onBackClick = onBackClick,
