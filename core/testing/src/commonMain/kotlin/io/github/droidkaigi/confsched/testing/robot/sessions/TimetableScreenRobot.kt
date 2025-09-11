@@ -17,8 +17,8 @@ import io.github.droidkaigi.confsched.droidkaigiui.session.TimetableItemCardBook
 import io.github.droidkaigi.confsched.droidkaigiui.session.TimetableItemCardTestTag
 import io.github.droidkaigi.confsched.droidkaigiui.session.TimetableListTestTag
 import io.github.droidkaigi.confsched.model.core.DroidKaigi2025Day
+import io.github.droidkaigi.confsched.model.sessions.TimetableItemId
 import io.github.droidkaigi.confsched.sessions.TimetableConferenceDayTestTag
-import io.github.droidkaigi.confsched.sessions.TimetableItemDetailScreenLazyColumnTestTag
 import io.github.droidkaigi.confsched.sessions.TimetableScreenContext
 import io.github.droidkaigi.confsched.sessions.TimetableScreenRoot
 import io.github.droidkaigi.confsched.sessions.TimetableScreenTestTag
@@ -32,6 +32,7 @@ import io.github.droidkaigi.confsched.testing.robot.core.DefaultWaitRobot
 import io.github.droidkaigi.confsched.testing.robot.core.WaitRobot
 import io.github.droidkaigi.confsched.testing.util.onAllNodesWithTag
 import kotlinx.coroutines.test.TestDispatcher
+import kotlin.test.assertTrue
 
 @Inject
 class TimetableScreenRobot(
@@ -43,6 +44,7 @@ class TimetableScreenRobot(
 ) : TimetableServerRobot by timetableServerRobot,
     CaptureScreenRobot by captureScreenRobot,
     WaitRobot by waitRobot {
+    val clickedItems = mutableSetOf<TimetableItemId>()
 
     context(composeUiTest: ComposeUiTest)
     fun setupTimetableScreenContent() {
@@ -51,7 +53,9 @@ class TimetableScreenRobot(
                 TestDefaultsProvider(testDispatcher) {
                     TimetableScreenRoot(
                         onSearchClick = {},
-                        onTimetableItemClick = {},
+                        onTimetableItemClick = {
+                            clickedItems.add(it)
+                        },
                     )
                 }
             }
@@ -107,7 +111,7 @@ class TimetableScreenRobot(
 
     context(composeUiTest: ComposeUiTest)
     fun checkClickedItemsExists() {
-        // TODO: Implement this method to verify that clicked items exist
+        assertTrue(clickedItems.isNotEmpty())
     }
 
     context(composeUiTest: ComposeUiTest)
