@@ -12,10 +12,13 @@ data object LicensesNavKey : NavKey
 sealed interface AboutItemNavKey : NavKey {
     @Serializable
     data object ContributorsNavKey : AboutItemNavKey
+
     @Serializable
     data object SettingsNavKey : AboutItemNavKey
+
     @Serializable
     data object StaffNavKey : AboutItemNavKey
+
     @Serializable
     data object SponsorsNavKey : AboutItemNavKey
 }
