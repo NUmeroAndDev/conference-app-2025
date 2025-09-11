@@ -95,12 +95,11 @@ class TimetableScreenTest {
                         doIt {
                             scrollTimetable()
                         }
-                        // TODO: Fix fail test - Grid scroll behavior needs investigation
-//                        itShould("first session is not displayed") {
-//                            captureScreenWithChecks(checks = {
-//                                checkTimetableGridFirstItemNotDisplayed()
-//                            })
-//                        }
+                        itShould("first session is not displayed") {
+                            captureScreenWithChecks(checks = {
+                                checkTimetableGridFirstItemNotDisplayed()
+                            })
+                        }
                     }
                     describe("click conference day2 tab") {
                         doIt {
