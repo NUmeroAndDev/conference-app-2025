@@ -18,7 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import io.github.confsched.profile.ProfileUiState
+import io.github.confsched.profile.ProfileScreenUiState
 import io.github.confsched.profile.hologramaticEffect
 import io.github.confsched.profile.tiltEffect
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
@@ -34,7 +34,7 @@ private enum class FlipState { Initial, Animating, Default }
 
 @Composable
 fun FlippableProfileCard(
-    uiState: ProfileUiState.Card,
+    uiState: ProfileScreenUiState.Card,
     modifier: Modifier = Modifier,
 ) {
     var flipState by remember { mutableStateOf(FlipState.Initial) }
@@ -81,7 +81,7 @@ fun FlippableProfileCard(
 
 @Composable
 private fun ProfileCard(
-    uiState: ProfileUiState.Card,
+    uiState: ProfileScreenUiState.Card,
     rotation: Float,
     isFlipped: Boolean,
     onFlippedChange: (Boolean) -> Unit,
@@ -142,7 +142,7 @@ private fun ProfileCard(
 private fun FlippableProfileCardPreview() {
     KaigiPreviewContainer {
         FlippableProfileCard(
-            uiState = ProfileUiState.Card(
+            uiState = ProfileScreenUiState.Card(
                 profile = Profile(
                     nickName = "DroidKaigi",
                     occupation = "Software Engineer",
