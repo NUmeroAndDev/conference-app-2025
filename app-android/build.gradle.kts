@@ -25,7 +25,7 @@ android {
 
     defaultConfig {
         applicationId = "io.github.droidkaigi.confsched2025"
-        versionCode = 4
+        versionCode = 5
         minSdk = 24
         targetSdk = 36
     }
