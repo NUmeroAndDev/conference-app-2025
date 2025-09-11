@@ -32,7 +32,7 @@ fun ProfileScreenRoot(
         )
 
         when (uiState) {
-            is ProfileUiState.Card -> {
+            is ProfileScreenUiState.Card -> {
                 val shareText = stringResource(ProfileRes.string.share_description)
 
                 ProfileCardScreen(
@@ -44,7 +44,7 @@ fun ProfileScreenRoot(
                 )
             }
 
-            is ProfileUiState.Edit -> {
+            is ProfileScreenUiState.Edit -> {
                 BackHandler(enabled = uiState.canBackToCardScreen) {
                     eventFlow.tryEmit(ProfileScreenEvent.ExitEditMode)
                 }
