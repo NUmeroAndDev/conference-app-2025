@@ -5,7 +5,7 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entry
 import io.github.droidkaigi.confsched.AppGraph
 import io.github.droidkaigi.confsched.navigation.listDetailSceneStrategyDetailPaneMetaData
-import io.github.droidkaigi.confsched.navkey.SponsorsNavKey
+import io.github.droidkaigi.confsched.navkey.AboutItemNavKey.SponsorsNavKey
 import io.github.droidkaigi.confsched.sponsors.SponsorScreenRoot
 import io.github.droidkaigi.confsched.sponsors.rememberSponsorsScreenContextRetained
 

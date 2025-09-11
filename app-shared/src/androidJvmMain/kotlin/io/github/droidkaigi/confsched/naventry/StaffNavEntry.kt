@@ -5,7 +5,7 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entry
 import io.github.droidkaigi.confsched.AppGraph
 import io.github.droidkaigi.confsched.navigation.listDetailSceneStrategyDetailPaneMetaData
-import io.github.droidkaigi.confsched.navkey.StaffNavKey
+import io.github.droidkaigi.confsched.navkey.AboutItemNavKey.StaffNavKey
 import io.github.droidkaigi.confsched.staff.StaffScreenRoot
 import io.github.droidkaigi.confsched.staff.rememberStaffScreenContextRetained
 

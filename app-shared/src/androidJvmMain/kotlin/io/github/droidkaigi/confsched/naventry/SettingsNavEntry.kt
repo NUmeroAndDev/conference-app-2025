@@ -5,7 +5,7 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entry
 import io.github.droidkaigi.confsched.AppGraph
 import io.github.droidkaigi.confsched.navigation.listDetailSceneStrategyDetailPaneMetaData
-import io.github.droidkaigi.confsched.navkey.SettingsNavKey
+import io.github.droidkaigi.confsched.navkey.AboutItemNavKey.SettingsNavKey
 import io.github.droidkaigi.confsched.settings.SettingsScreenRoot
 import io.github.droidkaigi.confsched.settings.rememberSettingsScreenContextRetained
 

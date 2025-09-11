@@ -29,16 +29,17 @@ import io.github.droidkaigi.confsched.navigation.materialFadeIn
 import io.github.droidkaigi.confsched.navigation.materialFadeOut
 import io.github.droidkaigi.confsched.navigation.rememberNavBackStack
 import io.github.droidkaigi.confsched.navigation.sceneStrategy
+import io.github.droidkaigi.confsched.navkey.AboutItemNavKey
+import io.github.droidkaigi.confsched.navkey.AboutItemNavKey.ContributorsNavKey
+import io.github.droidkaigi.confsched.navkey.AboutItemNavKey.SettingsNavKey
+import io.github.droidkaigi.confsched.navkey.AboutItemNavKey.SponsorsNavKey
+import io.github.droidkaigi.confsched.navkey.AboutItemNavKey.StaffNavKey
 import io.github.droidkaigi.confsched.navkey.AboutNavKey
-import io.github.droidkaigi.confsched.navkey.ContributorsNavKey
 import io.github.droidkaigi.confsched.navkey.EventMapNavKey
 import io.github.droidkaigi.confsched.navkey.FavoritesNavKey
 import io.github.droidkaigi.confsched.navkey.LicensesNavKey
 import io.github.droidkaigi.confsched.navkey.ProfileNavKey
 import io.github.droidkaigi.confsched.navkey.SearchNavKey
-import io.github.droidkaigi.confsched.navkey.SettingsNavKey
-import io.github.droidkaigi.confsched.navkey.SponsorsNavKey
-import io.github.droidkaigi.confsched.navkey.StaffNavKey
 import io.github.droidkaigi.confsched.navkey.TimetableItemDetailNavKey
 import io.github.droidkaigi.confsched.navkey.TimetableNavKey
 
@@ -127,6 +128,14 @@ actual fun KaigiAppUi() {
                         } else {
                             "https://portal.droidkaigi.jp/en"
                         }
+
+                        fun navigateToAboutItem(navKey: AboutItemNavKey) {
+                            if (backStack.lastOrNull() is AboutItemNavKey) {
+                                backStack.removeLastOrNull()
+                            }
+                            backStack.add(navKey)
+                        }
+
                         when (item) {
                             AboutItem.Map -> {
                                 externalNavController.navigate(
@@ -134,9 +143,9 @@ actual fun KaigiAppUi() {
                                 )
                             }
 
-                            AboutItem.Contributors -> backStack.add(ContributorsNavKey)
-                            AboutItem.Sponsors -> backStack.add(SponsorsNavKey)
-                            AboutItem.Staff -> backStack.add(StaffNavKey)
+                            AboutItem.Contributors -> navigateToAboutItem(ContributorsNavKey)
+                            AboutItem.Sponsors -> navigateToAboutItem(SponsorsNavKey)
+                            AboutItem.Staff -> navigateToAboutItem(StaffNavKey)
                             AboutItem.CodeOfConduct -> {
                                 externalNavController.navigate(
                                     url = "$portalBaseUrl/about/code-of-conduct",
@@ -151,7 +160,7 @@ actual fun KaigiAppUi() {
                                 )
                             }
 
-                            AboutItem.Settings -> backStack.add(SettingsNavKey)
+                            AboutItem.Settings -> navigateToAboutItem(SettingsNavKey)
                             AboutItem.Youtube -> {
                                 externalNavController.navigate(
                                     url = "https://www.youtube.com/c/DroidKaigi",
