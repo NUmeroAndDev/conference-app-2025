@@ -3,7 +3,9 @@ package io.github.droidkaigi.confsched
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
+import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import dev.chrisbanes.haze.hazeSource
@@ -31,13 +33,13 @@ import io.github.droidkaigi.confsched.navigation.rememberNavBackStack
 import io.github.droidkaigi.confsched.navigation.sceneStrategy
 import io.github.droidkaigi.confsched.navkey.AboutItemNavKey
 import io.github.droidkaigi.confsched.navkey.AboutItemNavKey.ContributorsNavKey
+import io.github.droidkaigi.confsched.navkey.AboutItemNavKey.LicensesNavKey
 import io.github.droidkaigi.confsched.navkey.AboutItemNavKey.SettingsNavKey
 import io.github.droidkaigi.confsched.navkey.AboutItemNavKey.SponsorsNavKey
 import io.github.droidkaigi.confsched.navkey.AboutItemNavKey.StaffNavKey
 import io.github.droidkaigi.confsched.navkey.AboutNavKey
 import io.github.droidkaigi.confsched.navkey.EventMapNavKey
 import io.github.droidkaigi.confsched.navkey.FavoritesNavKey
-import io.github.droidkaigi.confsched.navkey.LicensesNavKey
 import io.github.droidkaigi.confsched.navkey.ProfileNavKey
 import io.github.droidkaigi.confsched.navkey.SearchNavKey
 import io.github.droidkaigi.confsched.navkey.TimetableItemDetailNavKey
@@ -86,10 +88,7 @@ actual fun KaigiAppUi() {
                     onLinkClick = externalNavController::navigate,
                     onSearchClick = { backStack.add(SearchNavKey) },
                     onTimetableItemClick = {
-                        if (backStack.lastOrNull() is TimetableItemDetailNavKey) {
-                            backStack.removeLastOrNull()
-                        }
-                        backStack.add(TimetableItemDetailNavKey(it))
+                        backStack.addSingleTop(TimetableItemDetailNavKey(it))
                     },
                     timeTableEntryMetadata = NavDisplay.topLevelTransition(),
                 )
@@ -110,10 +109,7 @@ actual fun KaigiAppUi() {
                 )
                 favoritesEntry(
                     onTimetableItemClick = {
-                        if (backStack.lastOrNull() is TimetableItemDetailNavKey) {
-                            backStack.removeLastOrNull()
-                        }
-                        backStack.add(TimetableItemDetailNavKey(it))
+                        backStack.addSingleTop(TimetableItemDetailNavKey(it))
                     },
                     metadata = NavDisplay.topLevelTransition(),
                 )
@@ -129,13 +125,6 @@ actual fun KaigiAppUi() {
                             "https://portal.droidkaigi.jp/en"
                         }
 
-                        fun navigateToAboutItem(navKey: AboutItemNavKey) {
-                            if (backStack.lastOrNull() is AboutItemNavKey) {
-                                backStack.removeLastOrNull()
-                            }
-                            backStack.add(navKey)
-                        }
-
                         when (item) {
                             AboutItem.Map -> {
                                 externalNavController.navigate(
@@ -143,16 +132,16 @@ actual fun KaigiAppUi() {
                                 )
                             }
 
-                            AboutItem.Contributors -> navigateToAboutItem(ContributorsNavKey)
-                            AboutItem.Sponsors -> navigateToAboutItem(SponsorsNavKey)
-                            AboutItem.Staff -> navigateToAboutItem(StaffNavKey)
+                            AboutItem.Contributors -> backStack.addSingleTop<AboutItemNavKey>(ContributorsNavKey)
+                            AboutItem.Sponsors -> backStack.addSingleTop<AboutItemNavKey>(SponsorsNavKey)
+                            AboutItem.Staff -> backStack.addSingleTop<AboutItemNavKey>(StaffNavKey)
                             AboutItem.CodeOfConduct -> {
                                 externalNavController.navigate(
                                     url = "$portalBaseUrl/about/code-of-conduct",
                                 )
                             }
 
-                            AboutItem.License -> backStack.add(LicensesNavKey)
+                            AboutItem.License -> backStack.addSingleTop<AboutItemNavKey>(LicensesNavKey)
 
                             AboutItem.PrivacyPolicy -> {
                                 externalNavController.navigate(
@@ -160,7 +149,7 @@ actual fun KaigiAppUi() {
                                 )
                             }
 
-                            AboutItem.Settings -> navigateToAboutItem(SettingsNavKey)
+                            AboutItem.Settings -> backStack.addSingleTop<AboutItemNavKey>(SettingsNavKey)
                             AboutItem.Youtube -> {
                                 externalNavController.navigate(
                                     url = "https://www.youtube.com/c/DroidKaigi",
@@ -204,4 +193,11 @@ private fun NavDisplay.topLevelTransition() = transitionSpec {
     materialFadeIn() togetherWith materialFadeOut()
 } + NavDisplay.predictivePopTransitionSpec {
     materialFadeIn() togetherWith materialFadeOut()
+}
+
+inline fun <reified Key : NavKey> SnapshotStateList<NavKey>.addSingleTop(navKey: Key) {
+    if (this.lastOrNull() is Key) {
+        removeLastOrNull()
+    }
+    add(navKey)
 }

@@ -11,8 +11,8 @@ import io.github.droidkaigi.confsched.about.rememberLicensesScreenContextRetaine
 import io.github.droidkaigi.confsched.model.about.AboutItem
 import io.github.droidkaigi.confsched.navigation.listDetailSceneStrategyDetailPaneMetaData
 import io.github.droidkaigi.confsched.navigation.listDetailSceneStrategyListPaneMetaData
+import io.github.droidkaigi.confsched.navkey.AboutItemNavKey.LicensesNavKey
 import io.github.droidkaigi.confsched.navkey.AboutNavKey
-import io.github.droidkaigi.confsched.navkey.LicensesNavKey
 
 context(appGraph: AppGraph)
 fun EntryProviderBuilder<NavKey>.aboutEntries(
