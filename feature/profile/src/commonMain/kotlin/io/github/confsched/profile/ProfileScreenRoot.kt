@@ -26,7 +26,7 @@ fun ProfileScreenRoot(
     ) { profileWithImageBitmaps ->
         val eventFlow = rememberEventFlow<ProfileScreenEvent>()
 
-        val uiState = profilePresenter(
+        val uiState = profileScreenPresenter(
             eventFlow = eventFlow,
             profileWithImages = profileWithImageBitmaps,
         )

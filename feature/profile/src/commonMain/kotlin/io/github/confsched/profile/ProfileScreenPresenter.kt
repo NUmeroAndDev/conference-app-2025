@@ -14,7 +14,7 @@ import soil.query.compose.rememberMutation
 
 @Composable
 context(screenContext: ProfileScreenContext)
-fun profilePresenter(
+fun profileScreenPresenter(
     eventFlow: EventFlow<ProfileScreenEvent>,
     profileWithImages: ProfileWithImages,
 ): ProfileUiState = providePresenterDefaults {
