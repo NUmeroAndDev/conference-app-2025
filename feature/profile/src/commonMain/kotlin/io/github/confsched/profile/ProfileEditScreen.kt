@@ -1,6 +1,5 @@
 package io.github.confsched.profile
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -300,57 +299,6 @@ private fun Form<Profile>.Image() {
             }
         },
     )
-
-    // FIXME: Replace the ByteArray version once the following bug is fixed.
-    //   https://github.com/vinceglb/FileKit/issues/346
-    // var image: PlatformFile? by remember {
-    //     val file = if (value.image.isNotEmpty()) {
-    //         PlatformFile.fromBookmarkData(value.image)
-    //     } else {
-    //         null
-    //     }
-    //     mutableStateOf(file)
-    // }
-    // val coroutineScope = rememberCoroutineScope()
-    // Field(
-    //     selector = { it.image },
-    //     updater = { copy(image = it) },
-    //     validator = FieldValidator {
-    //         notEmpty { emptyImageErrorString }
-    //     },
-    //     render = { field ->
-    //         Column {
-    //             ImagePicker(
-    //                 image = image,
-    //                 onImageChange = { file ->
-    //                     image = file
-    //                     coroutineScope.launch {
-    //                         try {
-    //                             val bookmark = file.bookmarkData() // <-- Throw the exception
-    //                             field.onValueChange(bookmark.bytes)
-    //                         } catch (e: CancellationException) {
-    //                             throw e
-    //                         } catch (e: Exception) {
-    //                             field.onValueChange(ByteArray(0))
-    //                             println("Failed to load image: ${e.stackTraceToString()}")
-    //                         }
-    //                     }
-    //                 },
-    //                 onClear = {
-    //                     image = null
-    //                     field.onValueChange(ByteArray(0))
-    //                 }
-    //             )
-    //             if (field.hasError) {
-    //                 Text(
-    //                     text = field.error.messages.first(),
-    //                     color = MaterialTheme.colorScheme.error,
-    //                     style = MaterialTheme.typography.bodySmall,
-    //                 )
-    //             }
-    //         }
-    //     }
-    // )
 }
 
 @Composable
